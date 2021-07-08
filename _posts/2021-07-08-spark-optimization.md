@@ -4,7 +4,7 @@ toc: false
 comments: true
 layout: post
 description: Tricks to optimize your workflow on Spark
-categories: [Spark]
+categories: [Spark, Python, Scala]
 ---
 
 Apache Spark is an analytics engine designed to be particularly efficient to process Big Data. You can use Spark on an on-premise or a cloud-deployed Hadoop cluster or through the Databricks platform. In any of these setups, using Spark efficiently is critical if you want to control and reduce costs. For that you should be able to diagnose and resolve some common performance issues. These usually fall into the five following categories: spill, skew, shuffle, storage and serialization. Here we are going to go over each of them to understand what they are, see how to identify them and mitigate their impact on your workflow.
