@@ -218,7 +218,7 @@ You see all the previous and ongoing pipelines:
 
 Let's click on the ongoing pipeline. The pipeline runs on each OS and for each Python version. Wait a couple of minutes to see the results:
 
-![Job completed]({{ site.baseurl}}/images/gh03.png)
+![Job completed]({{ site.baseurl }}/images/gh03.png)
 
 All the pipelines succeed! We are ready to publish our package on the PyPi registry.
 
@@ -333,3 +333,7 @@ Our articles describe a full setup that you can leverage to build your own Pytho
   ```bash
   poetry publish
   ```
+
+## Acknowledgments
+
+This article was first published in Adaltas [blog](https://www.adaltas.com/en/articles/) and kindly reviewed by the CEO David Worms and one consultant Barthelemy NGOM.
