@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="twitter:card" content="summary_large_image" /><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Guide for optimizing performance with Spark | Lost in Datation</title>
+<meta name="generator" content="Jekyll v4.1.1" />
+<meta property="og:title" content="Guide for optimizing performance with Spark" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Tricks to optimize your workflow on Spark" />
+<meta property="og:description" content="Tricks to optimize your workflow on Spark" />
+<link rel="canonical" href="https://fbraza.github.io/BrazLog/spark/2021/07/08/spark-optimization.html" />
+<meta property="og:url" content="https://fbraza.github.io/BrazLog/spark/2021/07/08/spark-optimization.html" />
+<meta property="og:site_name" content="Lost in Datation" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2021-07-08T00:00:00-05:00" />
+<script type="application/ld+json">
+{"url":"https://fbraza.github.io/BrazLog/spark/2021/07/08/spark-optimization.html","@type":"BlogPosting","headline":"Guide for optimizing performance with Spark","dateModified":"2021-07-08T00:00:00-05:00","datePublished":"2021-07-08T00:00:00-05:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://fbraza.github.io/BrazLog/spark/2021/07/08/spark-optimization.html"},"description":"Tricks to optimize your workflow on Spark","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/BrazLog/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="https://fbraza.github.io/BrazLog/feed.xml" title="Lost in Datation" /><link rel="shortcut icon" type="image/x-icon" href="/BrazLog/images/favicon.ico"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Primer/15.2.0/primer.css" integrity="sha512-xTz2ys4coGAOz8vuV1NcQBkgVmKhsSEtjbqyMJbBHRplFuvKIUo6xhLHpAyPt9mfR6twHJgn9OgVLuqOvjeBhg==" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css" integrity="sha512-1PKOgIY59xJ8Co8+NE6FZ+LOAZKjy+KY8iq0G4B3CyeY6wYHN3yt9PW0XpSriVlkMXe40PTKnXrLnZ9+fkDaog==" crossorigin="anonymous" />
+
+<script>
+function wrap_img(fn) {
+    if (document.attachEvent ? document.readyState === "complete" : document.readyState !== "loading") {
+        var elements = document.querySelectorAll(".post img");
+        Array.prototype.forEach.call(elements, function(el, i) {
+            if (el.getAttribute("title") && (el.className != "emoji")) {
+                const caption = document.createElement('figcaption');
+                var node = document.createTextNode(el.getAttribute("title"));
+                caption.appendChild(node);
+                const wrapper = document.createElement('figure');
+                wrapper.className = 'image';
+                el.parentNode.insertBefore(wrapper, el);
+                el.parentNode.removeChild(el);
+                wrapper.appendChild(el);
+                wrapper.appendChild(caption);
+            }
+        });
+    } else { document.addEventListener('DOMContentLoaded', fn); }
+}
+window.onload = wrap_img;
+</script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function(){
+    // add link icon to anchor tags
+    var elem = document.querySelectorAll(".anchor-link")
+    elem.forEach(e => (e.innerHTML = '<i class="fas fa-link fa-xs"></i>'));
+    });
+</script>
+</head>
+<body><header class="site-header">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/BrazLog/">Lost in Datation</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/BrazLog/about/">About Me</a><a class="page-link" href="/BrazLog/search/">Search</a><a class="page-link" href="/BrazLog/categories/">Tags</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Guide for optimizing performance with Spark</h1><p class="page-description">Tricks to optimize your workflow on Spark</p><p class="post-meta post-meta-title"><time class="dt-published" datetime="2021-07-08T00:00:00-05:00" itemprop="datePublished">
+        Jul 8, 2021
+      </time>
+       • <span class="read-time" title="Estimated read time">
+    
+    
+      16 min read
+    
+</span></p>
+
+    
+      <p class="category-tags"><i class="fas fa-tags category-tags-icon"></i></i> 
+      
+        <a class="category-tags-link" href="/BrazLog/categories/#Spark">Spark</a>
+        
+      
+      </p>
+    
+
+    </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <p>Apache Spark is an analytics engine designed to be particularly efficient to process Big Data. You can use Spark on an on-premise or a cloud-deployed Hadoop cluster or through the Databricks platform. In any of these setups, using Spark efficiently is critical if you want to control and reduce costs. For that you should be able to diagnose and resolve some common performance issues. These usually fall into the five following categories: spill, skew, shuffle, storage and serialization. Here we are going to go over each of them to understand what they are, see how to identify them and mitigate their impact on your workflow.</p>
+
+<h2 id="skew">Skew</h2>
+
+<h3 id="definition-and-root-causes">Definition and root causes</h3>
+
+<p>In Spark, data is distributed across a cluster as partitions that are processed by different worker nodes. Usually partitions are 128 MB sized and evenly distributed. In reality however, some of your partitions can have significantly more records than others. Typically you face data skewness when using <code class="language-plaintext highlighter-rouge">join</code> or <code class="language-plaintext highlighter-rouge">groupBy</code> operations using a key that is not evenly distributed. This is not a Spark specific problem but keep in mind that the distribution of the data dramatically impacts on the performance of distributed systems. Let’s imagine that in your workflow your data ends up being partitioned as shown below:</p>
+
+<p><img src="/assets/articles/content_drafts_2021-06-08-spark-performance-optimization_assets_skew_picture.png" style="zoom: 33%;" /></p>
+
+<p>As partition one (P<sub>1</sub>) is around four times bigger than the others, it takes four time as much time and requires four time as much RAM to process P<sub>1</sub>. Consequently, the entire Spark job is slower. More specifically, the stage, including these tasks, takes as much time as the P<sub>1</sub> processing task. Finally, when P<sub>1</sub> does not fit in memory, Spark raises out-of-memory (OOM) errors or undergo some <strong>spill</strong> on disk, another issue described later.</p>
+
+<h3 id="monitoring-skew">Monitoring skew</h3>
+
+<p>To monitor if your data is skewed, on the Spark UI go on the <a href="https://spark.apache.org/docs/latest/web-ui.html#stages-tab">Stages</a> tab and read the timeline. If the tasks execution time is not evenly distributed and some task takes a dramatic amount of time compared to others, you data is skewed.</p>
+
+<h3 id="mitigating-skew-issues">Mitigating skew issues</h3>
+
+<p>Remember <strong>skew is a data problem</strong>. Several approaches exist to solve and mitigate it. Here three of them that you should consider when using Spark:</p>
+
+<ul>
+  <li>
+    <p>Use the well-known “salting-key” strategy which briefly consists on concatenating the key with a random number. This randomizes the data and redistribute it more evenly.</p>
+  </li>
+  <li>
+    <p>Use <a href="https://spark.apache.org/docs/latest/sql-performance-tuning.html#join-strategy-hints-for-sql-queries">query hints</a> to annotate and help the optimizer engine to improve logical execution plans.</p>
+  </li>
+  <li>
+    <p>Use the <a href="https://spark.apache.org/docs/latest/sql-performance-tuning.html#adaptive-query-execution">Adaptive Query Execution</a> framework that shipped with Apache Spark 3.0 by enabling its features:</p>
+
+    <div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// Enable AQE and the adaptive skew join</span>
+<span class="nv">spark</span><span class="o">.</span><span class="py">conf</span><span class="o">.</span><span class="py">set</span><span class="o">(</span><span class="s">"spark.sql.adaptive.enabled"</span><span class="o">,</span> <span class="kc">true</span><span class="o">)</span>
+<span class="nv">spark</span><span class="o">.</span><span class="py">conf</span><span class="o">.</span><span class="py">set</span><span class="o">(</span><span class="s">"spark.sql.adaptive.skewedJoin.enabled"</span><span class="o">,</span> <span class="kc">true</span><span class="o">)</span>
+</code></pre></div>    </div>
+  </li>
+</ul>
+
+<h2 id="spill">Spill</h2>
+
+<h3 id="definition-and-root-causes-1">Definition and root causes</h3>
+
+<p>When the partitions are to big and cannot fit in memory, Spark moves the data on disk and gets it back later in memory. This phenomenon, called <strong>spill</strong>, is made possible thank to the <a href="https://github.com/apache/spark/blob/master/core/src/main/scala/org/apache/spark/util/collection/ExternalAppendOnlyMap.scala">ExternalAppendOnlyMap</a> collection class. This prevents OOM errors when partitioned data is too big to fit in memory. Potentially expensive disk I/O operations arise as a trade-off from this operation. There are different scenarios where spill happens:</p>
+
+<ul>
+  <li>
+    <p>Ingesting too large partitions.</p>
+  </li>
+  <li>
+    <p>Aggregating tables on a skewed column.</p>
+  </li>
+  <li>
+    <p>Using <code class="language-plaintext highlighter-rouge">join()</code>, <code class="language-plaintext highlighter-rouge">crossjoin()</code> or the <code class="language-plaintext highlighter-rouge">explode()</code> operations may create very large partitions.</p>
+  </li>
+  <li>
+    <p>Using the <code class="language-plaintext highlighter-rouge">union()</code> operation. This operation takes two DataFrames and combine them into one and always use the same number of partitions that it started with. As depicted below we start with two DataFrame (DF1 &amp; DF2) with a certain number of partitions and end up with the same number of concatenated partitions that are bigger.</p>
+
+    <p><img src="assets/articles/content_drafts_2021-06-08-spark-performance-optimization_assets_union_picture.png" alt="" /></p>
+  </li>
+  <li>
+    <p>Setting an inappropriate value (too big usually) to the <code class="language-plaintext highlighter-rouge">spark.sql.files.maxPartitionBytes</code> parameter (set to 128 MB by default). Our advice is to keep it at default and only alter it after some testing.</p>
+  </li>
+</ul>
+
+<h3 id="monitoring-spill">Monitoring spill</h3>
+
+<p>To assess whether spill happened during your jobs, the easiest way is to go to the <a href="https://spark.apache.org/docs/latest/web-ui.html#stages-tab">Stages</a> tab from the Spark U and read the <strong>summary metrics</strong> table for all completed tasks. There, spill is represented by two values:</p>
+
+<ul>
+  <li><strong>Spill (Memory)</strong>: this is the size of the data as it existed in memory</li>
+  <li><strong>Spill (Disk)</strong>: this is the size of the data as it existed in disk</li>
+</ul>
+
+<blockquote>
+  <p>Please note two things: first, the Spill value in disks will be always lower than Spill value in memory due to compression. Second, if no spill occurred you won’t find these values in the summary metrics table.</p>
+</blockquote>
+
+<p>To know whether spill is occurring during the execution of your jobs, and not wait its end, use the <code class="language-plaintext highlighter-rouge">Spark.Listener</code> class in your code. A <code class="language-plaintext highlighter-rouge">SparkListener</code> object captures events from the Spark scheduler over the course of a Spark application execution (it is used to output the logs and metrics in the Spark UI). You can implement your own custom <code class="language-plaintext highlighter-rouge">SpillListener</code> to track spill. A very nice <a href="https://github.com/apache/spark/blob/master/core/src/main/scala/org/apache/spark/TestUtils.scala">example</a> can be found in the spark Github repository:</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// from https://github.com/apache/spark/blob/master/core/src/main/scala/org/apache/spark/TestUtils.scala</span>
+
+<span class="cm">/**
+ * A `SparkListener` that detects whether spills have occurred in Spark jobs.
+ */</span>
+<span class="k">private</span> <span class="k">class</span> <span class="nc">SpillListener</span> <span class="k">extends</span> <span class="nc">SparkListener</span> <span class="o">{</span>
+  <span class="k">private</span> <span class="k">val</span> <span class="nv">stageIdToTaskMetrics</span> <span class="k">=</span> <span class="k">new</span> <span class="nv">mutable</span><span class="o">.</span><span class="py">HashMap</span><span class="o">[</span><span class="kt">Int</span>, <span class="kt">ArrayBuffer</span><span class="o">[</span><span class="kt">TaskMetrics</span><span class="o">]]</span>
+  <span class="k">private</span> <span class="k">val</span> <span class="nv">spilledStageIds</span> <span class="k">=</span> <span class="k">new</span> <span class="nv">mutable</span><span class="o">.</span><span class="py">HashSet</span><span class="o">[</span><span class="kt">Int</span><span class="o">]</span>
+
+  <span class="k">def</span> <span class="nf">numSpilledStages</span><span class="k">:</span> <span class="kt">Int</span> <span class="o">=</span> <span class="n">synchronized</span> <span class="o">{</span>
+    <span class="nv">spilledStageIds</span><span class="o">.</span><span class="py">size</span>
+  <span class="o">}</span>
+
+  <span class="k">override</span> <span class="k">def</span> <span class="nf">onTaskEnd</span><span class="o">(</span><span class="n">taskEnd</span><span class="k">:</span> <span class="kt">SparkListenerTaskEnd</span><span class="o">)</span><span class="k">:</span> <span class="kt">Unit</span> <span class="o">=</span> <span class="n">synchronized</span> <span class="o">{</span>
+    <span class="nv">stageIdToTaskMetrics</span><span class="o">.</span><span class="py">getOrElseUpdate</span><span class="o">(</span>
+      <span class="nv">taskEnd</span><span class="o">.</span><span class="py">stageId</span><span class="o">,</span> <span class="k">new</span> <span class="nc">ArrayBuffer</span><span class="o">[</span><span class="kt">TaskMetrics</span><span class="o">])</span> <span class="o">+=</span> <span class="nv">taskEnd</span><span class="o">.</span><span class="py">taskMetrics</span>
+  <span class="o">}</span>
+
+  <span class="k">override</span> <span class="k">def</span> <span class="nf">onStageCompleted</span><span class="o">(</span><span class="n">stageComplete</span><span class="k">:</span> <span class="kt">SparkListenerStageCompleted</span><span class="o">)</span><span class="k">:</span> <span class="kt">Unit</span> <span class="o">=</span> <span class="n">synchronized</span> <span class="o">{</span>
+    <span class="k">val</span> <span class="nv">stageId</span> <span class="k">=</span> <span class="nv">stageComplete</span><span class="o">.</span><span class="py">stageInfo</span><span class="o">.</span><span class="py">stageId</span>
+    <span class="k">val</span> <span class="nv">metrics</span> <span class="k">=</span> <span class="nv">stageIdToTaskMetrics</span><span class="o">.</span><span class="py">remove</span><span class="o">(</span><span class="n">stageId</span><span class="o">).</span><span class="py">toSeq</span><span class="o">.</span><span class="py">flatten</span>
+    <span class="k">val</span> <span class="nv">spilled</span> <span class="k">=</span> <span class="nv">metrics</span><span class="o">.</span><span class="py">map</span><span class="o">(</span><span class="nv">_</span><span class="o">.</span><span class="py">memoryBytesSpilled</span><span class="o">).</span><span class="py">sum</span> <span class="o">&gt;</span> <span class="mi">0</span>
+    <span class="nf">if</span> <span class="o">(</span><span class="n">spilled</span><span class="o">)</span> <span class="o">{</span>
+      <span class="n">spilledStageIds</span> <span class="o">+=</span> <span class="n">stageId</span>
+    <span class="o">}</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<h3 id="mitigating-spill-issues">Mitigating spill issues</h3>
+
+<p>A quick answer would be to add more memory to your cluster’s workers. If not possible, decrease the size of each partition by increasing the number of partitions generated during data processing. In Spark you can:</p>
+
+<ul>
+  <li>
+    <p>configure the default number of partitions.</p>
+
+    <div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">spark</span><span class="o">.</span><span class="py">conf</span><span class="o">.</span><span class="py">set</span><span class="o">(</span><span class="s">"spark.sql.shuffle.partitions"</span><span class="o">,</span> <span class="n">number_of_partitions</span><span class="o">)</span>
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>repartition the data with the <code class="language-plaintext highlighter-rouge">repartition()</code> method (be careful this is an expensive operation).</p>
+  </li>
+  <li>
+    <p>configure the size of each partition with the <code class="language-plaintext highlighter-rouge">spark.sql.files.maxPartitionBytes</code> Spark setting.</p>
+  </li>
+  <li>
+    <p>solve any issues related to skewed data first.</p>
+  </li>
+</ul>
+
+<h2 id="shuffle">Shuffle</h2>
+
+<h3 id="definition-and-root-causes-2">Definition and root causes</h3>
+
+<p><strong>Shuffle</strong> occurs when Spark needs to regroup data from different partitions to compute a final result. It is a side effect observed with wide transformations. These include for example the <code class="language-plaintext highlighter-rouge">groupBy()</code>, <code class="language-plaintext highlighter-rouge">distinct()</code> or <code class="language-plaintext highlighter-rouge">join()</code> operations. Let’s explain shuffle by going through a quick and simple example involving a <code class="language-plaintext highlighter-rouge">groupBy()</code> combined with a <code class="language-plaintext highlighter-rouge">count()</code> operation.</p>
+
+<p><img src="assets/articles/content_drafts_2021-06-08-spark-performance-optimization_assets_shuffle_example.png" alt="" /></p>
+
+<p>First the data is read from source (i.e., HDFS, cloud storage, previous stage) <em>(1)</em>. At stage 1, Spark performs a <strong>“mapping”</strong> operation to identify which record belongs to which group <em>(2)</em>. Then data is prepared for the next partitions and <strong>written on disk in shuffle files</strong> <em>(3)</em>. For the next stage, data is <strong>read from the shuffle files</strong> and transferred through the network to the next executors <em>(4)</em> where a <strong>“reduce”</strong> operation is performed. Our final result is computed <em>(5)</em> and data written on disk <em>(6)</em>.</p>
+
+<p>Shuffle is a potentially very expensive operation that involves a lot of disk and network I/O which impact on Spark performance. Additionally, keep in mind that whatever type of wide transformations you are executing, the mapping and the reduce operations are performed in-memory and remain susceptible to some spill on disk which will add to the overhead of disk I/O.</p>
+
+<h3 id="monitoring-shuffle">Monitoring shuffle</h3>
+
+<p>The Spark UI is useful to get some statistics about the shuffled data in the <a href="https://spark.apache.org/docs/latest/web-ui.html#stages-tab">Stages</a> tab. In the summary metrics table, have a look to the following entries:</p>
+
+<ul>
+  <li><strong>Shuffle Read Size / Records</strong>: this the total of shuffle bytes read locally or from remote executors.</li>
+  <li><strong>Shuffle Remote Reads</strong>: this is the total of shuffle bytes read only from remote executors.</li>
+  <li><strong>Shuffle Read Blocked Time</strong>: this the time spent awaiting for shuffle data to be read from remote executors.</li>
+</ul>
+
+<p>While these numbers are interesting, there are no conventional threshold. It depends on your data and the way you process it. Reducing the amount of shuffle is something you should target but keep in mind that shuffle is a necessary evil. With the Spark UI, you can identify the most expensive tasks and try to reduce shuffle in these cases. Check also if data is not skewed (watch the timeline) or if spill occurred before focusing on shuffle. Finally knowing how to mitigate it properly should permit you to keep these metrics below acceptable thresholds.</p>
+
+<h3 id="mitigating-shuffle-issues">Mitigating shuffle issues</h3>
+
+<p>There are different approaches against shuffle:</p>
+
+<ul>
+  <li>
+    <p>to reduce the network I/O, design your cluster by favoring fewer but larger workers. This limits the number of machines where the data is shuffled across.</p>
+  </li>
+  <li>
+    <p>to reduce the amount of data being shuffled, filter out columns or unnecessary records for your processing and analysis.</p>
+  </li>
+  <li>
+    <p>to optimize join queries, when the size of one DataFrame is small (below 10 MB), Spark uses Broadcast joins (see the  <code class="language-plaintext highlighter-rouge">spark.sql.autoBroadcastJoinThreshold</code>, in the <a href="https://spark.apache.org/docs/latest/sql-performance-tuning.html">documentation</a>). But be careful with it and be sure to have enough memory on the driver as smallest partitions are processed there.</p>
+  </li>
+  <li>
+    <p>to optimize joins, use <strong>bucketing</strong> (<code class="language-plaintext highlighter-rouge">spark.sql.sources.bucketing.enabled</code> is set to true by default). Bucketing is an optimization technique to pull down data into distinct manageable parts named “buckets”. Use the <code class="language-plaintext highlighter-rouge">bucketBy()</code> <a href="https://spark.apache.org/docs/latest/api/scala/org/apache/spark/sql/DataFrameWriter.html">method</a> to bucket your data based on specific columns. Notably bucketing your data by sorted keys permits to avoid expensive shuffle operations.</p>
+  </li>
+  <li>
+    <p>to reduce the shuffle behavior you can edit several spark configuration <a href="https://spark.apache.org/docs/3.0.0-preview2/configuration.html#shuffle-behavior">properties</a>. You should not blindly play with these but rather test your changes before going into production. We advise the reader to focus on the following properties to limit shuffle and expensive I/O activity:</p>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Configuration</th>
+          <th>Description and recommendation</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code class="language-plaintext highlighter-rouge">spark.driver.memory</code></td>
+          <td>The default value is 1GB. This is the amount of memory allocated to the Spark driver to receive data from executors. You can change while submitting a spark job with the <code class="language-plaintext highlighter-rouge">spark-submit</code> command. Increase the value if you expect the driver to process more a great amount of data notably in the context of a broadcast join.</td>
+        </tr>
+        <tr>
+          <td><code class="language-plaintext highlighter-rouge">spark.shuffle.file.buffer</code></td>
+          <td>The default value is 32 KB. If your workload increased, set it to larger values (1 MB). The more you have the more Spark will buffer your data before writing mapping result on disk.</td>
+        </tr>
+        <tr>
+          <td><code class="language-plaintext highlighter-rouge">spark.file.transferTo</code></td>
+          <td>Set to <code class="language-plaintext highlighter-rouge">true</code> by default. Set it to false if you want Spark to use the file buffer before writing on disk. This decrease the I/O activity.</td>
+        </tr>
+        <tr>
+          <td><code class="language-plaintext highlighter-rouge">spark.io.compression.lz4.block.Size</code></td>
+          <td>The default value is 32 KB. By increasing it you can decrease the size f the shuffle file (don’t go over 1 MB). By default Spark uses lz4 compression but you can change the compression codec by altering the property <code class="language-plaintext highlighter-rouge">spark.io.compression.codec</code></td>
+        </tr>
+      </tbody>
+    </table>
+  </li>
+</ul>
+
+<h2 id="storage">Storage</h2>
+
+<h3 id="definition-and-root-causesstages">Definition and root causes<code class="language-plaintext highlighter-rouge">Stages</code></h3>
+
+<p>When talking about the impact of storage on performance, we talk about the overhead I/O cost of data ingestion. The most common example relate to:</p>
+
+<ul>
+  <li>
+    <p><strong>reading tiny files</strong></p>
+
+    <p>The “tiny files problem” has been pinpointed and described since the existence of distributed system like <a href="https://blog.cloudera.com/the-small-files-problem/">Hadoop</a>. Things are similar with Spark. Before executing any query on your data, Spark will assess how many tasks are required to read the input data and determine on which worker it should schedule these tasks. Moreover, some files contain metadata (i.e., ORC, Parquet…)  to be read and parsed. Then with a huge number of small files, you increase the workload on the Spark Scheduler, number of read / close file operations and metadata to parse. Collectively these operations greatly impact on Spark performance.</p>
+  </li>
+  <li>
+    <p><strong>scanning repositories</strong></p>
+
+    <p>Directory scanning adds overhead to the tiny files problem. But it also exists for terabytes files especially in the context of highly partitioned datasets on disks. For each partition you have one directory. If we consider some data partitioned by year, month day and hour we will have 8640 directories to scan! If you let your data scale for 10 years you will end with 86400 directories. Keep in mind that the Spark driver scan the repository one at the time.</p>
+  </li>
+  <li>
+    <p><strong>dealing with dataset schemas</strong></p>
+
+    <p>inferring schema with Spark for <code class="language-plaintext highlighter-rouge">csv</code> and <code class="language-plaintext highlighter-rouge">json</code> files also impairs performance in Spark. Indeed it requires to do a full scan of the data to assess all types. In contrast, Spark only reads one file when dealing with the Parquet format. This is under the assumption that all Parquet files under the same partition have the same schema. But be careful if you wish to support Parquet schema evolution. For each new schema evolution, you have a new partition with new files. If you alter the schema a lot you progressively fall into the scanning issue as described before. By default, schema evolution is disabled in Spark 2 &amp; 3 but if you need it use the <code class="language-plaintext highlighter-rouge">spark.sql.parquet.mergeSchema</code>  <a href="https://spark.apache.org/docs/latest/sql-data-sources-parquet.html#schema-merging">property</a>.</p>
+  </li>
+</ul>
+
+<h3 id="monitoring-storage">Monitoring storage</h3>
+
+<p>On the Spark UI you have access to some interesting metrics to monitor file scanning and count:</p>
+
+<ul>
+  <li>In the <a href="https://spark.apache.org/docs/latest/web-ui.html#stages-tab">Stages</a> tab when looking at the stage details, have a look to the <strong>Input Size / Records</strong> metrics which gives you an idea about the total amount of data that is ingested versus the number of records.</li>
+  <li>In the <a href="https://spark.apache.org/docs/latest/web-ui.html#sql-tab">SQL</a> tab,  select your job and stage to have access to more details as the total <strong>number of files read</strong>, <strong>scan time total</strong> and <strong>filesystem read time (sampled) total (min, med, max</strong>).</li>
+</ul>
+
+<h3 id="mitigating-storage-issues">Mitigating storage issues</h3>
+
+<p>Measures to mitigate these issues are pretty simple:</p>
+
+<ul>
+  <li>avoid using tiny files if possible or merge them into bigger files before performing any operations on your data.</li>
+  <li>keep in mind that the reading / scanning problem cannot be solved by adding more resources to your workers. Everything is handled by the driver.</li>
+  <li>partition your data according to your needs. Avoid over-partitioning if not necessary although this will depend on the data problem you are tackling.</li>
+</ul>
+
+<h2 id="serialization">Serialization</h2>
+
+<h3 id="definition-and-root-causes-3">Definition and root causes</h3>
+
+<p>Serialization improves performance on distributed applications by converting code objects and data into a stream of bytes and <em>vice-versa</em>. For distributed systems like Spark, the <strong>majority of the compute time is spent on data serialization</strong>.</p>
+
+<p>When writing and executing code, the Spark driver serializes the code, send it to the executors that deserialized the code to execute it. By default, Spark uses Java serialization with the <code class="language-plaintext highlighter-rouge">ObjectOutputStream</code> framework that works with any types and classes that implement <a href="https://docs.oracle.com/javase/8/docs/api/java/io/Serializable.html"><code class="language-plaintext highlighter-rouge">java.io.Serializable</code></a>. The <a href="https://github.com/EsotericSoftware/kryo">Kryo serialization</a> permits to serialize data faster but is not compatible with every classes and types. You also need to do extra-work before to register the classes you want to be serialized.</p>
+
+<p>At the beginning of Spark, users were mostly dealing with resilient distributed datasets (RDDs) by writing empiric code which describes how you want to do things. For RDDs, Spark uses Java serialization to serialize individual Scala and Java objects. <strong>This process is expensive</strong> especially because the Java objects model is highly memory consumptive. This is even more expensive with Pyspark where code and data are serialized / deserialized twice: first to Java/Scala and then to Python.</p>
+
+<blockquote>
+  <p>About PySpark:  all data that come to and from a Python executor has to be passed through a socket and a Java Virtual Machine (JVM) worker. Briefly, with PySpark, the <code class="language-plaintext highlighter-rouge">SparkContext</code> uses <code class="language-plaintext highlighter-rouge">Py4J</code> to launch a JVM to create a <code class="language-plaintext highlighter-rouge">JavaSparkContext</code>. That is the communication between <code class="language-plaintext highlighter-rouge">Py4J</code> and the JVM that orchestrate the data flow. It is worth noting that Py4J calls have pretty high latency. That is why all operations on RDDs takes much more time on PySpark than on Spark.</p>
+</blockquote>
+
+<p>The project Tungsten in 2004 and the design of the DataFrame API were critical steps towards performances improvement of the Spark engine. The first altered and improved the Java objects model allowing Spark to manage data expressed as DataFrame much more efficiently. The API permits us to write more declarative code that will be processed as instructions for the transformation chain. Both minimize the amount of work required by the Spark JVMs. And if you work with PySpark note that in this context nothing will be done in Python then excluding the double serialization needed with RDDs.</p>
+
+<p>All these theoretical details are not easy to grasp but shed light on a very important aspect of Spark: <strong>each time you will get away from the DataFrame API in your code, you will lose all these optimizations and encounter some performance hits.</strong> This is notably the case when you:</p>
+
+<ul>
+  <li>process manually RDDs (writing <code class="language-plaintext highlighter-rouge">map()</code> and / or <code class="language-plaintext highlighter-rouge">lambda</code> functions).</li>
+  <li>use user-defined functions (UDFs) that are useful and easy-to-use to extend Spark SQL functionalities. However they are “black-box” and prevent several Spark optimization processes including the way Spark deals with Java objects. For example using UDFs in PySpark will bring you back to the double serialization issue.</li>
+</ul>
+
+<h3 id="mitigating-storage-issues-1">Mitigating storage issues</h3>
+
+<p>Here the rules are simple:</p>
+
+<ul>
+  <li><strong>USE THE DATAFRAME API</strong>. Dig into the API to know exactly the possibilities offered to you.</li>
+  <li>Use UDFs only when strictly necessary. By design Scala will be faster than Python when using UDFs. With Python however you can still give a try to the <a href="https://spark.apache.org/docs/3.0.0/sql-pyspark-pandas-with-arrow.html#pandas-udfs-aka-vectorized-udfs">pandas UDFS</a> (also called vectorized UDFs) that use <a href="https://arrow.apache.org/">apache Arrow</a> to give a performance boost to PySpark in this context.</li>
+  <li>Give a try to the <a href="https://github.com/EsotericSoftware/kryo">Kryo serialization</a> framework despite its limitations. You may benefit from its performance boost for your current data problem. It is actually the default framework used by Spark in <a href="https://hudi.apache.org/docs/spark_quick-start-guide.html">Apache Hudi</a>.</li>
+</ul>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>Using Spark efficiently requires a good knowledge of its inner parts and an ability to identify technical and performance issues. Here we framed and articulated the five main problems that you may encounter and have discussed a number of techniques to bypass them and optimize your Spark applications. Noteworthy, do not take this article as a step-wise guide that will solve all your problems for all your situations. Instead, it should give you an idea of what is happening and what are the solutions you can implement based on your project. This lets a lot of rooms for experimentations and testing that are necessary to find the right and optimal balance for your Spark applications.</p>
+
+
+  </div><!-- from https://github.com/utterance/utterances -->
+<script src="https://utteranc.es/client.js"
+        repo="fbraza/BrazLog"
+        issue-term="title"
+        label="blogpost-comment"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+</script><a class="u-url" href="/BrazLog/spark/2021/07/08/spark-optimization.html" hidden></a>
+</article>
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/BrazLog/"></data>
+
+  <div class="wrapper">
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col">
+        <p class="feed-subscribe">
+          <a href="/BrazLog/feed.xml">
+            <svg class="svg-icon orange">
+              <use xlink:href="/BrazLog/assets/minima-social-icons.svg#rss"></use>
+            </svg><span>Subscribe</span>
+          </a>
+        </p>
+      </div>
+      <div class="footer-col">
+        <p>Python · Scala · BigData · System Design · Data Engineering</p>
+      </div>
+    </div>
+
+    <div class="social-links"><ul class="social-media-list"><li><a rel="me" href="https://github.com/fbraza" title="fbraza"><svg class="svg-icon grey"><use xlink:href="/BrazLog/assets/minima-social-icons.svg#github"></use></svg></a></li><li><a rel="me" href="https://twitter.com/%40braza_faouzi" title="@braza_faouzi"><svg class="svg-icon grey"><use xlink:href="/BrazLog/assets/minima-social-icons.svg#twitter"></use></svg></a></li></ul>
+</div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>
