@@ -166,7 +166,7 @@ Installed Python-3.7.10 to /home/fbraza/.pyenv/versions/3.7.10
 <p>You can see that <code class="language-plaintext highlighter-rouge">pyenv</code> sets <code class="language-plaintext highlighter-rouge">3.7.10</code> as our global Python version. This will not alter the operations that require the use of the system version. The path you can read between parenthesis corresponds to the path that points to the required Python version. How does this work? Briefly, <code class="language-plaintext highlighter-rouge">pyenv</code> captures Python commands using executables injected into your <code class="language-plaintext highlighter-rouge">PATH</code>. Then it determines which Python version you need to use, and passes the commands to the correct Python installation. Feel free to read the complete <a href="https://github.com/pyenv/pyenv">documentation</a> to better understand the functionalities and possibilities offered by <code class="language-plaintext highlighter-rouge">pyenv</code>.</p>
 
 <blockquote>
-  <p>Don’t be confused by the semantic here. Change the global version will not affect your system version. The system version corresponds to the version used by your OS to accomplish specific tasks or run background processes that depend on this specific Python version. Do not switch the system version to another one or you may face several issues with your OS! This version is usually updated along with your OS. The global version is just the version that <code class="language-plaintext highlighter-rouge">pyenv</code> will use to execute your Python commands / programs globally.</p>
+  <p>Note: Don’t be confused by the semantic here. Change the global version will not affect your system version. The system version corresponds to the version used by your OS to accomplish specific tasks or run background processes that depend on this specific Python version. Do not switch the system version to another one or you may face several issues with your OS! This version is usually updated along with your OS. The global version is just the version that <code class="language-plaintext highlighter-rouge">pyenv</code> will use to execute your Python commands / programs globally.</p>
 </blockquote>
 
 <h3 id="poetry-installation"><code class="language-plaintext highlighter-rouge">poetry</code> installation</h3>
@@ -244,7 +244,7 @@ Installed Python-3.7.10 to /home/fbraza/.pyenv/versions/3.7.10
 </ul>
 
 <blockquote>
-  <p>you can see the full list of available entries for the <code class="language-plaintext highlighter-rouge">pyproject.toml</code> file <a href="https://python-poetry.org/docs/pyproject/">here</a></p>
+  <p>Note: you can see the full list of available entries for the <code class="language-plaintext highlighter-rouge">pyproject.toml</code> file <a href="https://python-poetry.org/docs/pyproject/">here</a></p>
 </blockquote>
 
 <h3 id="install-and-activate-the-virtual-environment">Install and activate the virtual environment</h3>
@@ -275,7 +275,7 @@ Installing the current project: summarize_dataframe <span class="o">(</span>0.1.
 <p>Firstly the virtual environment is created and stored outside of the project. A bit similar to what we have when using <a href="https://docs.conda.io/en/latest/"><code class="language-plaintext highlighter-rouge">conda</code></a>. Indeed, Instead of creating a folder containing your dependency libraries (as <a href="https://pypi.org/project/virtualenv/"><code class="language-plaintext highlighter-rouge">virtualenv</code></a> does), <code class="language-plaintext highlighter-rouge">poetry</code> creates an environment on a global system path (<code class="language-plaintext highlighter-rouge">.cache/</code> by default). This separation of concerns allows keeping your project away from dependency source code.</p>
 
 <blockquote>
-  <p>You can create your virtual environment inside your project or in any other directories. For that you need to edit the configuration of poetry. Follow this <a href="https://python-poetry.org/docs/configuration/">documentation</a> for more details.</p>
+  <p>Note: You can create your virtual environment inside your project or in any other directories. For that you need to edit the configuration of poetry. Follow this <a href="https://python-poetry.org/docs/configuration/">documentation</a> for more details.</p>
 </blockquote>
 
 <p>Secondly, <code class="language-plaintext highlighter-rouge">poetry</code> is going to read the <code class="language-plaintext highlighter-rouge">pyproject.toml</code> and install all dependencies specified in this file. If not defined, poetry will download the last version of the packages. At the end of the operation, a <code class="language-plaintext highlighter-rouge">poetry.lock</code> file is created. It contains all packages and their exact versions. Keep in mind that if a <code class="language-plaintext highlighter-rouge">poetry.lock</code> file is already present, the version numbers defined in it take precedence over what is defined in the <code class="language-plaintext highlighter-rouge">pyproject.toml</code>. Finally, you should commit the <code class="language-plaintext highlighter-rouge">poetry.lock</code> file to your project repository so that all collaborators working on the project use the same versions of dependencies.</p>
