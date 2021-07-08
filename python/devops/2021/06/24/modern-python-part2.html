@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="twitter:card" content="summary_large_image" /><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Modern Python part 2 - write unit tests &amp; enforce Git commit conventions | Lost in Datation</title>
+<meta name="generator" content="Jekyll v4.1.1" />
+<meta property="og:title" content="Modern Python part 2 - write unit tests &amp; enforce Git commit conventions" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Tutorials to write tests and use pre-commit in Python" />
+<meta property="og:description" content="Tutorials to write tests and use pre-commit in Python" />
+<link rel="canonical" href="https://fbraza.github.io/BrazLog/python/devops/2021/06/24/modern-python-part2.html" />
+<meta property="og:url" content="https://fbraza.github.io/BrazLog/python/devops/2021/06/24/modern-python-part2.html" />
+<meta property="og:site_name" content="Lost in Datation" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2021-06-24T00:00:00-05:00" />
+<script type="application/ld+json">
+{"url":"https://fbraza.github.io/BrazLog/python/devops/2021/06/24/modern-python-part2.html","@type":"BlogPosting","headline":"Modern Python part 2 - write unit tests &amp; enforce Git commit conventions","dateModified":"2021-06-24T00:00:00-05:00","datePublished":"2021-06-24T00:00:00-05:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://fbraza.github.io/BrazLog/python/devops/2021/06/24/modern-python-part2.html"},"description":"Tutorials to write tests and use pre-commit in Python","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/BrazLog/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="https://fbraza.github.io/BrazLog/feed.xml" title="Lost in Datation" /><link rel="shortcut icon" type="image/x-icon" href="/BrazLog/images/favicon.ico"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Primer/15.2.0/primer.css" integrity="sha512-xTz2ys4coGAOz8vuV1NcQBkgVmKhsSEtjbqyMJbBHRplFuvKIUo6xhLHpAyPt9mfR6twHJgn9OgVLuqOvjeBhg==" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css" integrity="sha512-1PKOgIY59xJ8Co8+NE6FZ+LOAZKjy+KY8iq0G4B3CyeY6wYHN3yt9PW0XpSriVlkMXe40PTKnXrLnZ9+fkDaog==" crossorigin="anonymous" />
+
+<script>
+function wrap_img(fn) {
+    if (document.attachEvent ? document.readyState === "complete" : document.readyState !== "loading") {
+        var elements = document.querySelectorAll(".post img");
+        Array.prototype.forEach.call(elements, function(el, i) {
+            if (el.getAttribute("title") && (el.className != "emoji")) {
+                const caption = document.createElement('figcaption');
+                var node = document.createTextNode(el.getAttribute("title"));
+                caption.appendChild(node);
+                const wrapper = document.createElement('figure');
+                wrapper.className = 'image';
+                el.parentNode.insertBefore(wrapper, el);
+                el.parentNode.removeChild(el);
+                wrapper.appendChild(el);
+                wrapper.appendChild(caption);
+            }
+        });
+    } else { document.addEventListener('DOMContentLoaded', fn); }
+}
+window.onload = wrap_img;
+</script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function(){
+    // add link icon to anchor tags
+    var elem = document.querySelectorAll(".anchor-link")
+    elem.forEach(e => (e.innerHTML = '<i class="fas fa-link fa-xs"></i>'));
+    });
+</script>
+</head>
+<body><header class="site-header">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/BrazLog/">Lost in Datation</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/BrazLog/about/">About Me</a><a class="page-link" href="/BrazLog/search/">Search</a><a class="page-link" href="/BrazLog/categories/">Tags</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Modern Python part 2 - write unit tests &amp; enforce Git commit conventions</h1><p class="page-description">Tutorials to write tests and use pre-commit in Python</p><p class="post-meta post-meta-title"><time class="dt-published" datetime="2021-06-24T00:00:00-05:00" itemprop="datePublished">
+        Jun 24, 2021
+      </time>
+       • <span class="read-time" title="Estimated read time">
+    
+    
+      16 min read
+    
+</span></p>
+
+    
+      <p class="category-tags"><i class="fas fa-tags category-tags-icon"></i></i> 
+      
+        <a class="category-tags-link" href="/BrazLog/categories/#Python">Python</a>
+        &nbsp;
+      
+        <a class="category-tags-link" href="/BrazLog/categories/#DevOps">DevOps</a>
+        
+      
+      </p>
+    
+
+    </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <p>Good software engineering practices always bring a lot of long-term benefits. For example, writing unit tests permits you to maintain large codebases and ensures that a specific piece of your code behaves as expected. Writing consistent Git commits also enhance the collaboration between the project stakeholders. Well-crafted Git commit messages open the door to automatic versioning and generated change log files. Consequently, a lot of attempts are currently ongoing and applied to normalize the messages written in our Git commits.</p>
+
+<p>In the first part of this serie, we setup, our project by installing different Python versions with <code class="language-plaintext highlighter-rouge">pyenv</code>, setting a local version of Python with <code class="language-plaintext highlighter-rouge">pyenv</code>, encapsulating it into a virtual environment with <code class="language-plaintext highlighter-rouge">poetry</code>. Here we show more precisely how to unit test your Python application and how to enforce and validate your Git commit messages. The source code associated with this article is published on <a href="https://github.com/adaltas/summarize_dataframe">GitHub</a>.</p>
+
+<p>This article is the second one from a series of three in which we share our best practices.</p>
+
+<ul>
+  <li>Part 1: <a href="/en/2021/06/09/pyrepo-project-initialization/">project initialization with pyenv and poetry</a></li>
+  <li>Part 2: <a href="/en/2021/06/24/unit-tests-conventional-commits/">unit testing and commit enforcement</a></li>
+  <li>Part 3: CI pipeline with GitHub Actions and publication on PiPy</li>
+</ul>
+
+<h2 id="testing-our-code">Testing our code</h2>
+
+<p>The project is a simple python function that summarizes data present in a <a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html">pandas DataFrame</a>. The function outputs the number of rows and columns and the frequency of each data types present in the pandas DataFrame:</p>
+
+<pre><code class="language-none">---- Data Summary ------
+                       Values
+Number of rows          230
+Number of columns         9
+float64                   3
+int64                     4
+object                    2
+</code></pre>
+
+<p>Go to your project root directory and activate your virtual environment:</p>
+
+<p>```bash{outputLines: 2-100}{promptUser: adaltas}{promptHost: local}
+poetry shell</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+We add a couple of dependencies using poetry:
+
+```bash{outputLines: 2-100}{promptUser: adaltas}{promptHost: local}
+poetry add -D pynvim numpy pandas
+
+Using version ^0.4.3 for pynvim
+Using version ^1.20.2 for numpy
+Using version ^1.2.3 for pandas
+
+Updating dependencies
+Resolving dependencies... (1.4s)
+
+Writing lock file
+
+Package operations: 8 installs, 0 updates, 0 removals
+
+  • Installing six (1.15.0)
+  • Installing greenlet (1.0.0)
+  • Installing msgpack (1.0.2)
+  • Installing numpy (1.20.2)
+  • Installing python-dateutil (2.8.1)
+  • Installing pytz (2021.1)
+  • Installing pandas (1.2.3)
+  • Installing pynvim (0.4.3)
+</code></pre></div></div>
+
+<p>The <code class="language-plaintext highlighter-rouge">-D</code> flag indicates that the dependency only apply to development environments.</p>
+
+<blockquote>
+  <p>I personally use NeoVim for coding that is why I need the <code class="language-plaintext highlighter-rouge">pynvim</code>  package to support NeoVim python plugins.</p>
+</blockquote>
+
+<p>Based on the expected output defined above, our program is made of three steps:</p>
+
+<ol>
+  <li>Getting the shape of the pandas DataFrame.</li>
+  <li>Getting the pandas <code class="language-plaintext highlighter-rouge">dtypes</code> frequency.</li>
+  <li>Concatenating the two results into a unified DataFrame that we will use to output the final result.</li>
+</ol>
+
+<p>Once the final DataFrame is obtained we output the result as depicted above. In this regard our code scaffold could look as the following:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="n">pd</span>
+
+
+<span class="k">def</span> <span class="nf">data_summary</span><span class="p">(</span><span class="n">df</span><span class="p">:</span> <span class="n">pd</span><span class="p">.</span><span class="n">DataFrame</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="bp">None</span><span class="p">:</span>
+    <span class="s">"""
+    Function defined to return a DataFrame containing details
+    about the number of rows and columns and the column dtype
+    frequency of the passed pandas DataFrame
+    """</span>
+    <span class="k">def</span> <span class="nf">_shape</span><span class="p">(</span><span class="n">df</span><span class="p">:</span> <span class="n">pd</span><span class="p">.</span><span class="n">DataFrame</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="s">"""
+        Function defined to return a dataframe with details about
+        the number of row and columns
+        """</span>
+        <span class="k">return</span> <span class="bp">None</span>
+
+    <span class="k">def</span> <span class="nf">_dtypes_freq</span><span class="p">(</span><span class="n">df</span><span class="p">:</span> <span class="n">pd</span><span class="p">.</span><span class="n">DataFrame</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="s">"""
+        Function defined to return a dataframe with details about
+        the pandas dtypes frequency
+        """</span>
+		<span class="k">return</span> <span class="bp">None</span>
+    <span class="k">return</span> <span class="bp">None</span>
+
+<span class="k">def</span> <span class="nf">display_summary</span><span class="p">(</span><span class="n">df</span><span class="p">:</span> <span class="n">pd</span><span class="p">.</span><span class="n">DataFrame</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="bp">None</span><span class="p">:</span>
+    <span class="s">"""
+    Function define to print out the result of the data summary
+    """</span>
+    <span class="n">result_df</span> <span class="o">=</span> <span class="bp">True</span>
+    <span class="n">message</span> <span class="o">=</span> <span class="s">'---- Data summary ----'</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="n">result_df</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s">'</span><span class="se">\n</span><span class="s">'</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Let’s now start writing our unit tests. We are going to use the <code class="language-plaintext highlighter-rouge">unittest</code> tool available with the Python standard library. You may remember in the previous article that <a href="https://docs.pytest.org/en/stable/contents.html">pytest</a> was defined as a developer dependency for testing. It is not an issue with <code class="language-plaintext highlighter-rouge">pytest</code> because it natively runs tests written with the <code class="language-plaintext highlighter-rouge">unittest</code> library.</p>
+
+<p>Unit tests are single methods that <code class="language-plaintext highlighter-rouge">unittest</code> expects you to write inside Python classes. Choose a descriptive name for your test classes and methods. The name of your test methods should start with <code class="language-plaintext highlighter-rouge">test_</code>.  Additionally, <code class="language-plaintext highlighter-rouge">unittest</code> uses a series of special assertion methods inherited from the <code class="language-plaintext highlighter-rouge">unittest.TestCase</code> class. In practice, a test should precisely cover one feature, be autonomous without requiring external cues, and should recreate the conditions of their success.</p>
+
+<p>To recreate the necessary environment, setup code must be written. If this code happens to be redundant, implements a <code class="language-plaintext highlighter-rouge">setUp()</code> method, that will be executed before every single test. This is pretty convenient to re-use and re-organize your code. Depending on your use case you may have to perform systematic operations after the tests ran. For that, you may use the <code class="language-plaintext highlighter-rouge">tearDown()</code> method.</p>
+
+<p>First you can read below the unit test we implemented for the <code class="language-plaintext highlighter-rouge">data_summary()</code> function:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">unittest</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="n">pd</span>
+<span class="kn">from</span> <span class="nn">summarize_dataframe.summarize_df</span> <span class="kn">import</span> <span class="n">data_summary</span>
+
+
+<span class="k">class</span> <span class="nc">TestDataSummary</span><span class="p">(</span><span class="n">unittest</span><span class="p">.</span><span class="n">TestCase</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">setUp</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># initialize dataframe to test
+</span>        <span class="n">df_data</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">1</span><span class="p">,</span> <span class="s">'a'</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="s">'b'</span><span class="p">],</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="s">'c'</span><span class="p">]]</span>
+        <span class="n">df_cols</span> <span class="o">=</span> <span class="p">[</span><span class="s">'numbers'</span><span class="p">,</span> <span class="s">'letters'</span><span class="p">]</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">df_data</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="n">df_cols</span><span class="p">)</span>
+        <span class="c1"># initialize expected dataframe
+</span>        <span class="n">exp_col</span> <span class="o">=</span> <span class="p">[</span><span class="s">'Values'</span><span class="p">]</span>
+        <span class="n">exp_idx</span> <span class="o">=</span> <span class="p">[</span><span class="s">'Number of rows'</span><span class="p">,</span> <span class="s">'Number of columns'</span><span class="p">,</span> <span class="s">'int64'</span><span class="p">,</span> <span class="s">'object'</span><span class="p">]</span>
+        <span class="n">exp_data</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">]]</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">exp_df</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">exp_data</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="n">exp_col</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">exp_idx</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">test_data_summary</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">expected_df</span> <span class="o">=</span> <span class="bp">self</span><span class="p">.</span><span class="n">exp_df</span>
+        <span class="n">result_df</span> <span class="o">=</span> <span class="n">data_summary</span><span class="p">(</span><span class="bp">self</span><span class="p">.</span><span class="n">df</span><span class="p">)</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="n">expected_df</span><span class="p">.</span><span class="n">equals</span><span class="p">(</span><span class="n">result_df</span><span class="p">))</span>
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">'__main__'</span><span class="p">:</span>
+    <span class="n">unittest</span><span class="p">.</span><span class="n">main</span><span class="p">()</span>
+</code></pre></div></div>
+
+<p>The <code class="language-plaintext highlighter-rouge">setUp()</code> method initializes two distinct pandas DataFrame. <code class="language-plaintext highlighter-rouge">self.exp_df</code> is the resulting DataFrame we expect to get after calling the <code class="language-plaintext highlighter-rouge">data_summary()</code> function and <code class="language-plaintext highlighter-rouge">self.df</code> is the one used to test our functions. At the moment, tests are expected to fail. The logic has not been implemented. To test with <code class="language-plaintext highlighter-rouge">poetry</code> use the command:</p>
+
+<p>```bash{outputLines: 2-12}{promptUser: adaltas}
+poetry run pytest -v
+============================================== test session starts ==============================
+platform linux – Python 3.8.7, pytest-5.4.3, py-1.10.0, pluggy-0.13.1 – /home/fbraza/.cache/pypoetry/virtualenvs/summarize-dataframe-SO-g_7pj-py3.8/bin/python
+cachedir: .pytest_cache
+rootdir: /home/fbraza/Documents/python_project/summarize_dataframe
+collected 1 item
+tests/test_summarize_dataframe.py::TestDataSummary::test_data_summary FAILED [100%]
+=============================================== FAILURES =========================================
+<strong>__</strong><strong>__</strong><strong>__</strong><strong>__</strong><strong>__</strong><strong>__<em>TestDataSummary.test_data_summary __</em></strong><strong>__</strong><strong>__</strong><strong>__</strong><strong>__</strong></p>
+
+<p>self = <tests.test_summarize_dataframe.TestDataSummary testMethod="test_data_summary"></tests.test_summarize_dataframe.TestDataSummary></p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>def test_data_summary(self):
+    expected_df = self.exp_df
+    result_df = data_summary(self.df) &gt;       self.assertTrue(expected_df.equals(result_df)) E       AssertionError: False is not true
+</code></pre></div></div>
+
+<p>tests/test_summarize_dataframe.py:26: AssertionError
+============================================== short test summary info =============================
+FAILED tests/test_summarize_dataframe.py::TestDataSummary::test_data_summary - AssertionError: False is not true
+============================================== 1 failed in 0.32s ===================================</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+Using the `-v` flag returns a more verbose output for your test results. You can see that your tests are labeled according to the classes and functions names you gave (i.e., `&lt;test_module.py&gt;::&lt;class&gt;::&lt;test_method&gt;`).
+
+The code is updated to conform with the unit tests:
+
+```python
+import pandas as pd
+
+
+def data_summary(df: pd.DataFrame) -&gt; pd.DataFrame:
+    """
+    Function defined to output details about the number
+    of rows and columns and the column dtype frequency of
+    the passed pandas DataFrame
+    """
+    def _shape(df: pd.DataFrame) -&gt; pd.DataFrame:
+        """
+        Function defined to return a dataframe with details about
+        the number of row and columns
+        """
+        row, col = df.shape
+        return pd.DataFrame(data=[[row], [col]], columns=['Values'], index=['Number of rows', 'Number of columns'])
+
+    def _dtypes_freq(df: pd.DataFrame) -&gt; pd.DataFrame:
+        """
+        Function defined to return a dataframe with details about
+        the pandas dtypes frequency
+        """
+        counter, types = {}, df.dtypes
+        for dtype in types:
+            tmp = str(dtype)
+            if tmp in counter.keys():
+                counter[tmp] += 1
+            else:
+                counter[tmp] = 1
+        values = [[value] for value in counter.values()]
+        return pd.DataFrame(data=values, columns=['Values'], index=list(counter.keys()))
+    result_df = pd.concat([_shape(df), _dtypes_freq(df)])
+    return result_df
+
+def display_summary(df: pd.DataFrame) -&gt; None:
+    """
+    Function define to print out the result of the data summary
+    """
+    result_df = True
+    message = '---- Data summary ----'
+    print(message, result_df, sep='\n')
+</code></pre></div></div>
+
+<p>Run our test again:</p>
+
+<p>```bash{outputLines: 2-100}{promptUser: adaltas}{promptHost: local}
+poetry run pytest -v
+=============================================== test session starts ===============================================================
+platform linux – Python 3.8.7, pytest-5.4.3, py-1.10.0, pluggy-0.13.1 – /home/fbraza/.cache/pypoetry/virtualenvs/summarize-dataframe-SO-g_7pj-py3.8/bin/python
+cachedir: .pytest_cache
+rootdir: /home/fbraza/Documents/python_project/summarize_dataframe
+collected 1 item</p>
+
+<p>tests/test_summarize_dataframe.py::TestDataSummary::test_data_summary PASSED [100%]
+=============================================== 1 passed in 0.28s =================================================================</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+One last thing here. In our tests, we did not test the actual output. Our module is designed to output a string representation of our DataFrame summary. There are solutions to achieve this goal with `unittest`. However we are going to use `pytest` for this test. Surprising isn't it? As said before `pytest` interpolates very well with `unittest` and we are going to illustrate it now. Here the code for this test:
+
+```python
+import unittest
+import pytest
+import pandas as pd
+from summarize_dataframe.summarize_df import data_summary, display_summary
+
+
+class TestDataSummary(unittest.TestCase):
+    def setUp(self):
+        # initialize dataframe to test
+        df_data = [[1, 'a'], [2, 'b'], [3, 'c']]
+        df_cols = ['numbers', 'letters']
+        self.df = pd.DataFrame(data=df_data, columns=df_cols)
+        # initialize expected dataframe
+        exp_col = ['Values']
+        exp_idx = ['Number of rows', 'Number of columns', 'int64', 'object']
+        exp_data = [[3], [2], [1], [1]]
+        self.exp_df = pd.DataFrame(data=exp_data, columns=exp_col, index=exp_idx)
+
+    @pytest.fixture(autouse=True)
+    def _pass_fixture(self, capsys):
+        self.capsys = capsys
+
+    def test_data_summary(self):
+        expected_df = self.exp_df
+        result_df = data_summary(self.df)
+        self.assertTrue(expected_df.equals(result_df))
+
+    def test_display(self):
+        print('---- Data summary ----', self.exp_df, sep='\n')
+        expected_stdout = self.capsys.readouterr()
+        display_summary(self.df)
+        result_stdout = self.capsys.readouterr()
+        self.assertEqual(expected_stdout, result_stdout)
+
+if __name__ == '__main__':
+    unittest.main()
+</code></pre></div></div>
+
+<p>Notice the decorator <code class="language-plaintext highlighter-rouge">@pytest.fixture(autouse=True)</code> and the function it encapsulates (<code class="language-plaintext highlighter-rouge">_pass_fixture</code>). In the unit test terminology, this method is called a <a href="https://docs.pytest.org/en/stable/fixture.html">fixture</a>. Fixtures are functions (or methods if you use an OOP approach), which will run before each test to which it is applied. Fixtures are used to feed some data to the tests. They fill the same objective as the <code class="language-plaintext highlighter-rouge">setUp()</code> method we used before. Here we are using a predefined fixture called <code class="language-plaintext highlighter-rouge">capsys</code> to capture the standard output (<code class="language-plaintext highlighter-rouge">stdout</code>) and reuse it in our test. We can then modify our code <code class="language-plaintext highlighter-rouge">display_summary()</code> accordingly:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="n">pd</span>
+
+
+<span class="k">def</span> <span class="nf">data_summary</span><span class="p">(</span><span class="n">df</span><span class="p">:</span> <span class="n">pd</span><span class="p">.</span><span class="n">DataFrame</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="p">.</span><span class="n">DataFrame</span><span class="p">:</span>
+    <span class="s">"""
+    Function defined to output details about the number
+    of rows and columns and the column dtype frequency of
+    the passed pandas DataFrame
+    """</span>
+    <span class="k">def</span> <span class="nf">_shape</span><span class="p">(</span><span class="n">df</span><span class="p">:</span> <span class="n">pd</span><span class="p">.</span><span class="n">DataFrame</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="p">.</span><span class="n">DataFrame</span><span class="p">:</span>
+        <span class="s">"""
+        Function defined to return a dataframe with details about
+        the number of row and columns
+        """</span>
+        <span class="n">row</span><span class="p">,</span> <span class="n">col</span> <span class="o">=</span> <span class="n">df</span><span class="p">.</span><span class="n">shape</span>
+        <span class="k">return</span> <span class="n">pd</span><span class="p">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="p">[[</span><span class="n">row</span><span class="p">],</span> <span class="p">[</span><span class="n">col</span><span class="p">]],</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s">'Values'</span><span class="p">],</span> <span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="s">'Number of rows'</span><span class="p">,</span> <span class="s">'Number of columns'</span><span class="p">])</span>
+
+    <span class="k">def</span> <span class="nf">_dtypes_freq</span><span class="p">(</span><span class="n">df</span><span class="p">:</span> <span class="n">pd</span><span class="p">.</span><span class="n">DataFrame</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="p">.</span><span class="n">DataFrame</span><span class="p">:</span>
+        <span class="s">"""
+        Function defined to return a dataframe with details about
+        the pandas dtypes frequency
+        """</span>
+        <span class="n">counter</span><span class="p">,</span> <span class="n">types</span> <span class="o">=</span> <span class="p">{},</span> <span class="n">df</span><span class="p">.</span><span class="n">dtypes</span>
+        <span class="k">for</span> <span class="n">dtype</span> <span class="ow">in</span> <span class="n">types</span><span class="p">:</span>
+            <span class="n">tmp</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">dtype</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">tmp</span> <span class="ow">in</span> <span class="n">counter</span><span class="p">.</span><span class="n">keys</span><span class="p">():</span>
+                <span class="n">counter</span><span class="p">[</span><span class="n">tmp</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">counter</span><span class="p">[</span><span class="n">tmp</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="n">values</span> <span class="o">=</span> <span class="p">[[</span><span class="n">value</span><span class="p">]</span> <span class="k">for</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">counter</span><span class="p">.</span><span class="n">values</span><span class="p">()]</span>
+        <span class="k">return</span> <span class="n">pd</span><span class="p">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">values</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s">'Values'</span><span class="p">],</span> <span class="n">index</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="n">counter</span><span class="p">.</span><span class="n">keys</span><span class="p">()))</span>
+    <span class="n">result_df</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="n">concat</span><span class="p">([</span><span class="n">_shape</span><span class="p">(</span><span class="n">df</span><span class="p">),</span> <span class="n">_dtypes_freq</span><span class="p">(</span><span class="n">df</span><span class="p">)])</span>
+    <span class="k">return</span> <span class="n">result_df</span>
+
+<span class="k">def</span> <span class="nf">display_summary</span><span class="p">(</span><span class="n">df</span><span class="p">:</span> <span class="n">pd</span><span class="p">.</span><span class="n">DataFrame</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="bp">None</span><span class="p">:</span>
+    <span class="s">"""
+    Function define to print out the result of the data summary
+    """</span>
+    <span class="n">result_df</span> <span class="o">=</span> <span class="n">data_summary</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+    <span class="n">message</span> <span class="o">=</span> <span class="s">'---- Data summary ----'</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="n">result_df</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s">'</span><span class="se">\n</span><span class="s">'</span><span class="p">)</span>
+
+</code></pre></div></div>
+
+<p>Then run the tests again:</p>
+
+<p>```bash{outputLines: 2-100}{promptUser: adaltas}{promptHost: local}
+poetry run pytest -v
+=============================================== test session starts ===============================================================
+platform linux – Python 3.8.7, pytest-5.4.3, py-1.10.0, pluggy-0.13.1 – /home/fbraza/.cache/pypoetry/virtualenvs/summarize-dataframe-SO-g_7pj-py3.8/bin/python
+cachedir: .pytest_cache
+rootdir: /home/fbraza/Documents/python_project/summarize_dataframe
+collected 2 items
+tests/test_summarize_dataframe.py::TestDataSummary::test_data_summary PASSED [ 50%]
+tests/test_summarize_dataframe.py::TestDataSummary::test_display PASSED      [100%]</p>
+
+<p>=============================================== 2 passed in 0.29s =================================================================</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+The tests now succeed. It is time to commit and share our work, for example by publishing it to [GitHub](https://github.com/). Before that, let's take a close look at how to properly communicate about our work with Git commit messages while respecting and enforcing a common standard.
+
+## Enforce Git commit messages rules in your Python project
+
+Writing optimal Git commit messages is not an easy task. Messages need to be clear, readable, and understandable in the long term. **[The Conventional Commits specification](https://www.conventionalcommits.org/en/v1.0.0/)** proposes a set of rules for creating explicit commit histories.
+
+### Using `commitizen`
+
+In our series about [JavaScript monorepos](/en/2021/02/02/js-monorepos-commits-changelog/), we saw how to integrate these conventions to enforce good practices regarding commit messages. Applied to Python, we are going to use a package called [commitizen](https://commitizen-tools.github.io/commitizen/) to achieve this. Let's add this package to our developer dependencies:
+
+```bash{outputLines: 2-23}{promptUser: adaltas}
+poetry add -D commitizen
+
+Using version ^2.17.0 for commitizen
+
+Updating dependencies
+Resolving dependencies... (3.1s)
+
+Writing lock file
+
+Package operations: 11 installs, 0 updates, 0 removals
+
+  • Installing markupsafe (1.1.1)
+  • Installing prompt-toolkit (3.0.18)
+  • Installing argcomplete (1.12.2)
+  • Installing colorama (0.4.4)
+  • Installing decli (0.5.2)
+  • Installing jinja2 (2.11.3)
+  • Installing pyyaml (5.4.1)
+  • Installing questionary (1.6.0)
+  • Installing termcolor (1.1.0)
+  • Installing tomlkit (0.7.0)
+  • Installing commitizen (2.17.0)
+</code></pre></div></div>
+
+<p>To setup <code class="language-plaintext highlighter-rouge">commitizen</code> for your project, run the command <code class="language-plaintext highlighter-rouge">cz init</code>. It prompts us with a set of questions:</p>
+
+<p>```bash{outputLines: 2-100}{promptUser: adaltas}{promptHost: local}
+cz init
+? Please choose a supported config file: (default: pyproject.toml)  (Use arrow keys)
+ » pyproject.toml
+   .cz.toml
+   .cz.json
+   cz.json
+   .cz.yaml
+   cz.yaml</p>
+
+<p>? Please choose a cz (commit rule): (default: cz_conventional_commits)  (Use arrow keys)
+ » cz_conventional_commits
+   cz_jira
+   cz_customize</p>
+
+<p>? Please enter the correct version format: (default: “$version”)</p>
+
+<p>? Do you want to install pre-commit hook?  (Y/n)</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+Choose all default choices here as they fit perfectly with our actual situation. The last question asks us if we want to use [pre-commit](https://pre-commit.com/) hook. We are going to come back to this later on. So just answer `no` for now. If we look at our `pyproject.toml` file we can see that a new entry named `[tool.commitizen]` has been added:
+
+```toml
+[...]
+
+[tool.commitizen]
+name = "cz_conventional_commits" # commit rule chosen
+version = "0.0.1"
+tag_format = "$version"
+</code></pre></div></div>
+
+<p>To check your commit message, you can use the following command:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>cz check <span class="nt">-m</span> <span class="s2">"all summarize_data tests now succeed"</span>
+
+commit validation: failed!
+please enter a commit message <span class="k">in </span>the commitizen format.
+commit <span class="s2">""</span>: <span class="s2">"all summarize_data tests now succeed"</span>
+pattern: <span class="o">(</span>build|ci|docs|feat|fix|perf|refactor|style|test|chore|revert|bump<span class="o">)!</span>?<span class="o">(</span><span class="se">\(\S</span>+<span class="se">\)</span><span class="o">)</span>?:<span class="o">(</span><span class="se">\s</span>.<span class="k">*</span><span class="o">)</span>
+</code></pre></div></div>
+
+<p>Our message is rejected because it does not respect the commit rules. The last line suggests some patterns to use. Take some time to read the <a href="https://www.conventionalcommits.org/en/v1.0.0/">conventional commits</a> documentation and run the command <code class="language-plaintext highlighter-rouge">cz info</code> to print a short documentation:</p>
+
+<p>```bash{outputLines: 2-100}{promptUser: adaltas}{promptHost: local}
+cz info
+The commit contains the following structural elements, to communicate intent to the consumers of your library:</p>
+
+<p>fix: a commit of the type fix patches a bug in your codebase
+(this correlates with PATCH in semantic versioning).</p>
+
+<p>feat: a commit of the type feat introduces a new feature to the codebase
+(this correlates with MINOR in semantic versioning).</p>
+
+<p>BREAKING CHANGE: a commit that has the text BREAKING CHANGE: at the beginning of
+its optional body or footer section introduces a breaking API change
+(correlating with MAJOR in semantic versioning).
+A BREAKING CHANGE can be part of commits of any type.</p>
+
+<p>Others: commit types other than fix: and feat: are allowed,
+like chore:, docs:, style:, refactor:, perf:, test:, and others.
+[…]</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+This command guides you on how to write your commit message. Here the format should be `"[pattern]: [MESSAGE]"`. For us, this leads to:
+
+```bash{outputLines: 2-100}{promptUser: adaltas}{promptHost: local}
+cz check -m "test: all summarize_data tests now succeed"
+Commit validation: successful!
+</code></pre></div></div>
+
+<p>Very good, our commit message is valid. But hold on. Checking our messages each time with <code class="language-plaintext highlighter-rouge">commitizen</code> might be cumbersome and doesn’t provide the garanty to be applied. It would be better to check automatically the message each time we use the <code class="language-plaintext highlighter-rouge">git commit</code> command. That is where the <code class="language-plaintext highlighter-rouge">pre-commit</code> hook takes action.</p>
+
+<h3 id="automatically-enforce-git-message-conventions-with-pre-commit">Automatically enforce Git message conventions with <code class="language-plaintext highlighter-rouge">pre-commit</code></h3>
+
+<p>Git hooks are useful to automate and perform some actions at specific place during the Git lifecycle. The <code class="language-plaintext highlighter-rouge">pre-commit</code> hook permits to run scripts before a Git commit is issued. We can use the hook to validate the commit messages and prevent Git from using a message which doesn’t match our expectations. The hook is active from the command line as well as from any tools interacting with the Git repository where the hook is registered, including your favoride IDE.</p>
+
+<p><a href="https://pre-commit.com/index.html">pre-commit</a> is a framework for managing and maintaining multi-language pre-commit hooks. If you want to know more about the inner workings and the spectrum of possibilities opened by the <code class="language-plaintext highlighter-rouge">pre-commit</code> hook, you can read its <a href="https://pre-commit.com/index.html#usage">usage documentation</a>.</p>
+
+<p>To install <code class="language-plaintext highlighter-rouge">pre-commit</code> just run:</p>
+
+<p>```bash{outputLines: 2-100}{promptUser: adaltas}{promptHost: local}
+peotry add -D pre-commit</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+To automate the Git commit verification we first need to create a configuration file `.pre-commit-config.yaml` as followed:
+
+```yaml
+---
+repos:
+  - repo: https://github.com/commitizen-tools/commitizen
+    rev: master
+    hooks:
+      - id: commitizen
+        stages: [commit-msg]
+</code></pre></div></div>
+
+<p>Next we can install the hook with its source defined in the <code class="language-plaintext highlighter-rouge">repo</code> property:</p>
+
+<p>```bash{outputLines: 2-100}{promptUser: adaltas}{promptHost: local}
+pre-commit install –hook-type commit-msg</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+Now that everything is set, we can use our Git hook:
+
+```bash{outputLines: 12}{promptUser: adaltas}
+git commit -m "test: all summarize_data tests now succeed"
+[INFO] Initializing environment for https://github.com/commitizen-tools/commitizen.
+[INFO] Installing environment for https://github.com/commitizen-tools/commitizen.
+[INFO] Once installed this environment will be reused.
+[INFO] This may take a few minutes...
+commitizen check.........................................................Passed
+[INFO] Restored changes from /home/fbraza/.cache/pre-commit/patch1617970841.
+[master 1e64d0a] test: all summarize_data tests now succeed
+ 2 files changed, 48 insertions(+), 5 deletions(-)
+ rewrite tests/test_summarize_dataframe.py (98%)
+</code></pre></div></div>
+
+<p><code class="language-plaintext highlighter-rouge">pre-commit</code> installs an environment to run its checks. As you can see here the commit message assessment passed. To finish we can commit and push the modifications made on the build files (<code class="language-plaintext highlighter-rouge">poetry.lock</code>, <code class="language-plaintext highlighter-rouge">pyproject.toml</code>) and our module:</p>
+
+<p>```bash{outputLines: 2-100}{promptUser: adaltas}{promptHost: local}
+git commit -m “build: add developer dependencies” -m “commitizen and pre-commit added to our dev dependencies”</p>
+
+<p>commitizen check…………………………………………………Passed
+[master 1c6457c] build: add developer dependencies
+ 2 files changed, 585 insertions(+), 1 deletion(-)</p>
+
+<p>git commit -m “feat: implementation of the summary function to summarize dataframe”</p>
+
+<p>commitizen check…………………………………………………Passed
+[master 5c053ad] build: add developer dependencies
+ 1 file changed, 94 insertions(+)</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+We can now push everything to our GitHub repository:
+
+```bash{outputLines: 2-100}{promptUser: adaltas}{promptHost: local}
+git push origin master
+</code></pre></div></div>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>We covered a few topics:</p>
+
+<ul>
+  <li>On the first hand, we saw how to write unit tests for your code. You shall always start to write tests before coding. It helps you affinate your API and expectations before implementing them. You will definitively benefit from it. We used <code class="language-plaintext highlighter-rouge">unittest</code> which is already available in the Python standard library. I actually like its simple design and object-oriented approach but others prefer using the <a href="https://docs.pytest.org/en/stable/"><code class="language-plaintext highlighter-rouge">pytest</code> library</a> which is definitively worth checking. One very convenient aspect is that <code class="language-plaintext highlighter-rouge">pytest</code> supports the <code class="language-plaintext highlighter-rouge">unittest.TestCase</code> class from the beginning. You can then write your tests with either of the two libraries or even mix both depending on your needs and have one common command to run them all.</li>
+  <li>We saw how to enforce good practices when writing Git commit messages. Our proposed solution relies on the use of two distinct Python packages: <a href="https://commitizen-tools.github.io/commitizen/">commitizen</a> and <a href="https://pre-commit.com/">pre-commit</a>. The first one provides with the tools to check if a message validate the conventions you have chosen. The second one automates the process using a Git hook.</li>
+</ul>
+
+<p>In our next and last article, we are going to go one step further. We automate testing using <code class="language-plaintext highlighter-rouge">tox</code> and integrate it inside a <a href="/en/tag/ci-cd/">CI/CD</a> pipeline. Once done we will show how to prepare our package and finally publish it on <a href="https://pypi.org/">PyPi</a> using <code class="language-plaintext highlighter-rouge">poetry</code>.</p>
+
+<h2 id="cheat-sheet">Cheat sheet</h2>
+
+<h3 id="poetry"><code class="language-plaintext highlighter-rouge">poetry</code></h3>
+
+<ul>
+  <li>
+    <p>Add project dependencies:</p>
+
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>poetry add <span class="o">[</span>package_name]
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>Add developer dependencies:</p>
+
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>poetry add <span class="nt">-D</span> <span class="o">[</span>package_name]
+</code></pre></div>    </div>
+
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>poetry add <span class="nt">--dev</span> <span class="o">[</span>package_name]
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>Run test:</p>
+
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>poetry run pytest
+</code></pre></div>    </div>
+  </li>
+</ul>
+
+<h3 id="commitizen"><code class="language-plaintext highlighter-rouge">commitizen</code></h3>
+
+<ul>
+  <li>
+    <p>Initialize <code class="language-plaintext highlighter-rouge">commitizen</code>:</p>
+
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>cz init
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>Check your commit:</p>
+
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>cz check <span class="nt">-m</span> <span class="s2">"YOUR MESSAGE"</span>
+</code></pre></div>    </div>
+  </li>
+</ul>
+
+<h3 id="pre-commit"><code class="language-plaintext highlighter-rouge">pre-commit</code></h3>
+
+<ul>
+  <li>
+    <p>Generate a default configuration file:</p>
+
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pre-commit sample-config
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>Install git hook:</p>
+
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pre-commit <span class="nb">install</span> <span class="nt">--hook-type</span> <span class="o">[</span>hook_name]
+</code></pre></div>    </div>
+  </li>
+</ul>
+
+<h2 id="acknowledgments">Acknowledgments</h2>
+
+<p>This article was first published in Adaltas <a href="https://www.adaltas.com/en/articles/">blog</a>and kindly review by the CEO David Worms and one consultant Barthelemy NGOM.</p>
+
+  </div><!-- from https://github.com/utterance/utterances -->
+<script src="https://utteranc.es/client.js"
+        repo="fbraza/BrazLog"
+        issue-term="title"
+        label="blogpost-comment"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+</script><a class="u-url" href="/BrazLog/python/devops/2021/06/24/modern-python-part2.html" hidden></a>
+</article>
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/BrazLog/"></data>
+
+  <div class="wrapper">
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col">
+        <p class="feed-subscribe">
+          <a href="/BrazLog/feed.xml">
+            <svg class="svg-icon orange">
+              <use xlink:href="/BrazLog/assets/minima-social-icons.svg#rss"></use>
+            </svg><span>Subscribe</span>
+          </a>
+        </p>
+      </div>
+      <div class="footer-col">
+        <p>Python · Scala · BigData · System Design · Data Engineering</p>
+      </div>
+    </div>
+
+    <div class="social-links"><ul class="social-media-list"><li><a rel="me" href="https://github.com/fbraza" title="fbraza"><svg class="svg-icon grey"><use xlink:href="/BrazLog/assets/minima-social-icons.svg#github"></use></svg></a></li><li><a rel="me" href="https://twitter.com/%40braza_faouzi" title="@braza_faouzi"><svg class="svg-icon grey"><use xlink:href="/BrazLog/assets/minima-social-icons.svg#twitter"></use></svg></a></li></ul>
+</div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>
