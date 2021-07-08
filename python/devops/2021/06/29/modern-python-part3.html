@@ -153,55 +153,54 @@ window.onload = wrap_img;
 
 <p>Run the <code class="language-plaintext highlighter-rouge">tox</code> pipeline:</p>
 
-<p>```bash{outputLines: 2-100}{promptUser: adaltas}{promptHost: local}
-tox
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>tox
 py38 run-test: commands[0] | poetry run black summarize_dataframe/summarize_df.py
-All done! ✨ 🍰 ✨
+All <span class="k">done</span><span class="o">!</span> ✨ 🍰 ✨
 1 file left unchanged.
 py38 run-test: commands[1] | poetry run flake8 summarize_dataframe/summarize_df.py
 py38 run-test: commands[2] | poetry run pylint summarize_dataframe/summarize_df.py
-<strong>**</strong><strong>**</strong>* Module summarize_dataframe.summarize_df
-summarize_dataframe/summarize_df.py:1:0: C0114: Missing module docstring (missing-module-docstring)
-summarize_dataframe/summarize_df.py:4:0: C0103: Argument name “df” doesn’t conform to snake_case naming style (invalid-name)
-summarize_dataframe/summarize_df.py:11:4: C0103: Argument name “df” doesn’t conform to snake_case naming style (invalid-name)
-summarize_dataframe/summarize_df.py:23:4: C0103: Argument name “df” doesn’t conform to snake_case naming style (invalid-name)
-summarize_dataframe/summarize_df.py:43:0: C0103: Argument name “df” doesn’t conform to snake_case naming style (invalid-name)</p>
+<span class="k">*************</span> Module summarize_dataframe.summarize_df
+summarize_dataframe/summarize_df.py:1:0: C0114: Missing module docstring <span class="o">(</span>missing-module-docstring<span class="o">)</span>
+summarize_dataframe/summarize_df.py:4:0: C0103: Argument name <span class="s2">"df"</span> doesn<span class="s1">'t conform to snake_case naming style (invalid-name)
+summarize_dataframe/summarize_df.py:11:4: C0103: Argument name "df" doesn'</span>t conform to snake_case naming style <span class="o">(</span>invalid-name<span class="o">)</span>
+summarize_dataframe/summarize_df.py:23:4: C0103: Argument name <span class="s2">"df"</span> doesn<span class="s1">'t conform to snake_case naming style (invalid-name)
+summarize_dataframe/summarize_df.py:43:0: C0103: Argument name "df" doesn'</span>t conform to snake_case naming style <span class="o">(</span>invalid-name<span class="o">)</span>
 
-<hr />
-<p>Your code has been rated at 7.62/10 (previous run: 7.62/10, +0.00)</p>
+<span class="nt">------------------------------------------------------------------</span>
+Your code has been rated at 7.62/10 <span class="o">(</span>previous run: 7.62/10, +0.00<span class="o">)</span>
 
-<p>ERROR: InvocationError for command /home/fbraza/Documents/python_project/summarize_dataframe/.tox/py38/bin/poetry run pylint summarize_dataframe/summarize_df.py (exited with code 16)
-<strong>__</strong><strong>__</strong><strong>__</strong><strong>__</strong><strong>__</strong><strong>__</strong><strong>__</strong><strong>__</strong><strong>__</strong>__ summary <strong>__</strong><strong>__</strong><strong>__</strong><strong>__</strong><strong>__</strong><strong>__</strong><strong>__</strong><strong>__</strong><strong>__</strong><strong>__</strong><em>__</em>
-ERROR:   py38: commands failed</p>
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
-An error is raised because [pylint](https://www.pylint.org/) shed light on some style inconsistencies. By default, `tox` quits if any warnings or errors occurred during the execution of the commands. The errors are by themselves quite explicit. After correcting them, run again the pipeline:
+ERROR: InvocationError <span class="k">for </span><span class="nb">command</span> /home/fbraza/Documents/python_project/summarize_dataframe/.tox/py38/bin/poetry run pylint summarize_dataframe/summarize_df.py <span class="o">(</span>exited with code 16<span class="o">)</span>
+________________________________________________________ summary ________________________________________________________________
+ERROR:   py38: commands failed
+</code></pre></div></div>
 
-```bash{outputLines: 2-100}{promptUser: adaltas}{promptHost: local}
-tox
-# shorten for brevety [...]
+<p>An error is raised because <a href="https://www.pylint.org/">pylint</a> shed light on some style inconsistencies. By default, <code class="language-plaintext highlighter-rouge">tox</code> quits if any warnings or errors occurred during the execution of the commands. The errors are by themselves quite explicit. After correcting them, run again the pipeline:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>tox
+<span class="c"># shorten for brevety [...]</span>
 py38 run-test: commands[0] | poetry run black summarize_dataframe/summarize_df.py
-All done! ✨ 🍰 ✨
+All <span class="k">done</span><span class="o">!</span> ✨ 🍰 ✨
 1 file left unchanged.
 py38 run-test: commands[1] | poetry run flake8 summarize_dataframe/summarize_df.py
 py38 run-test: commands[2] | poetry run pylint summarize_dataframe/summarize_df.py
 
---------------------------------------------------------------------
-Your code has been rated at 10.00/10 (previous run: 10.00/10, +0.00)
+<span class="nt">--------------------------------------------------------------------</span>
+Your code has been rated at 10.00/10 <span class="o">(</span>previous run: 10.00/10, +0.00<span class="o">)</span>
 
-py38 run-test: commands[3] | poetry run pytest -v
-================================================= test session starts =============================================================
-platform linux -- Python 3.8.7, pytest-5.4.3, py-1.10.0, pluggy-0.13.1 -- /home/fbraza/Documents/python_project/summarize_dataframe/.tox/py38/bin/python
+py38 run-test: commands[3] | poetry run pytest <span class="nt">-v</span>
+<span class="o">=================================================</span> <span class="nb">test </span>session starts <span class="o">=============================================================</span>
+platform linux <span class="nt">--</span> Python 3.8.7, pytest-5.4.3, py-1.10.0, pluggy-0.13.1 <span class="nt">--</span> /home/fbraza/Documents/python_project/summarize_dataframe/.tox/py38/bin/python
 cachedir: .tox/py38/.pytest_cache
 rootdir: /home/fbraza/Documents/python_project/summarize_dataframe
 collected 2 items
 
-tests/test_summarize_dataframe.py::TestDataSummary::test_data_summary PASSED                                                                                           [ 50%]
-tests/test_summarize_dataframe.py::TestDataSummary::test_display PASSED                                                                                                [100%]
+tests/test_summarize_dataframe.py::TestDataSummary::test_data_summary PASSED                                                                                           <span class="o">[</span> 50%]
+tests/test_summarize_dataframe.py::TestDataSummary::test_display PASSED                                                                                                <span class="o">[</span>100%]
 
-================================================= 2 passed in 0.30s ===============================================================
+<span class="o">=================================================</span> 2 passed <span class="k">in </span>0.30s <span class="o">===============================================================</span>
 ______________________________________________________ summary ____________________________________________________________________
   py38: commands succeeded
-  congratulations :)
+  congratulations :<span class="o">)</span>
 </code></pre></div></div>
 
 <p>Perfect. The <code class="language-plaintext highlighter-rouge">tox</code> automation pipeline succeed locally. The next step start implements the CI pipeline with GitHub Actions.</p>
@@ -212,39 +211,38 @@ ______________________________________________________ summary _________________
 
 <p>Most importantly, GitHub Actions provide the ability to test your Python package using several Python versions and on different operating systems (Linux, macOS and Windows). The only thing you need is an existing repository and a <code class="language-plaintext highlighter-rouge">.github/workflows/&lt;file_name&gt;.yaml</code> file:</p>
 
-<p>```bash{promptUser: adaltas}{promptHost: local}
-mkdir -p .github/workflows
-touch .github/workflows/ci.yml</p>
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
-The content of the `.github/workflows/ci.yml` file is:
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">mkdir</span> <span class="nt">-p</span> .github/workflows
+<span class="nb">touch</span> .github/workflows/ci.yml
+</code></pre></div></div>
 
-```yaml
-name: CI Pipeline for summarize_df
+<p>The content of the <code class="language-plaintext highlighter-rouge">.github/workflows/ci.yml</code> file is:</p>
 
-on:
-  - push
-  - pull_request
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">name</span><span class="pi">:</span> <span class="s">CI Pipeline for summarize_df</span>
 
-jobs:
-  build:
-    runs-on: $
-    strategy:
-      matrix:
-        platform: [ubuntu-latest, macos-latest, windows-latest]
-        python-version: [3.7, 3.8, 3.9]
+<span class="na">on</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="s">push</span>
+  <span class="pi">-</span> <span class="s">pull_request</span>
 
-    steps:
-    - uses: actions/checkout@v1
-    - name: Set up Python $
-      uses: actions/setup-python@v2
-      with:
-        python-version: $
-    - name: Install dependencies
-      run: |
-        python -m pip install poetry
-        poetry install
-    - name: Test with tox
-      run: poetry run tox
+<span class="na">jobs</span><span class="pi">:</span>
+  <span class="na">build</span><span class="pi">:</span>
+    <span class="na">runs-on</span><span class="pi">:</span> <span class="s">$</span>
+    <span class="na">strategy</span><span class="pi">:</span>
+      <span class="na">matrix</span><span class="pi">:</span>
+        <span class="na">platform</span><span class="pi">:</span> <span class="pi">[</span><span class="nv">ubuntu-latest</span><span class="pi">,</span> <span class="nv">macos-latest</span><span class="pi">,</span> <span class="nv">windows-latest</span><span class="pi">]</span>
+        <span class="na">python-version</span><span class="pi">:</span> <span class="pi">[</span><span class="nv">3.7</span><span class="pi">,</span> <span class="nv">3.8</span><span class="pi">,</span> <span class="nv">3.9</span><span class="pi">]</span>
+
+    <span class="na">steps</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="na">uses</span><span class="pi">:</span> <span class="s">actions/checkout@v1</span>
+    <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Set up Python $</span>
+      <span class="na">uses</span><span class="pi">:</span> <span class="s">actions/setup-python@v2</span>
+      <span class="na">with</span><span class="pi">:</span>
+        <span class="na">python-version</span><span class="pi">:</span> <span class="s">$</span>
+    <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Install dependencies</span>
+      <span class="na">run</span><span class="pi">:</span> <span class="pi">|</span>
+        <span class="s">python -m pip install poetry</span>
+        <span class="s">poetry install</span>
+    <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Test with tox</span>
+      <span class="na">run</span><span class="pi">:</span> <span class="s">poetry run tox</span>
 </code></pre></div></div>
 
 <p>A few words about the different fields:</p>
@@ -287,17 +285,16 @@ jobs:
 
 <p>To finish, we are going to install a package, called <a href="https://github.com/ymyzk/tox-gh-actions">tox-gh-actions</a>, to run <code class="language-plaintext highlighter-rouge">tox</code> in parallel on GitHub while using several versions of Python:</p>
 
-<p>```bash{outputLines: 2-100}{promptUser: adaltas}{promptHost: local}
-poetry add tox-gh-actions –dev</p>
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
-The pipeline is ready. Add, commit and push your changes to see the pipeline running:
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>poetry add tox-gh-actions <span class="nt">--dev</span>
+</code></pre></div></div>
 
-```bash{promptUser: adaltas}{promptHost: local}
-echo "!.github/" &gt;&gt; .gitignore
+<p>The pipeline is ready. Add, commit and push your changes to see the pipeline running:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">echo</span> <span class="s2">"!.github/"</span> <span class="o">&gt;&gt;</span> .gitignore
 git add .gitignore
-git commit -m "build: update .gitignore to unmask .github/ folder"
-git add pyproject.toml tox.ini poetry.lock `.github/workflows/ci.yml`
-git commit -m "build: tox pipeline + github actions CI pipeline"
+git commit <span class="nt">-m</span> <span class="s2">"build: update .gitignore to unmask .github/ folder"</span>
+git add pyproject.toml tox.ini poetry.lock <span class="sb">`</span>.github/workflows/ci.yml<span class="sb">`</span>
+git commit <span class="nt">-m</span> <span class="s2">"build: tox pipeline + github actions CI pipeline"</span>
 </code></pre></div></div>
 
 <p>Go to your GitHub repository and click on the <strong>Actions</strong> tab:</p>
@@ -335,41 +332,37 @@ git commit -m "build: tox pipeline + github actions CI pipeline"
 
 <p>All the variables here are quite explicit. These are metadata needed for the publication of the package. The <code class="language-plaintext highlighter-rouge">include</code> variable is interesting to add any files you want. In our case we are going to add a <code class="language-plaintext highlighter-rouge">CHANGELOG.md</code> file. Do you remember <code class="language-plaintext highlighter-rouge">commitizen</code>? If not please take the time to read our article on <a href="/en/2021/06/24/unit-tests-conventional-commits/">commitizen and conventional commits</a>. Use the following command:</p>
 
-<p>```bash{outputLines: 2-100}{promptUser: adaltas}{promptHost: local}
-cz bump</p>
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
-It prints the semantic version from your `pyproject.toml` file and ask you to create a Git tag. The version will be updated based on your Git commit. Next we create the `CHANGELOG.md`:
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>cz bump
+</code></pre></div></div>
 
-```bash{outputLines: 3-100}{promptUser: adaltas}{promptHost: local}
-cz changelog
-cat CHANGELOG.md
+<p>It prints the semantic version from your <code class="language-plaintext highlighter-rouge">pyproject.toml</code> file and ask you to create a Git tag. The version will be updated based on your Git commit. Next we create the <code class="language-plaintext highlighter-rouge">CHANGELOG.md</code>:</p>
 
-## Unreleased
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>cz changelog
+<span class="nb">cat </span>CHANGELOG.md
 
-## 0.1.0 (2021-04-28)
+<span class="c">## Unreleased</span>
 
-### Refactor
+<span class="c">## 0.1.0 (2021-04-28)</span>
+
+<span class="c">### Refactor</span>
 
 - correct pylint warnings
-- split the function into two: one returning df other for output
+- <span class="nb">split </span>the <span class="k">function </span>into two: one returning <span class="nb">df </span>other <span class="k">for </span>output
 
-### Feat
+<span class="c">### Feat</span>
 
-- implementation of the summary function to summarize dataframe
+- implementation of the summary <span class="k">function </span>to summarize dataframe
 </code></pre></div></div>
 
 <p>Your <code class="language-plaintext highlighter-rouge">CHANGELOG.md</code> has been created based on the Git history you generated thanks to <code class="language-plaintext highlighter-rouge">commitizen</code>. Pretty neat isn’t it?! Once done let’s focus on publishing our package:</p>
 
-<p>```bash{outputLines: 2-100}{promptUser: adaltas}{promptHost: local}
-poetry build
-Building summarize_dataframe (0.1.0)</p>
-<ul>
-  <li>Building sdist</li>
-  <li>Built summarize_dataframe-0.1.0.tar.gz</li>
-  <li>Building wheel</li>
-  <li>Built summarize_dataframe-0.1.0-py3-none-any.whl
-```</li>
-</ul>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>poetry build
+Building summarize_dataframe <span class="o">(</span>0.1.0<span class="o">)</span>
+  - Building sdist
+  - Built summarize_dataframe-0.1.0.tar.gz
+  - Building wheel
+  - Built summarize_dataframe-0.1.0-py3-none-any.whl
+</code></pre></div></div>
 
 <p>This creates a folder called <code class="language-plaintext highlighter-rouge">dist</code> where the built package is located. To test if everything works you can use <code class="language-plaintext highlighter-rouge">pip</code>:</p>
 
@@ -377,16 +370,15 @@ Building summarize_dataframe (0.1.0)</p>
   <p>Do this outside of your virtual environment to not pollute it.</p>
 </blockquote>
 
-<p>```bash{outputLines: 2-100}{promptUser: adaltas}{promptHost: local}
-pip install path/to/your/package/summarize_dataframe-0.1.0-py3-none-any.whl</p>
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
-Now we need to create an account on [PyPi](https://pypi.org/account/register/). Just enter the expected details, validate your email and execute:
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pip <span class="nb">install </span>path/to/your/package/summarize_dataframe-0.1.0-py3-none-any.whl
+</code></pre></div></div>
 
-```bash{outputLines: 2-100}{promptUser: adaltas}{promptHost: local}
-poetry publish
-Username: ***********
-Password: ***********
-Publishing summarize_dataframe (0.1.0) to PyPI
+<p>Now we need to create an account on <a href="https://pypi.org/account/register/">PyPi</a>. Just enter the expected details, validate your email and execute:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>poetry publish
+Username: <span class="k">***********</span>
+Password: <span class="k">***********</span>
+Publishing summarize_dataframe <span class="o">(</span>0.1.0<span class="o">)</span> to PyPI
  - Uploading summarize_dataframe-0.1.0-py3-none-any.whl 100%
  - Uploading summarize_dataframe-0.1.0.tar.gz 100%
 </code></pre></div></div>
