@@ -118,11 +118,11 @@ A quick answer would be to add more memory to your cluster's workers. If not pos
 
 ### Definition and root causes
 
-**Shuffle** occurs when Spark needs to regroup data from different partitions to compute a final result. It is a side effect observed with wide transformations. These include for example the `groupBy()`, `distinct()` or `join()` operations. Let's explain shuffle by going through a quick and simple example involving a `groupBy()` combined with a `count()` operation. 
+**Shuffle** occurs when Spark needs to regroup data from different partitions to compute a final result. It is a side effect observed with wide transformations. These include for example the `groupBy()`, `distinct()` or `join()` operations. Let's explain shuffle by going through a quick and simple example involving a `groupBy()` combined with a `count()` operation.
 
 ![]({{ site.baseurl }}/images/content_drafts_2021-06-08-spark-performance-optimization_assets_shuffle_example.png)
 
-First the data is read from source (i.e., HDFS, cloud storage, previous stage) *(1)*. At stage 1, Spark performs a **"mapping"** operation to identify which record belongs to which group *(2)*. Then data is prepared for the next partitions and **written on disk in shuffle files** *(3)*. For the next stage, data is **read from the shuffle files** and transferred through the network to the next executors *(4)* where a **"reduce"** operation is performed. Our final result is computed *(5)* and data written on disk *(6)*. 
+First the data is read from source (i.e., HDFS, cloud storage, previous stage) *(1)*. At stage 1, Spark performs a **"mapping"** operation to identify which record belongs to which group *(2)*. Then data is prepared for the next partitions and **written on disk in shuffle files** *(3)*. For the next stage, data is **read from the shuffle files** and transferred through the network to the next executors *(4)* where a **"reduce"** operation is performed. Our final result is computed *(5)* and data written on disk *(6)*.
 
 Shuffle is a potentially very expensive operation that involves a lot of disk and network I/O which impact on Spark performance. Additionally, keep in mind that whatever type of wide transformations you are executing, the mapping and the reduce operations are performed in-memory and remain susceptible to some spill on disk which will add to the overhead of disk I/O.
 
@@ -161,9 +161,9 @@ There are different approaches against shuffle:
 
 ### Definition and root causes`Stages`
 
-When talking about the impact of storage on performance, we talk about the overhead I/O cost of data ingestion. The most common example relate to:  
+When talking about the impact of storage on performance, we talk about the overhead I/O cost of data ingestion. The most common example relate to:
 
-- **reading tiny files** 
+- **reading tiny files**
 
   The "tiny files problem" has been pinpointed and described since the existence of distributed system like [Hadoop](https://blog.cloudera.com/the-small-files-problem/). Things are similar with Spark. Before executing any query on your data, Spark will assess how many tasks are required to read the input data and determine on which worker it should schedule these tasks. Moreover, some files contain metadata (i.e., ORC, Parquet...)  to be read and parsed. Then with a huge number of small files, you increase the workload on the Spark Scheduler, number of read / close file operations and metadata to parse. Collectively these operations greatly impact on Spark performance.
 
@@ -171,7 +171,7 @@ When talking about the impact of storage on performance, we talk about the overh
 
   Directory scanning adds overhead to the tiny files problem. But it also exists for terabytes files especially in the context of highly partitioned datasets on disks. For each partition you have one directory. If we consider some data partitioned by year, month day and hour we will have 8640 directories to scan! If you let your data scale for 10 years you will end with 86400 directories. Keep in mind that the Spark driver scan the repository one at the time.
 
-- **dealing with dataset schemas** 
+- **dealing with dataset schemas**
 
   inferring schema with Spark for `csv` and `json` files also impairs performance in Spark. Indeed it requires to do a full scan of the data to assess all types. In contrast, Spark only reads one file when dealing with the Parquet format. This is under the assumption that all Parquet files under the same partition have the same schema. But be careful if you wish to support Parquet schema evolution. For each new schema evolution, you have a new partition with new files. If you alter the schema a lot you progressively fall into the scanning issue as described before. By default, schema evolution is disabled in Spark 2 & 3 but if you need it use the `spark.sql.parquet.mergeSchema`  [property](https://spark.apache.org/docs/latest/sql-data-sources-parquet.html#schema-merging).
 
@@ -188,19 +188,19 @@ Measures to mitigate these issues are pretty simple:
 
 - avoid using tiny files if possible or merge them into bigger files before performing any operations on your data.
 - keep in mind that the reading / scanning problem cannot be solved by adding more resources to your workers. Everything is handled by the driver.
-- partition your data according to your needs. Avoid over-partitioning if not necessary although this will depend on the data problem you are tackling. 
+- partition your data according to your needs. Avoid over-partitioning if not necessary although this will depend on the data problem you are tackling.
 
 ## Serialization
 
 ### Definition and root causes
 
-Serialization improves performance on distributed applications by converting code objects and data into a stream of bytes and *vice-versa*. For distributed systems like Spark, the **majority of the compute time is spent on data serialization**. 
+Serialization improves performance on distributed applications by converting code objects and data into a stream of bytes and *vice-versa*. For distributed systems like Spark, the **majority of the compute time is spent on data serialization**.
 
 When writing and executing code, the Spark driver serializes the code, send it to the executors that deserialized the code to execute it. By default, Spark uses Java serialization with the `ObjectOutputStream` framework that works with any types and classes that implement [`java.io.Serializable`](https://docs.oracle.com/javase/8/docs/api/java/io/Serializable.html). The [Kryo serialization](https://github.com/EsotericSoftware/kryo) permits to serialize data faster but is not compatible with every classes and types. You also need to do extra-work before to register the classes you want to be serialized.
 
-At the beginning of Spark, users were mostly dealing with resilient distributed datasets (RDDs) by writing empiric code which describes how you want to do things. For RDDs, Spark uses Java serialization to serialize individual Scala and Java objects. **This process is expensive** especially because the Java objects model is highly memory consumptive. This is even more expensive with Pyspark where code and data are serialized / deserialized twice: first to Java/Scala and then to Python. 
+At the beginning of Spark, users were mostly dealing with resilient distributed datasets (RDDs) by writing empiric code which describes how you want to do things. For RDDs, Spark uses Java serialization to serialize individual Scala and Java objects. **This process is expensive** especially because the Java objects model is highly memory consumptive. This is even more expensive with Pyspark where code and data are serialized / deserialized twice: first to Java/Scala and then to Python.
 
-> About PySpark:  all data that come to and from a Python executor has to be passed through a socket and a Java Virtual Machine (JVM) worker. Briefly, with PySpark, the `SparkContext` uses `Py4J` to launch a JVM to create a `JavaSparkContext`. That is the communication between `Py4J` and the JVM that orchestrate the data flow. It is worth noting that Py4J calls have pretty high latency. That is why all operations on RDDs takes much more time on PySpark than on Spark.
+> Note: For PySpark all data that come to and from a Python executor has to be passed through a socket and a Java Virtual Machine (JVM) worker. Briefly, with PySpark, the `SparkContext` uses `Py4J` to launch a JVM to create a `JavaSparkContext`. That is the communication between `Py4J` and the JVM that orchestrate the data flow. It is worth noting that Py4J calls have pretty high latency. That is why all operations on RDDs takes much more time on PySpark than on Spark.
 
 The project Tungsten in 2004 and the design of the DataFrame API were critical steps towards performances improvement of the Spark engine. The first altered and improved the Java objects model allowing Spark to manage data expressed as DataFrame much more efficiently. The API permits us to write more declarative code that will be processed as instructions for the transformation chain. Both minimize the amount of work required by the Spark JVMs. And if you work with PySpark note that in this context nothing will be done in Python then excluding the double serialization needed with RDDs.
 

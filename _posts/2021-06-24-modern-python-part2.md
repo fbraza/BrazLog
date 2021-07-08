@@ -65,7 +65,7 @@ Package operations: 8 installs, 0 updates, 0 removals
 
 The `-D` flag indicates that the dependency only apply to development environments.
 
-> I personally use NeoVim for coding that is why I need the `pynvim`  package to support NeoVim python plugins.
+> Note: I personally use NeoVim for coding that is why I need the `pynvim`  package to support NeoVim python plugins.
 
 Based on the expected output defined above, our program is made of three steps:
 

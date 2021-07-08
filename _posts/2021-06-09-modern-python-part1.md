@@ -81,7 +81,7 @@ pyenv versions
 
 You can see that `pyenv` sets `3.7.10` as our global Python version. This will not alter the operations that require the use of the system version. The path you can read between parenthesis corresponds to the path that points to the required Python version. How does this work? Briefly, `pyenv` captures Python commands using executables injected into your `PATH`. Then it determines which Python version you need to use, and passes the commands to the correct Python installation. Feel free to read the complete [documentation](https://github.com/pyenv/pyenv) to better understand the functionalities and possibilities offered by `pyenv`.
 
-> Don't be confused by the semantic here. Change the global version will not affect your system version. The system version corresponds to the version used by your OS to accomplish specific tasks or run background processes that depend on this specific Python version. Do not switch the system version to another one or you may face several issues with your OS! This version is usually updated along with your OS. The global version is just the version that `pyenv` will use to execute your Python commands / programs globally.
+> Note: Don't be confused by the semantic here. Change the global version will not affect your system version. The system version corresponds to the version used by your OS to accomplish specific tasks or run background processes that depend on this specific Python version. Do not switch the system version to another one or you may face several issues with your OS! This version is usually updated along with your OS. The global version is just the version that `pyenv` will use to execute your Python commands / programs globally.
 
 ### `poetry` installation
 
@@ -161,7 +161,7 @@ We can see several entries in our default`pyproject.toml` file.
 - **`[tool.poetry.dev-dependencies]`**: This section contains all developer dependencies which are packages needed to work and iterate on this project. Nevertheless, these dependencies are not required to run the app and will not be downloaded when building the package.
 - **`[build-system]`**: Do not touch this section unless you updated the version of `poetry`.
 
-> you can see the full list of available entries for the `pyproject.toml` file [here](https://python-poetry.org/docs/pyproject/)
+> Note: you can see the full list of available entries for the `pyproject.toml` file [here](https://python-poetry.org/docs/pyproject/)
 
 ### Install and activate the virtual environment
 
@@ -191,7 +191,7 @@ Installing the current project: summarize_dataframe (0.1.0)
 
 Firstly the virtual environment is created and stored outside of the project. A bit similar to what we have when using [`conda`](https://docs.conda.io/en/latest/). Indeed, Instead of creating a folder containing your dependency libraries (as [`virtualenv`](https://pypi.org/project/virtualenv/) does), `poetry` creates an environment on a global system path (`.cache/` by default). This separation of concerns allows keeping your project away from dependency source code.
 
-> You can create your virtual environment inside your project or in any other directories. For that you need to edit the configuration of poetry. Follow this [documentation](https://python-poetry.org/docs/configuration/) for more details.
+> Note: You can create your virtual environment inside your project or in any other directories. For that you need to edit the configuration of poetry. Follow this [documentation](https://python-poetry.org/docs/configuration/) for more details.
 
 Secondly, `poetry` is going to read the `pyproject.toml` and install all dependencies specified in this file. If not defined, poetry will download the last version of the packages. At the end of the operation, a `poetry.lock` file is created. It contains all packages and their exact versions. Keep in mind that if a `poetry.lock` file is already present, the version numbers defined in it take precedence over what is defined in the `pyproject.toml`. Finally, you should commit the `poetry.lock` file to your project repository so that all collaborators working on the project use the same versions of dependencies.
 
