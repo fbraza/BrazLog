@@ -62,7 +62,7 @@ You can see two sections here:
 
 Run the `tox` pipeline:
 
-```bash{outputLines: 2-100}{promptUser: adaltas}{promptHost: local}
+```bash
 tox
 py38 run-test: commands[0] | poetry run black summarize_dataframe/summarize_df.py
 All done! ✨ 🍰 ✨
@@ -86,7 +86,7 @@ ERROR:   py38: commands failed
 
 An error is raised because [pylint](https://www.pylint.org/) shed light on some style inconsistencies. By default, `tox` quits if any warnings or errors occurred during the execution of the commands. The errors are by themselves quite explicit. After correcting them, run again the pipeline:
 
-```bash{outputLines: 2-100}{promptUser: adaltas}{promptHost: local}
+```bash
 tox
 # shorten for brevety [...]
 py38 run-test: commands[0] | poetry run black summarize_dataframe/summarize_df.py
@@ -122,7 +122,7 @@ GitHub Actions make it easy to automate all your software workflows. This servic
 
 Most importantly, GitHub Actions provide the ability to test your Python package using several Python versions and on different operating systems (Linux, macOS and Windows). The only thing you need is an existing repository and a `.github/workflows/<file_name>.yaml` file:
 
-```bash{promptUser: adaltas}{promptHost: local}
+```bash
 mkdir -p .github/workflows
 touch .github/workflows/ci.yml
 ```
@@ -193,13 +193,13 @@ python = "^3.7.1"
 
 To finish, we are going to install a package, called [tox-gh-actions](https://github.com/ymyzk/tox-gh-actions), to run `tox` in parallel on GitHub while using several versions of Python:
 
-```bash{outputLines: 2-100}{promptUser: adaltas}{promptHost: local}
+```bash
 poetry add tox-gh-actions --dev
 ```
 
 The pipeline is ready. Add, commit and push your changes to see the pipeline running:
 
-```bash{promptUser: adaltas}{promptHost: local}
+```bash
 echo "!.github/" >> .gitignore
 git add .gitignore
 git commit -m "build: update .gitignore to unmask .github/ folder"
@@ -243,13 +243,13 @@ include = ["CHANGELOG.md"]
 
 All the variables here are quite explicit. These are metadata needed for the publication of the package. The `include` variable is interesting to add any files you want. In our case we are going to add a `CHANGELOG.md` file. Do you remember `commitizen`? If not please take the time to read our article on [commitizen and conventional commits](/en/2021/06/24/unit-tests-conventional-commits/). Use the following command:
 
-```bash{outputLines: 2-100}{promptUser: adaltas}{promptHost: local}
+```bash
 cz bump
 ```
 
 It prints the semantic version from your `pyproject.toml` file and ask you to create a Git tag. The version will be updated based on your Git commit. Next we create the `CHANGELOG.md`:
 
-```bash{outputLines: 3-100}{promptUser: adaltas}{promptHost: local}
+```bash
 cz changelog
 cat CHANGELOG.md
 
@@ -269,7 +269,7 @@ cat CHANGELOG.md
 
 Your `CHANGELOG.md` has been created based on the Git history you generated thanks to `commitizen`. Pretty neat isn't it?! Once done let's focus on publishing our package:
 
-```bash{outputLines: 2-100}{promptUser: adaltas}{promptHost: local}
+```bash
 poetry build
 Building summarize_dataframe (0.1.0)
   - Building sdist
@@ -282,13 +282,13 @@ This creates a folder called `dist` where the built package is located. To test 
 
 > Do this outside of your virtual environment to not pollute it.
 
-```bash{outputLines: 2-100}{promptUser: adaltas}{promptHost: local}
+```bash
 pip install path/to/your/package/summarize_dataframe-0.1.0-py3-none-any.whl
 ```
 
 Now we need to create an account on [PyPi](https://pypi.org/account/register/). Just enter the expected details, validate your email and execute:
 
-```bash{outputLines: 2-100}{promptUser: adaltas}{promptHost: local}
+```bash
 poetry publish
 Username: ***********
 Password: ***********

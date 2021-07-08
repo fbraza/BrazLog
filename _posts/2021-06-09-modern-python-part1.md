@@ -121,7 +121,7 @@ poetry new <project_name>
 
 This command generates a default project scaffold. The content of our new project is the following:
 
-```none
+```text
 .
 ├── <project_name>
 │   └── __init__.py

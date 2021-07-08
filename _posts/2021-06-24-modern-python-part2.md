@@ -33,13 +33,13 @@ object                    2
 
 Go to your project root directory and activate your virtual environment:
 
-```bash{outputLines: 2-100}{promptUser: adaltas}{promptHost: local}
+```bash
 poetry shell
 ```
 
 We add a couple of dependencies using poetry:
 
-```bash{outputLines: 2-100}{promptUser: adaltas}{promptHost: local}
+```bash
 poetry add -D pynvim numpy pandas
 
 Using version ^0.4.3 for pynvim
@@ -146,7 +146,7 @@ if __name__ == '__main__':
 
 The `setUp()` method initializes two distinct pandas DataFrame. `self.exp_df` is the resulting DataFrame we expect to get after calling the `data_summary()` function and `self.df` is the one used to test our functions. At the moment, tests are expected to fail. The logic has not been implemented. To test with `poetry` use the command:
 
-```bash{outputLines: 2-12}{promptUser: adaltas}
+```bash
 poetry run pytest -v
 ============================================== test session starts ==============================
 platform linux -- Python 3.8.7, pytest-5.4.3, py-1.10.0, pluggy-0.13.1 -- /home/fbraza/.cache/pypoetry/virtualenvs/summarize-dataframe-SO-g_7pj-py3.8/bin/python
@@ -221,7 +221,7 @@ def display_summary(df: pd.DataFrame) -> None:
 
 Run our test again:
 
-```bash{outputLines: 2-100}{promptUser: adaltas}{promptHost: local}
+```bash
 poetry run pytest -v
 =============================================== test session starts ===============================================================
 platform linux -- Python 3.8.7, pytest-5.4.3, py-1.10.0, pluggy-0.13.1 -- /home/fbraza/.cache/pypoetry/virtualenvs/summarize-dataframe-SO-g_7pj-py3.8/bin/python
@@ -323,7 +323,7 @@ def display_summary(df: pd.DataFrame) -> None:
 
 Then run the tests again:
 
-```bash{outputLines: 2-100}{promptUser: adaltas}{promptHost: local}
+```bash
 poetry run pytest -v
 =============================================== test session starts ===============================================================
 platform linux -- Python 3.8.7, pytest-5.4.3, py-1.10.0, pluggy-0.13.1 -- /home/fbraza/.cache/pypoetry/virtualenvs/summarize-dataframe-SO-g_7pj-py3.8/bin/python
@@ -346,7 +346,7 @@ Writing optimal Git commit messages is not an easy task. Messages need to be cle
 
 In our series about [JavaScript monorepos](/en/2021/02/02/js-monorepos-commits-changelog/), we saw how to integrate these conventions to enforce good practices regarding commit messages. Applied to Python, we are going to use a package called [commitizen](https://commitizen-tools.github.io/commitizen/) to achieve this. Let's add this package to our developer dependencies:
 
-```bash{outputLines: 2-23}{promptUser: adaltas}
+```bash
 poetry add -D commitizen
 
 Using version ^2.17.0 for commitizen
@@ -373,7 +373,7 @@ Package operations: 11 installs, 0 updates, 0 removals
 
 To setup `commitizen` for your project, run the command `cz init`. It prompts us with a set of questions:
 
-```bash{outputLines: 2-100}{promptUser: adaltas}{promptHost: local}
+```bash
 cz init
 ? Please choose a supported config file: (default: pyproject.toml)  (Use arrow keys)
  » pyproject.toml
@@ -417,7 +417,7 @@ pattern: (build|ci|docs|feat|fix|perf|refactor|style|test|chore|revert|bump)!?(\
 
 Our message is rejected because it does not respect the commit rules. The last line suggests some patterns to use. Take some time to read the [conventional commits](https://www.conventionalcommits.org/en/v1.0.0/) documentation and run the command `cz info` to print a short documentation:
 
-```bash{outputLines: 2-100}{promptUser: adaltas}{promptHost: local}
+```bash
 cz info
 The commit contains the following structural elements, to communicate intent to the consumers of your library:
 
@@ -439,7 +439,7 @@ like chore:, docs:, style:, refactor:, perf:, test:, and others.
 
 This command guides you on how to write your commit message. Here the format should be `"[pattern]: [MESSAGE]"`. For us, this leads to:
 
-```bash{outputLines: 2-100}{promptUser: adaltas}{promptHost: local}
+```bash
 cz check -m "test: all summarize_data tests now succeed"
 Commit validation: successful!
 ```
@@ -454,7 +454,7 @@ Git hooks are useful to automate and perform some actions at specific place duri
 
 To install `pre-commit` just run:
 
-```bash{outputLines: 2-100}{promptUser: adaltas}{promptHost: local}
+```bash
 peotry add -D pre-commit
 ```
 
@@ -472,13 +472,13 @@ repos:
 
 Next we can install the hook with its source defined in the `repo` property:
 
-```bash{outputLines: 2-100}{promptUser: adaltas}{promptHost: local}
+```bash
 pre-commit install --hook-type commit-msg
 ```
 
 Now that everything is set, we can use our Git hook:
 
-```bash{outputLines: 12}{promptUser: adaltas}
+```bash
 git commit -m "test: all summarize_data tests now succeed"
 [INFO] Initializing environment for https://github.com/commitizen-tools/commitizen.
 [INFO] Installing environment for https://github.com/commitizen-tools/commitizen.
@@ -493,7 +493,7 @@ commitizen check.........................................................Passed
 
 `pre-commit` installs an environment to run its checks. As you can see here the commit message assessment passed. To finish we can commit and push the modifications made on the build files (`poetry.lock`, `pyproject.toml`) and our module:
 
-```bash{outputLines: 2-100}{promptUser: adaltas}{promptHost: local}
+```bash
 git commit -m "build: add developer dependencies" -m "commitizen and pre-commit added to our dev dependencies"
 
 commitizen check.........................................................Passed
@@ -509,7 +509,7 @@ commitizen check.........................................................Passed
 
 We can now push everything to our GitHub repository:
 
-```bash{outputLines: 2-100}{promptUser: adaltas}{promptHost: local}
+```bash
 git push origin master
 ```
 
