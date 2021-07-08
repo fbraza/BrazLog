@@ -3,20 +3,18 @@ title: Modern Python part 1 - start a project with pyenv & poetry
 toc: false
 comments: true
 layout: post
-description: Tutorials to write tests and use pre-commit in Python
+description: Let's the poetry begin...
 categories: [Python, DevOps]
 ---
 
 When learning a programming language, the focus is essentially on understanding the syntax, the code style, and the underlying concepts. With time, you become sufficiently comfortable with the language and you start writing programs solving new exciting problems.
 
-However, when you need to move towards this step, there is an aspect that one might have underestimated which is how to build the right environment. An environment that enforces good software engineering practices, improves productivity and facilitates collaboration. At Adaltas, we manage several open source projects and we welcome a lot of contributions. They are mostly targeting the Node.js platform. Based on this experience, we already established [common practices](/en/2021/01/05/js-monorepos-project-initialization/) for managing large scale projects written in Node.js.
+However, when you need to move towards this step, there is an aspect that one might have underestimated which is how to build the right environment. An environment that enforces good software engineering practices, improves productivity and facilitates collaboration. Packaging and tooling with Python is often described as cumbersome and challenging. In this regard, several open-source projects emerged in the last years and aim at facilitating the management of Python packages along your working projects. We are going to see here how to use two of them: [Pyenv](https://github.com/pyenv/pyenv), to manage and install different Python versions, and [Poetry](https://python-poetry.org/), to manage your packages and virtual environments. Combined or used individually, they help you to establish a productive environment.
 
-Another language we also use a lot in our daily job as data consultant is [Python](/en/tag/python/). Packaging and tooling with Python is often described as cumbersome and challenging. In this regard, several open-source projects emerged in the last years and aim at facilitating the management of Python packages along your working projects. We are going to see here how to use two of them: [Pyenv](https://github.com/pyenv/pyenv), to manage and install different Python versions, and [Poetry](https://python-poetry.org/), to manage your packages and virtual environments. Combined or used individually, they help you to establish a productive environment.
+This article is the first one from a series of three in which we share some best practices.
 
-This article is the first one from a series of three in which we share our best practices.
-
-- Part 1: [project initialization with pyenv and poetry](/en/2021/06/09/pyrepo-project-initialization/)
-- Part 2: [unit testing and commit enforcement](/en/2021/06/24/unit-tests-conventional-commits/)
+- Part 1: [project initialization with pyenv and poetry](https://fbraza.github.io/BrazLog/python/devops/2021/06/09/modern-python-part1.html)
+- Part 2: [unit testing and commit enforcement](https://fbraza.github.io/BrazLog/python/devops/2021/06/24/modern-python-part2.html)
 - Part 3: CI pipeline with GitHub Actions and publication on PiPy
 
 ## Pre-requisites
@@ -269,4 +267,4 @@ In our next article, we are going to dive more into our project. We will write s
 
 ## Acknowledgments
 
-This article was first published in Adaltas [blog](https://www.adaltas.com/en/articles/)and kindly review by the CEO David Worms and one consultant Barthelemy NGOM.
+This article was first published in Adaltas [blog](https://www.adaltas.com/en/articles/) and kindly reviewed by the CEO David Worms and one consultant Barthelemy NGOM.

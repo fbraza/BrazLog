@@ -3,7 +3,7 @@ title: Modern Python part 2 - write unit tests & enforce Git commit conventions
 toc: false
 comments: true
 layout: post
-description: Tutorials to write tests and use pre-commit in Python
+description: The benefits of testing and enforcing Git commit
 categories: [Python, DevOps]
 ---
 
@@ -13,8 +13,8 @@ In the first part of this serie, we setup, our project by installing different P
 
 This article is the second one from a series of three in which we share our best practices.
 
-- Part 1: [project initialization with pyenv and poetry](/en/2021/06/09/pyrepo-project-initialization/)
-- Part 2: [unit testing and commit enforcement](/en/2021/06/24/unit-tests-conventional-commits/)
+- Part 1: [project initialization with pyenv and poetry](https://fbraza.github.io/BrazLog/python/devops/2021/06/09/modern-python-part1.html)
+- Part 2: [unit testing and commit enforcement](https://fbraza.github.io/BrazLog/python/devops/2021/06/24/modern-python-part2.html)
 - Part 3: CI pipeline with GitHub Actions and publication on PiPy
 
 ## Testing our code
@@ -578,4 +578,4 @@ In our next and last article, we are going to go one step further. We automate t
 
 ## Acknowledgments
 
-This article was first published in Adaltas [blog](https://www.adaltas.com/en/articles/)and kindly review by the CEO David Worms and one consultant Barthelemy NGOM.
+This article was first published in Adaltas [blog](https://www.adaltas.com/en/articles/) and kindly reviewed by the CEO David Worms and one consultant Barthelemy NGOM.
