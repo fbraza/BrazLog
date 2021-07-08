@@ -98,12 +98,12 @@ window.onload = wrap_img;
   <div class="post-content e-content" itemprop="articleBody">
     <p>To propose a well-maintained and usable Python package to the open-source community or even inside your company, you are expected to accomplish a set of critical steps. First ensure that your code is unit tested. Second respect the common writing and format styles. Automate these steps and integrate them in a continuous integration pipeline to avoid any regression that stems from modifications applied to your source code. Finally, provide enough documentation for future users. Once done it is common to publish your Python package on the <a href="https://pypi.org/">Python Package Index (PyPI)</a>. Here we are going to see how to accomplish each of these steps using <a href="https://python-poetry.org/">Poetry</a>, <a href="https://tox.readthedocs.io/en/latest/">Tox</a> and <a href="https://github.com/features/actions">GitHub Actions</a>. The code used for our use case can be found <a href="https://github.com/adaltas/summarize_dataframe">on our repository</a>.</p>
 
-<p>This article is the last one from a series of three in which we share our best practices.</p>
+<p>This article is the last one from a series of three in which I share some best practices.</p>
 
 <ul>
-  <li>Part 1: <a href="/en/2021/06/09/pyrepo-project-initialization/">project initialization with pyenv and poetry</a></li>
-  <li>Part 2: <a href="/en/2021/06/24/unit-tests-conventional-commits/">unit testing and commit enforcement</a></li>
-  <li>Part 3: <a href="/en/2021/06/28/pypi-tox-cicd-github-actions/">CI pipeline with GitHub Actions and publication on PiPy</a></li>
+  <li>Part 1: <a href="https://fbraza.github.io/BrazLog/python/devops/2021/06/09/modern-python-part1.html">project initialization with pyenv and poetry</a></li>
+  <li>Part 2: <a href="https://fbraza.github.io/BrazLog/python/devops/2021/06/24/modern-python-part2.html">unit testing and commit enforcement</a></li>
+  <li>Part 3: <a href="https://fbraza.github.io/BrazLog/python/devops/2021/06/29/modern-python-part3.html">CI pipeline with GitHub Actions and publication on PiPy</a></li>
 </ul>
 
 <h2 id="automate-linter-checks-and-tests-with-tox">Automate linter checks and tests with <code class="language-plaintext highlighter-rouge">tox</code></h2>
@@ -385,7 +385,7 @@ Publishing summarize_dataframe <span class="o">(</span>0.1.0<span class="o">)</s
 
 <p>The package is now online and shared with the community.</p>
 
-<p><img src="./assets/gh04.png" alt="Project publication on PyPi" /></p>
+<p><img src="/BrazLog/images/gh04.png" alt="Project publication on PyPi" /></p>
 
 <h2 id="conclusion">Conclusion</h2>
 
