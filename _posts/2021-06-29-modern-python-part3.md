@@ -9,11 +9,12 @@ categories: [Python, DevOps]
 
 To propose a well-maintained and usable Python package to the open-source community or even inside your company, you are expected to accomplish a set of critical steps. First ensure that your code is unit tested. Second respect the common writing and format styles. Automate these steps and integrate them in a continuous integration pipeline to avoid any regression that stems from modifications applied to your source code. Finally, provide enough documentation for future users. Once done it is common to publish your Python package on the [Python Package Index (PyPI)](https://pypi.org/). Here we are going to see how to accomplish each of these steps using [Poetry](https://python-poetry.org/), [Tox](https://tox.readthedocs.io/en/latest/) and [GitHub Actions](https://github.com/features/actions). The code used for our use case can be found [on our repository](https://github.com/adaltas/summarize_dataframe).
 
-This article is the last one from a series of three in which we share our best practices.
+This article is the last one from a series of three in which I share some best practices.
 
-- Part 1: [project initialization with pyenv and poetry](/en/2021/06/09/pyrepo-project-initialization/)
-- Part 2: [unit testing and commit enforcement](/en/2021/06/24/unit-tests-conventional-commits/)
-- Part 3: [CI pipeline with GitHub Actions and publication on PiPy](/en/2021/06/28/pypi-tox-cicd-github-actions/)
+- Part 1: [project initialization with pyenv and poetry](https://fbraza.github.io/BrazLog/python/devops/2021/06/09/modern-python-part1.html)
+- Part 2: [unit testing and commit enforcement](https://fbraza.github.io/BrazLog/python/devops/2021/06/24/modern-python-part2.html)
+- Part 3: [CI pipeline with GitHub Actions and publication on PiPy](https://fbraza.github.io/BrazLog/python/devops/2021/06/29/modern-python-part3.html)
+
 
 ## Automate linter checks and tests with `tox`
 
@@ -299,7 +300,7 @@ Publishing summarize_dataframe (0.1.0) to PyPI
 
 The package is now online and shared with the community.
 
-![Project publication on PyPi](./assets/gh04.png)
+![Project publication on PyPi]({{ site.baseurl }}/images/gh04.png)
 
 ## Conclusion
 

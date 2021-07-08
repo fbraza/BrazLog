@@ -11,11 +11,11 @@ Good software engineering practices always bring a lot of long-term benefits. Fo
 
 In the first part of this serie, we setup, our project by installing different Python versions with `pyenv`, setting a local version of Python with `pyenv`, encapsulating it into a virtual environment with `poetry`. Here we show more precisely how to unit test your Python application and how to enforce and validate your Git commit messages. The source code associated with this article is published on [GitHub](https://github.com/adaltas/summarize_dataframe).
 
-This article is the second one from a series of three in which we share our best practices.
+This article is the second one from a series of three in which I share our best practices.
 
 - Part 1: [project initialization with pyenv and poetry](https://fbraza.github.io/BrazLog/python/devops/2021/06/09/modern-python-part1.html)
 - Part 2: [unit testing and commit enforcement](https://fbraza.github.io/BrazLog/python/devops/2021/06/24/modern-python-part2.html)
-- Part 3: CI pipeline with GitHub Actions and publication on PiPy
+- Part 3: [CI pipeline with GitHub Actions and publication on PiPy](https://fbraza.github.io/BrazLog/python/devops/2021/06/29/modern-python-part3.html)
 
 ## Testing our code
 

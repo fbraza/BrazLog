@@ -11,11 +11,12 @@ When learning a programming language, the focus is essentially on understanding 
 
 However, when you need to move towards this step, there is an aspect that one might have underestimated which is how to build the right environment. An environment that enforces good software engineering practices, improves productivity and facilitates collaboration. Packaging and tooling with Python is often described as cumbersome and challenging. In this regard, several open-source projects emerged in the last years and aim at facilitating the management of Python packages along your working projects. We are going to see here how to use two of them: [Pyenv](https://github.com/pyenv/pyenv), to manage and install different Python versions, and [Poetry](https://python-poetry.org/), to manage your packages and virtual environments. Combined or used individually, they help you to establish a productive environment.
 
-This article is the first one from a series of three in which we share some best practices.
+This article is the first one from a series of three in which I share some best practices.
 
 - Part 1: [project initialization with pyenv and poetry](https://fbraza.github.io/BrazLog/python/devops/2021/06/09/modern-python-part1.html)
 - Part 2: [unit testing and commit enforcement](https://fbraza.github.io/BrazLog/python/devops/2021/06/24/modern-python-part2.html)
-- Part 3: CI pipeline with GitHub Actions and publication on PiPy
+- Part 3: [CI pipeline with GitHub Actions and publication on PiPy](https://fbraza.github.io/BrazLog/python/devops/2021/06/29/modern-python-part3.html)
+
 
 ## Pre-requisites
 
