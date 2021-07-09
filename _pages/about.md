@@ -10,7 +10,7 @@ He previously worked during 8 years as a scientist in biology and got hooked by 
 
 He worked as an intern in [**Altran**](https://capgemini-engineering.com/be/en/) for a mission of 8 weeks focused on the development of a computer vision system for the Portuguese national electricity company. The he worked 5 months at [**Adaltas**](https://www.adaltas.com/en/) where he improved his skills in infrastructure with notably the deployment of Hadoop clusters.
 
-He likes working in the Python ecosystem. He has a focus on Data Engineering but likes to touch Data Analysis and Machine Learning. He loves programming languages and is attempting to work his way through Scala and Go ecosystems.
+He likes working in the Python ecosystem. He has a focus on Data Engineering but likes to touch Data Analysis and Machine Learning. He loves programming languages and is attempting to work his way through Scala, Ruby and JavaScript ecosystems.
 
 Contact
 --------
