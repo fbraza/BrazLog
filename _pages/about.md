@@ -6,8 +6,7 @@ permalink: /about/
 
 Faouzi is French. He lived in France, Germany, Portugal and now in Belgium where he works full-time as a Data Engineer consultant at [**Dataroots**](https://dataroots.io/)
 
-He previously worked during 8 years as a scientist in biology and got hooked by the Bioinformaticians' black magic! He decided to
-dive more into the IT and start learning how to program for data 2 years and a half ago. In the process, he got graduated in Data engineering from the [**Data ScienceTech Institute**](https://www.datasciencetech.institute/).
+He previously worked during 8 years as a scientist in biology and got hooked by the Bioinformaticians' black magic! He decided to dive more into the IT and start learning how to program for data 2 years and a half ago. In the process, he got graduated in Data engineering from the [**Data ScienceTech Institute**](https://www.datasciencetech.institute/).
 
 He worked as an intern in [**Altran**](https://capgemini-engineering.com/be/en/) for a mission of 8 weeks focused on the development of a computer vision system for the Portuguese national electricity company. The he worked 5 months at [**Adaltas**](https://www.adaltas.com/en/) where he improved his skills in infrastructure with notably the deployment of Hadoop clusters.
 
