@@ -137,17 +137,17 @@ on:
   - pull_request
 jobs:
   build:
-    runs-on: ${{matrix.platform}}
+    runs-on: PLATFORMS # read the note below
     strategy:
       matrix:
         platform: [ubuntu-latest, macos-latest, windows-latest]
         python-version: [3.7, 3.8, 3.9]
     steps:
     - uses: actions/checkout@v1
-    - name: Set up Python ${{ matrix.python-version }}
+    - name: Set up Python version
       uses: actions/setup-python@v2
       with:
-        python-version: ${{ matrix.python-version }}
+        python-version: PYTHON_VERSIONS # read the note below
     - name: Install dependencies
       run: |
         python -m pip install poetry
@@ -156,6 +156,7 @@ jobs:
       run: poetry run tox
 ```
 
+>Having an issue with templating. So replace the constant as followed: PLATFORMS = ${{matrix.platform}}, PYTHON_VERSIONS = ${{ matrix.python-version }}
 A few words about the different fields:
 
 - **`on`**: this field defines the type of event that is going to trigger the pipeline.
