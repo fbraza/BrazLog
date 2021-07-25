@@ -1,4 +1,5 @@
 ---
+hide: true
 title: Understand Azure Account storage & Azure SQL
 toc: false
 comments: true
@@ -7,7 +8,7 @@ description: An overview of Azure account storage & Azure SQL
 categories: [Cloud, Azure]
 ---
 
-##  The storage account
+## The storage account
 
 A storage account provides a unique namespace in Azure for your data. It supports blobs (including data lake storage Gen2), queue, table store and Azure files. Every object that you store in Azure Storage has an address that includes your globally unique storage account name. For example, the combination of the account name and the Azure Storage blob endpoint forms the base address for the objects in your storage account.
 
@@ -19,7 +20,7 @@ Azure storage is a manged service that provide durable (think redundancy), secur
 
 ### Storage account management
 
-#### Create and access storage account
+#### **Create and access storage account**
 
 You can create storage account on the portal or using de Azure CLI. There are several parameters to control the configuration of the storage account. See below a few of them:
 
@@ -54,7 +55,7 @@ The simplest way to connect with the informations is to use **storage account co
 >
 > The command should return the value of the connection string. Use it to replace `<value>` from your `.env` file.
 
-#### Security 
+#### **Security**
 
 Azure storage provides several tools for security:
 
@@ -65,7 +66,7 @@ Azure storage provides several tools for security:
 
 ##### Encryption in transit
 
-- Always use **HTTPS**. 
+- Always use **HTTPS**.
 
 ##### Cross-origin resource sharing (CORS) support
 
@@ -116,13 +117,13 @@ Additionally Blob storage employs *redundancy options* which define whre and how
 
 Azure Data Lake Storage Gen1 (ADLS Gen1) is an Apache Hadoop file system that is compatible with Hadoop Distributed File System (HDFS) and works with the Hadoop ecosystem. it provides unlimited storage and can store any data in its native format. It uses Azure Active Directory for authentication and access control lists (ACLs) to manage a secure access to the data.
 
-### Azure Data Lake Storage Gen2 (ADLS Gen2) 
+### Azure Data Lake Storage Gen2 (ADLS Gen2)
 
 ADLS Gen2 is dedicated to big data analytics built on top of Azure Blob storage. It's built on by combining both Azure Blob storage and ADLS Gen1 features.  It provides several interesting features as:
 
 - **Hierarchical namespace** with a tree-like organization where objects and files are organized inside directories. Slashes are used in the name to mimic a hierarchical directory structure.
 - **Hadoop-compatible access** namely data is stored as if it was HDFS and is accessible directly from Azure Databricks, Azure HDInsight, and Azure Synapse Analytics.
-- **Security** with both *access controls* and Portable Operating System Interface (POSIX) permissions. ***You can set permissions at the directory or file level*** for data stored within the data lake. 
+- **Security** with both *access controls* and Portable Operating System Interface (POSIX) permissions. ***You can set permissions at the directory or file level*** for data stored within the data lake.
 - **Low cost**
 - **Optimized performance** thank to the Azure Blob Filesystem (ABFS) driver. it is is optimized specifically for big data analytics. Moreover, ADSL Gen2 organizes stored data into a hierarchy of directories and subdirectories, much like a file system.
 - **Data redundancy** ADLS Gen2 ensure data availability using replication models that provide redundancy locally, or at the zone or region levels.

@@ -1,3 +1,7 @@
+---
+hide: true
+---
+
 ## Storage
 
 ## Types of Data
