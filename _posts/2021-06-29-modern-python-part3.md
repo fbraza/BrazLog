@@ -129,7 +129,33 @@ touch .github/workflows/ci.yml
 ```
 
 The content of the `.github/workflows/ci.yml` file is:
-![Github action YAML config]({{ site.baseurl }}/images/2021-06-29-python-part3-ci-gh.png)
+
+```yaml
+name: CI Pipeline for summarize_df
+on:
+  - push
+  - pull_request
+jobs:
+  build:
+    runs-on: ${{matrix.platform}}
+    strategy:
+      matrix:
+        platform: [ubuntu-latest, macos-latest, windows-latest]
+        python-version: [3.7, 3.8, 3.9]
+    steps:
+    - uses: actions/checkout@v1
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: Install dependencies
+      run: |
+        python -m pip install poetry
+        poetry install
+    - name: Test with tox
+      run: poetry run tox
+```
+
 A few words about the different fields:
 
 - **`on`**: this field defines the type of event that is going to trigger the pipeline.
