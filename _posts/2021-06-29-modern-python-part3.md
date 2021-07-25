@@ -130,7 +130,7 @@ touch .github/workflows/ci.yml
 
 The content of the `.github/workflows/ci.yml` file is:
 
-![]({{ site.baseurl }}/images/2021-06-29-python-part3-ci-gh.png)
+![Github action YAML config]({{ site.baseurl }}/images/2021-06-29-python-part3-ci-gh.png)
 
 A few words about the different fields:
 
