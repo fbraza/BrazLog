@@ -129,9 +129,7 @@ touch .github/workflows/ci.yml
 ```
 
 The content of the `.github/workflows/ci.yml` file is:
-
 ![Github action YAML config]({{ site.baseurl }}/images/2021-06-29-python-part3-ci-gh.png)
-
 A few words about the different fields:
 
 - **`on`**: this field defines the type of event that is going to trigger the pipeline.
@@ -184,17 +182,11 @@ git commit -m "build: tox pipeline + github actions CI pipeline"
 ```
 
 Go to your GitHub repository and click on the **Actions** tab:
-
 ![GitHub action]({{ site.baseurl }}/images/2021-06-29-python-part3-gh01.png)
-
 You see all the previous and ongoing pipelines:
-
 ![Workflow runs]({{ site.baseurl }}/images/2021-06-29-python-part3-gh02.png)
-
 Let's click on the ongoing pipeline. The pipeline runs on each OS and for each Python version. Wait a couple of minutes to see the results:
-
 ![Job completed]({{ site.baseurl }}/images/2021-06-29-python-part3-gh03.png)
-
 All the pipelines succeed! We are ready to publish our package on the PyPi registry.
 
 ## Publish packages on PyPi with `poetry`
