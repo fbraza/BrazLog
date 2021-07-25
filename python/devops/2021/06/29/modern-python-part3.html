@@ -215,11 +215,9 @@ ______________________________________________________ summary _________________
 <span class="nb">touch</span> .github/workflows/ci.yml
 </code></pre></div></div>
 
-<p>The content of the <code class="language-plaintext highlighter-rouge">.github/workflows/ci.yml</code> file is:</p>
-
-<p><img src="/BrazLog/images/2021-06-29-python-part3-ci-gh.png" alt="Github action YAML config" /></p>
-
-<p>A few words about the different fields:</p>
+<p>The content of the <code class="language-plaintext highlighter-rouge">.github/workflows/ci.yml</code> file is:
+<img src="/BrazLog/images/2021-06-29-python-part3-ci-gh.png" alt="Github action YAML config" />
+A few words about the different fields:</p>
 
 <ul>
   <li><strong><code class="language-plaintext highlighter-rouge">on</code></strong>: this field defines the type of event that is going to trigger the pipeline.</li>
@@ -275,19 +273,13 @@ git add pyproject.toml tox.ini poetry.lock <span class="sb">`</span>.github/work
 git commit <span class="nt">-m</span> <span class="s2">"build: tox pipeline + github actions CI pipeline"</span>
 </code></pre></div></div>
 
-<p>Go to your GitHub repository and click on the <strong>Actions</strong> tab:</p>
-
-<p><img src="/BrazLog/images/2021-06-29-python-part3-gh01.png" alt="GitHub action" /></p>
-
-<p>You see all the previous and ongoing pipelines:</p>
-
-<p><img src="/BrazLog/images/2021-06-29-python-part3-gh02.png" alt="Workflow runs" /></p>
-
-<p>Let’s click on the ongoing pipeline. The pipeline runs on each OS and for each Python version. Wait a couple of minutes to see the results:</p>
-
-<p><img src="/BrazLog/images/2021-06-29-python-part3-gh03.png" alt="Job completed" /></p>
-
-<p>All the pipelines succeed! We are ready to publish our package on the PyPi registry.</p>
+<p>Go to your GitHub repository and click on the <strong>Actions</strong> tab:
+<img src="/BrazLog/images/2021-06-29-python-part3-gh01.png" alt="GitHub action" />
+You see all the previous and ongoing pipelines:
+<img src="/BrazLog/images/2021-06-29-python-part3-gh02.png" alt="Workflow runs" />
+Let’s click on the ongoing pipeline. The pipeline runs on each OS and for each Python version. Wait a couple of minutes to see the results:
+<img src="/BrazLog/images/2021-06-29-python-part3-gh03.png" alt="Job completed" />
+All the pipelines succeed! We are ready to publish our package on the PyPi registry.</p>
 
 <h2 id="publish-packages-on-pypi-with-poetry">Publish packages on PyPi with <code class="language-plaintext highlighter-rouge">poetry</code></h2>
 
