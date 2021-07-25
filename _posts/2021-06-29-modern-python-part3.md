@@ -156,7 +156,6 @@ jobs:
       run: poetry run tox
 ```
 
->Having an issue with templating. So replace the constant as followed: PLATFORMS = ${{matrix.platform}}, PYTHON_VERSIONS = ${{ matrix.python-version }}
 A few words about the different fields:
 
 - **`on`**: this field defines the type of event that is going to trigger the pipeline.
