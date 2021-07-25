@@ -137,17 +137,17 @@ on:
   - pull_request
 jobs:
   build:
-    runs-on: PLATFORMS # read the note below
+    runs-on: ${{matrix.platform}}
     strategy:
       matrix:
         platform: [ubuntu-latest, macos-latest, windows-latest]
         python-version: [3.7, 3.8, 3.9]
     steps:
     - uses: actions/checkout@v1
-    - name: Set up Python version
+    - name: Set up Python ${{ matrix.python-version }}
       uses: actions/setup-python@v2
       with:
-        python-version: PYTHON_VERSIONS # read the note below
+        python-version: ${{ matrix.python-version }}
     - name: Install dependencies
       run: |
         python -m pip install poetry
