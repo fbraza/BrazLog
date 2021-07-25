@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="twitter:card" content="summary_large_image" /><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Understand Azure Account storage &amp; Azure SQL | Braza Faouzi</title>
+<meta name="generator" content="Jekyll v4.1.1" />
+<meta property="og:title" content="Understand Azure Account storage &amp; Azure SQL" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="An overview of Azure account storage &amp; Azure SQL" />
+<meta property="og:description" content="An overview of Azure account storage &amp; Azure SQL" />
+<link rel="canonical" href="https://fbraza.github.io/BrazLog/cloud/azure/2021/07/22/Azure-data-storages.html" />
+<meta property="og:url" content="https://fbraza.github.io/BrazLog/cloud/azure/2021/07/22/Azure-data-storages.html" />
+<meta property="og:site_name" content="Braza Faouzi" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2021-07-22T00:00:00-05:00" />
+<script type="application/ld+json">
+{"url":"https://fbraza.github.io/BrazLog/cloud/azure/2021/07/22/Azure-data-storages.html","@type":"BlogPosting","headline":"Understand Azure Account storage &amp; Azure SQL","dateModified":"2021-07-22T00:00:00-05:00","datePublished":"2021-07-22T00:00:00-05:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://fbraza.github.io/BrazLog/cloud/azure/2021/07/22/Azure-data-storages.html"},"description":"An overview of Azure account storage &amp; Azure SQL","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/BrazLog/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="https://fbraza.github.io/BrazLog/feed.xml" title="Braza Faouzi" /><link rel="shortcut icon" type="image/x-icon" href="/BrazLog/images/favicon.ico"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Primer/15.2.0/primer.css" integrity="sha512-xTz2ys4coGAOz8vuV1NcQBkgVmKhsSEtjbqyMJbBHRplFuvKIUo6xhLHpAyPt9mfR6twHJgn9OgVLuqOvjeBhg==" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css" integrity="sha512-1PKOgIY59xJ8Co8+NE6FZ+LOAZKjy+KY8iq0G4B3CyeY6wYHN3yt9PW0XpSriVlkMXe40PTKnXrLnZ9+fkDaog==" crossorigin="anonymous" />
+
+<script>
+function wrap_img(fn) {
+    if (document.attachEvent ? document.readyState === "complete" : document.readyState !== "loading") {
+        var elements = document.querySelectorAll(".post img");
+        Array.prototype.forEach.call(elements, function(el, i) {
+            if (el.getAttribute("title") && (el.className != "emoji")) {
+                const caption = document.createElement('figcaption');
+                var node = document.createTextNode(el.getAttribute("title"));
+                caption.appendChild(node);
+                const wrapper = document.createElement('figure');
+                wrapper.className = 'image';
+                el.parentNode.insertBefore(wrapper, el);
+                el.parentNode.removeChild(el);
+                wrapper.appendChild(el);
+                wrapper.appendChild(caption);
+            }
+        });
+    } else { document.addEventListener('DOMContentLoaded', fn); }
+}
+window.onload = wrap_img;
+</script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function(){
+    // add link icon to anchor tags
+    var elem = document.querySelectorAll(".anchor-link")
+    elem.forEach(e => (e.innerHTML = '<i class="fas fa-link fa-xs"></i>'));
+    });
+</script>
+</head>
+<body><header class="site-header">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/BrazLog/">Braza Faouzi</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/BrazLog/about/">About Me</a><a class="page-link" href="/BrazLog/search/">Search</a><a class="page-link" href="/BrazLog/categories/">Tags</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Understand Azure Account storage &amp; Azure SQL</h1><p class="page-description">An overview of Azure account storage & Azure SQL</p><p class="post-meta post-meta-title"><time class="dt-published" datetime="2021-07-22T00:00:00-05:00" itemprop="datePublished">
+        Jul 22, 2021
+      </time>
+       • <span class="read-time" title="Estimated read time">
+    
+    
+      7 min read
+    
+</span></p>
+
+    
+      <p class="category-tags"><i class="fas fa-tags category-tags-icon"></i></i> 
+      
+        <a class="category-tags-link" href="/BrazLog/categories/#Cloud">Cloud</a>
+        &nbsp;
+      
+        <a class="category-tags-link" href="/BrazLog/categories/#Azure">Azure</a>
+        
+      
+      </p>
+    
+
+    </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <h2 id="the-storage-account">The storage account</h2>
+
+<p>A storage account provides a unique namespace in Azure for your data. It supports blobs (including data lake storage Gen2), queue, table store and Azure files. Every object that you store in Azure Storage has an address that includes your globally unique storage account name. For example, the combination of the account name and the Azure Storage blob endpoint forms the base address for the objects in your storage account.</p>
+
+<p><img src="/BrazLog/images/2021-07-27-03-data-storage.png" alt="" /></p>
+
+<p>Azure storage is a manged service that provide durable (think redundancy), secure (think encryption and access control), scalable. Because it is fully managed Microsoft handles maintenance and any critical problems. A single Azure subscription can host up to 200 storage accounts each of them holding up to 500 TB of data.  Azure storage includes four types of data that are accessible via HTTP or HTTPS using SDKs or REST API:</p>
+
+<p><img src="/BrazLog/images/2021-07-27-04-data-storage.png" alt="" /></p>
+
+<h3 id="storage-account-management">Storage account management</h3>
+
+<h4 id="create-and-access-storage-account">Create and access storage account</h4>
+
+<p>You can create storage account on the portal or using de Azure CLI. There are several parameters to control the configuration of the storage account. See below a few of them:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: left">Option</th>
+      <th style="text-align: left">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: left"><code class="language-plaintext highlighter-rouge">--name</code></td>
+      <td style="text-align: left">A <strong>storage account name</strong>.  Unique across all existing storage account names in Azure. It must be 3 to 24 characters long and can contain only lowercase letters and numbers.</td>
+    </tr>
+    <tr>
+      <td style="text-align: left"><code class="language-plaintext highlighter-rouge">--resource-group</code></td>
+      <td style="text-align: left">Use <strong>your_resources_group_name</strong> to place the storage account.</td>
+    </tr>
+    <tr>
+      <td style="text-align: left"><code class="language-plaintext highlighter-rouge">--location</code></td>
+      <td style="text-align: left">Select a location near you (see below). If not specified the storage account will be created in the same location as your resource group.</td>
+    </tr>
+    <tr>
+      <td style="text-align: left"><code class="language-plaintext highlighter-rouge">--sku</code></td>
+      <td style="text-align: left">This decides the storage account performance and replication model. Options include <code class="language-plaintext highlighter-rouge">Premium_LRS</code>, <code class="language-plaintext highlighter-rouge">Standard_GRS</code>, <code class="language-plaintext highlighter-rouge">Standard_LRS</code>, <code class="language-plaintext highlighter-rouge">Standard_RAGRS</code>, and <code class="language-plaintext highlighter-rouge">Standard_ZRS</code>.</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>To access the services from a storage account you make call through a REST API or use the different SDKs available in several programming languages. Once you have your corresponding library / SDK available you are ready to connect to your storage account. For that you need two things:</p>
+
+<ul>
+  <li>Access key: you have two keys by storage account to rotate them for security</li>
+  <li>REST API endpoint: see the figure about storage service and endpoint above.</li>
+</ul>
+
+<p>The simplest way to connect with the informations is to use <strong>storage account connection strings</strong>. A connection string provides all needed connectivity information in a single text string. <strong>BUT BE CAREFUL</strong> do not put the sensitive information as a plain text. Rather store connectivity information in a Database, environment variable or configuration file (if <code class="language-plaintext highlighter-rouge">config</code> file do not track it with your version control service). You can also use <em>shared access signatures</em> to give an fine-grained access (time-limited, can restrict permissions).</p>
+
+<blockquote>
+  <p>For an <code class="language-plaintext highlighter-rouge">.env</code> file, create it and add the following variable:</p>
+
+  <div class="language-text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>AZURE_STORAGE_CONNECTION_STRING=&lt;value&gt;
+</code></pre></div>  </div>
+
+  <p>Then use the Azure CLI do generate the connection string:</p>
+
+  <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>az storage account show-connection-string <span class="se">\</span>
+  <span class="nt">--resource-group</span> learn-009f04cb-07c8-4c8c-a4d4-17e24253a448 <span class="se">\</span>
+  <span class="nt">--query</span> connectionString <span class="se">\</span>
+  <span class="nt">--name</span> &lt;name&gt;
+</code></pre></div>  </div>
+
+  <p>The command should return the value of the connection string. Use it to replace <code class="language-plaintext highlighter-rouge">&lt;value&gt;</code> from your <code class="language-plaintext highlighter-rouge">.env</code> file.</p>
+</blockquote>
+
+<h4 id="security">Security</h4>
+
+<p>Azure storage provides several tools for security:</p>
+
+<h5 id="encryption-at-rest">Encryption at rest</h5>
+
+<ul>
+  <li>Storage Service Encryption (SSE) with a 256-AES cipher. SSE automatically encrypts data when writing to Azure Storage. Deryption happens automatically when reading data (SSE is included here and not charged for storage)</li>
+  <li>for VMs, you can encrypt the virtual hard disks with Azure Disk Encryption. Keys are stored in Azure key Vault that manage disk encryption keys and secrets</li>
+</ul>
+
+<h5 id="encryption-in-transit">Encryption in transit</h5>
+
+<ul>
+  <li>Always use <strong>HTTPS</strong>.</li>
+</ul>
+
+<h5 id="cross-origin-resource-sharing-cors-support">Cross-origin resource sharing (CORS) support</h5>
+
+<ul>
+  <li>CORS uses the HTTP headers so that web application from one domain can access resources from a server at a different domain. With CORS web apps ensure that only authorized content is loaded. CORS is an option you can enable on Storage accounts.</li>
+</ul>
+
+<h5 id="role-based-access-control-rbac">Role-based access control (RBAC)</h5>
+
+<ul>
+  <li>Azure storage supports Azure Active Directory (think kerberos) and RBAC for resources management and data operations to ensure that the client has the right permissions to access the data.</li>
+  <li>RBAC can be scoped at the subscription, resource group, storage account or individual container or queue level</li>
+</ul>
+
+<h5 id="storage-account-keys">Storage account keys</h5>
+
+<p><img src="/home/fbraza/Documents/BLOG/BrazLog/images/2021-07-27-05-data-storage.png" alt="" /></p>
+
+<ul>
+  <li>Two keys by storage account.</li>
+  <li>Possibility to rotate your keys.</li>
+  <li><em>Do not share storage account keys with external third-party applications</em></li>
+</ul>
+
+<h5 id="shared-access-signature-sas">Shared access signature (SAS)</h5>
+
+<ul>
+  <li>As a best practice, use SAS for external third-party clients.</li>
+  <li>A SAS is a string that contains a security token that can be attached to a URI.</li>
+  <li>Two types of SAS: <em>service-level</em> (read access a specific resource) &amp; <em>account-level</em> (more permissions like creating files)</li>
+</ul>
+
+<h5 id="azure-defender-for-storage">Azure defender for Storage</h5>
+
+<ul>
+  <li>It detects unusual and potentially harmful attempts to access or exploit storage accounts</li>
+  <li>Azure Defender for Storage is currently available for Blob storage, Azure Files, and Azure Data Lake Storage Gen2.</li>
+</ul>
+
+<h3 id="azure-blob-storage">Azure Blob storage</h3>
+
+<p>In Blob storage, every blob lives inside a <em>blob container</em>. You can store an unlimited number of blobs in a container and an unlimited number of containers in a storage account. Containers are “flat” — they can only store blobs, not other containers.</p>
+
+<p>Blob storage provides several options for accessing data based on their usage. These options are called <em>access tier</em>:</p>
+
+<ul>
+  <li><em>Hot access tier</em> that is optimized for frequent access in the storage account and is the default option</li>
+  <li><em>Cool access tier</em> optimized for large amount of data accessed infrequently and <strong>stored at least 30 days</strong>. Accessing data with cool access tier can be more expensive.</li>
+  <li>Archive access tier that is only available for block blobs and is optimized for use case where retrieving data may take several hours (high latency). Data needs to be <strong>stored at least 180 days</strong>.</li>
+</ul>
+
+<p>Additionally Blob storage employs <em>redundancy options</em> which define whre and how data is replicated:</p>
+
+<ul>
+  <li><em>Locally redundant storage (LRS)</em> Data is copied synchronously three times within the primary region.</li>
+  <li><em>Zone-redundant storage (ZRS)</em> Data is copied synchronously across three Azure availability zones in the primary region.</li>
+  <li><em>Geo-redundant storage (GRS)</em> Data is copied synchronously three times in the primary region, then copied to the secondary region. To access data in the secondary region, the read-access geo-redundant storage (RA-GRS) option must be enabled.</li>
+  <li><em>Geo-zone-redundant storage (GZRS)</em> Data is copied synchronously across three Azure availability zones in the primary region, then copied asynchronously to the secondary region. The RA-GRS option must be enabled to access data in the secondary region.</li>
+</ul>
+
+<h3 id="azure-data-lake-storage-gen1">Azure Data Lake Storage Gen1</h3>
+
+<p>Azure Data Lake Storage Gen1 (ADLS Gen1) is an Apache Hadoop file system that is compatible with Hadoop Distributed File System (HDFS) and works with the Hadoop ecosystem. it provides unlimited storage and can store any data in its native format. It uses Azure Active Directory for authentication and access control lists (ACLs) to manage a secure access to the data.</p>
+
+<h3 id="azure-data-lake-storage-gen2-adls-gen2">Azure Data Lake Storage Gen2 (ADLS Gen2)</h3>
+
+<p>ADLS Gen2 is dedicated to big data analytics built on top of Azure Blob storage. It’s built on by combining both Azure Blob storage and ADLS Gen1 features.  It provides several interesting features as:</p>
+
+<ul>
+  <li><strong>Hierarchical namespace</strong> with a tree-like organization where objects and files are organized inside directories. Slashes are used in the name to mimic a hierarchical directory structure.</li>
+  <li><strong>Hadoop-compatible access</strong> namely data is stored as if it was HDFS and is accessible directly from Azure Databricks, Azure HDInsight, and Azure Synapse Analytics.</li>
+  <li><strong>Security</strong> with both <em>access controls</em> and Portable Operating System Interface (POSIX) permissions. <strong><em>You can set permissions at the directory or file level</em></strong> for data stored within the data lake.</li>
+  <li><strong>Low cost</strong></li>
+  <li><strong>Optimized performance</strong> thank to the Azure Blob Filesystem (ABFS) driver. it is is optimized specifically for big data analytics. Moreover, ADSL Gen2 organizes stored data into a hierarchy of directories and subdirectories, much like a file system.</li>
+  <li><strong>Data redundancy</strong> ADLS Gen2 ensure data availability using replication models that provide redundancy locally, or at the zone or region levels.</li>
+</ul>
+
+<h2 id="azure-sql">Azure SQL</h2>
+
+<p>There are three main deployment options and choices that can fit your need if you want to deal with Azure SQL services: deploy SQL Server on Azure VMs, deploy SQL managed instances or deploy SQL databases.</p>
+
+<p><img src="/BrazLog/images/2021-07-27-06-data-storage.png" alt="" /></p>
+
+<h3 id="sql-server-on-azure-virtual-machines">SQL Server on Azure Virtual Machines</h3>
+
+<p>It is a version of SQL server running in a Azure VM. It’s basically just SQL Server. This is an Infrastructure as a service (IaaS) with which you need to update and patch both OS and SQL server yourself.</p>
+
+  </div><!-- from https://github.com/utterance/utterances -->
+<script src="https://utteranc.es/client.js"
+        repo="fbraza/BrazLog"
+        issue-term="title"
+        label="blogpost-comment"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+</script><a class="u-url" href="/BrazLog/cloud/azure/2021/07/22/Azure-data-storages.html" hidden></a>
+</article>
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/BrazLog/"></data>
+
+  <div class="wrapper">
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col">
+        <p class="feed-subscribe">
+          <a href="/BrazLog/feed.xml">
+            <svg class="svg-icon orange">
+              <use xlink:href="/BrazLog/assets/minima-social-icons.svg#rss"></use>
+            </svg><span>Subscribe</span>
+          </a>
+        </p>
+      </div>
+      <div class="footer-col">
+        <p>Python · Scala · BigData · System Design · Data Engineering</p>
+      </div>
+    </div>
+
+    <div class="social-links"><ul class="social-media-list"><li><a rel="me" href="https://github.com/fbraza" title="fbraza"><svg class="svg-icon grey"><use xlink:href="/BrazLog/assets/minima-social-icons.svg#github"></use></svg></a></li><li><a rel="me" href="https://twitter.com/%40braza_faouzi" title="@braza_faouzi"><svg class="svg-icon grey"><use xlink:href="/BrazLog/assets/minima-social-icons.svg#twitter"></use></svg></a></li></ul>
+</div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>

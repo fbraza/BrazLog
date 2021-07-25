@@ -217,33 +217,7 @@ ______________________________________________________ summary _________________
 
 <p>The content of the <code class="language-plaintext highlighter-rouge">.github/workflows/ci.yml</code> file is:</p>
 
-<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">name</span><span class="pi">:</span> <span class="s">CI Pipeline for summarize_df</span>
-
-<span class="na">on</span><span class="pi">:</span>
-  <span class="pi">-</span> <span class="s">push</span>
-  <span class="pi">-</span> <span class="s">pull_request</span>
-
-<span class="na">jobs</span><span class="pi">:</span>
-  <span class="na">build</span><span class="pi">:</span>
-    <span class="na">runs-on</span><span class="pi">:</span> <span class="s">$</span>
-    <span class="na">strategy</span><span class="pi">:</span>
-      <span class="na">matrix</span><span class="pi">:</span>
-        <span class="na">platform</span><span class="pi">:</span> <span class="pi">[</span><span class="nv">ubuntu-latest</span><span class="pi">,</span> <span class="nv">macos-latest</span><span class="pi">,</span> <span class="nv">windows-latest</span><span class="pi">]</span>
-        <span class="na">python-version</span><span class="pi">:</span> <span class="pi">[</span><span class="nv">3.7</span><span class="pi">,</span> <span class="nv">3.8</span><span class="pi">,</span> <span class="nv">3.9</span><span class="pi">]</span>
-
-    <span class="na">steps</span><span class="pi">:</span>
-    <span class="pi">-</span> <span class="na">uses</span><span class="pi">:</span> <span class="s">actions/checkout@v1</span>
-    <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Set up Python $</span>
-      <span class="na">uses</span><span class="pi">:</span> <span class="s">actions/setup-python@v2</span>
-      <span class="na">with</span><span class="pi">:</span>
-        <span class="na">python-version</span><span class="pi">:</span> <span class="s">$</span>
-    <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Install dependencies</span>
-      <span class="na">run</span><span class="pi">:</span> <span class="pi">|</span>
-        <span class="s">python -m pip install poetry</span>
-        <span class="s">poetry install</span>
-    <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Test with tox</span>
-      <span class="na">run</span><span class="pi">:</span> <span class="s">poetry run tox</span>
-</code></pre></div></div>
+<p><img src="/BrazLog/images/2021-06-29-python-part3-ci-gh" alt="" /></p>
 
 <p>A few words about the different fields:</p>
 
@@ -252,7 +226,7 @@ ______________________________________________________ summary _________________
   <li><strong><code class="language-plaintext highlighter-rouge">jobs</code></strong>: this field defines the multiple steps of your pipeline. They run in an instance of a virtual environment.</li>
   <li><strong><code class="language-plaintext highlighter-rouge">build</code></strong>: this is where all the magic happens:
     <ul>
-      <li>The <code class="language-plaintext highlighter-rouge">strategy.matrix.platform</code> field defines the different OS you want to use to test your package. Use templating to pass these values to the <code class="language-plaintext highlighter-rouge">build.runs-on</code> field (<code class="language-plaintext highlighter-rouge">$</code>) .</li>
+      <li>The <code class="language-plaintext highlighter-rouge">strategy.matrix.platform</code> field defines the different OS you want to use to test your package. Use templating to pass these values to the <code class="language-plaintext highlighter-rouge">build.runs-on</code> field (<code class="language-plaintext highlighter-rouge">$</code>).</li>
       <li>The <code class="language-plaintext highlighter-rouge">strategy.matrix.python-version</code> field defines the different versions of Python you want to use to test your package.</li>
       <li>The <code class="language-plaintext highlighter-rouge">steps</code> field permits you to specify which actions you use (<code class="language-plaintext highlighter-rouge">steps.uses</code>) and which command you want to run (<code class="language-plaintext highlighter-rouge">steps.run</code>)</li>
     </ul>
@@ -269,6 +243,10 @@ ______________________________________________________ summary _________________
 
 <span class="nn">[...]</span>
 </code></pre></div></div>
+
+<blockquote>
+  <p>Having several python version defined in your <code class="language-plaintext highlighter-rouge">tox.ini</code> file causes issue with your local testing. Running the <code class="language-plaintext highlighter-rouge">tox</code> raises an error because of lacking python versions. If you still want to test you module locally just use the <code class="language-plaintext highlighter-rouge">tox -e py</code> command.</p>
+</blockquote>
 
 <div class="language-toml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># content of: pyproject.toml</span>
 <span class="nn">[...]</span>
@@ -299,15 +277,15 @@ git commit <span class="nt">-m</span> <span class="s2">"build: tox pipeline + gi
 
 <p>Go to your GitHub repository and click on the <strong>Actions</strong> tab:</p>
 
-<p><img src="/BrazLog/images/gh01.png" alt="GitHub action" /></p>
+<p><img src="/BrazLog/images/2021-06-29-python-part3-gh01.png" alt="GitHub action" /></p>
 
 <p>You see all the previous and ongoing pipelines:</p>
 
-<p><img src="/BrazLog/images/gh02.png" alt="Workflow runs" /></p>
+<p><img src="/BrazLog/images/2021-06-29-python-part3-gh02.png" alt="Workflow runs" /></p>
 
 <p>Let’s click on the ongoing pipeline. The pipeline runs on each OS and for each Python version. Wait a couple of minutes to see the results:</p>
 
-<p><img src="/BrazLog/images/gh03.png" alt="Job completed" /></p>
+<p><img src="/BrazLog/images/2021-06-29-python-part3-gh03.png" alt="Job completed" /></p>
 
 <p>All the pipelines succeed! We are ready to publish our package on the PyPi registry.</p>
 
@@ -385,7 +363,7 @@ Publishing summarize_dataframe <span class="o">(</span>0.1.0<span class="o">)</s
 
 <p>The package is now online and shared with the community.</p>
 
-<p><img src="/BrazLog/images/gh04.png" alt="Project publication on PyPi" /></p>
+<p><img src="/BrazLog/images/2021-06-29-python-part3-gh04.png" alt="Project publication on PyPi" /></p>
 
 <h2 id="conclusion">Conclusion</h2>
 
