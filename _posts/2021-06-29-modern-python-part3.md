@@ -130,42 +130,15 @@ touch .github/workflows/ci.yml
 
 The content of the `.github/workflows/ci.yml` file is:
 
-```yaml
-name: CI Pipeline for summarize_df
-
-on:
-  - push
-  - pull_request
-
-jobs:
-  build:
-    runs-on: ${{matrix.platform}}
-    strategy:
-      matrix:
-        platform: [ubuntu-latest, macos-latest, windows-latest]
-        python-version: [3.7, 3.8, 3.9]
-
-    steps:
-    - uses: actions/checkout@v1
-    - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v2
-      with:
-        python-version: ${{ matrix.python-version }}
-    - name: Install dependencies
-      run: |
-        python -m pip install poetry
-        poetry install
-    - name: Test with tox
-      run: poetry run tox
-```
+![]({{ site.baseurl }}/images/2021-06-29-python-part3-ci-gh)
 
 A few words about the different fields:
 
 - **`on`**: this field defines the type of event that is going to trigger the pipeline.
 - **`jobs`**: this field defines the multiple steps of your pipeline. They run in an instance of a virtual environment.
 - **`build`**: this is where all the magic happens:
-  - The `strategy.matrix.platform` field defines the different OS you want to use to test your package. Use templating to pass these values to the `build.runs-on` field (`${{matrix.platform}}`) .
-  -  The `strategy.matrix.python-version` field defines the different versions of Python you want to use to test your package.
+  - The `strategy.matrix.platform` field defines the different OS you want to use to test your package. Use templating to pass these values to the `build.runs-on` field (`${{matrix.platform}}`).
+  - The `strategy.matrix.python-version` field defines the different versions of Python you want to use to test your package.
   - The `steps` field permits you to specify which actions you use (`steps.uses`) and which command you want to run (`steps.run`)
 
 Before finishing, alter the `tox.ini` and `pyporject.toml` files accordingly. Initially we chose the `3.8` Python version for `tox`. But we want it to be compatible with  `3.7` and `3.9`. For the `pyproject.toml` file, choose a version expected to be compatible with your package. Here we choose to make our package compatible from `3.7.1` and above. Below are the changes added to our files:
@@ -179,6 +152,8 @@ skip_missing_interpreters = true
 
 [...]
 ```
+
+>Having several python version defined in your `tox.ini` file causes issue with your local testing. Running the `tox` raises an error because of lacking python versions. If you still want to test you module locally just use the `tox -e py` command.
 
 ```toml
 # content of: pyproject.toml
@@ -210,15 +185,15 @@ git commit -m "build: tox pipeline + github actions CI pipeline"
 
 Go to your GitHub repository and click on the **Actions** tab:
 
-![GitHub action]({{ site.baseurl }}/images/gh01.png)
+![GitHub action]({{ site.baseurl }}/images/2021-06-29-python-part3-gh01.png)
 
 You see all the previous and ongoing pipelines:
 
-![Workflow runs]({{ site.baseurl }}/images/gh02.png)
+![Workflow runs]({{ site.baseurl }}/images/2021-06-29-python-part3-gh02.png)
 
 Let's click on the ongoing pipeline. The pipeline runs on each OS and for each Python version. Wait a couple of minutes to see the results:
 
-![Job completed]({{ site.baseurl }}/images/gh03.png)
+![Job completed]({{ site.baseurl }}/images/2021-06-29-python-part3-gh03.png)
 
 All the pipelines succeed! We are ready to publish our package on the PyPi registry.
 
@@ -300,7 +275,7 @@ Publishing summarize_dataframe (0.1.0) to PyPI
 
 The package is now online and shared with the community.
 
-![Project publication on PyPi]({{ site.baseurl }}/images/gh04.png)
+![Project publication on PyPi]({{ site.baseurl }}/images/2021-06-29-python-part3-gh04.png)
 
 ## Conclusion
 
