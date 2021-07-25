@@ -215,9 +215,37 @@ ______________________________________________________ summary _________________
 <span class="nb">touch</span> .github/workflows/ci.yml
 </code></pre></div></div>
 
-<p>The content of the <code class="language-plaintext highlighter-rouge">.github/workflows/ci.yml</code> file is:
-<img src="/BrazLog/images/2021-06-29-python-part3-ci-gh.png" alt="Github action YAML config" />
+<p>The content of the <code class="language-plaintext highlighter-rouge">.github/workflows/ci.yml</code> file is:</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">name</span><span class="pi">:</span> <span class="s">CI Pipeline for summarize_df</span>
+<span class="na">on</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="s">push</span>
+  <span class="pi">-</span> <span class="s">pull_request</span>
+<span class="na">jobs</span><span class="pi">:</span>
+  <span class="na">build</span><span class="pi">:</span>
+    <span class="na">runs-on</span><span class="pi">:</span> <span class="s">PLATFORMS</span> <span class="c1"># read the note below</span>
+    <span class="na">strategy</span><span class="pi">:</span>
+      <span class="na">matrix</span><span class="pi">:</span>
+        <span class="na">platform</span><span class="pi">:</span> <span class="pi">[</span><span class="nv">ubuntu-latest</span><span class="pi">,</span> <span class="nv">macos-latest</span><span class="pi">,</span> <span class="nv">windows-latest</span><span class="pi">]</span>
+        <span class="na">python-version</span><span class="pi">:</span> <span class="pi">[</span><span class="nv">3.7</span><span class="pi">,</span> <span class="nv">3.8</span><span class="pi">,</span> <span class="nv">3.9</span><span class="pi">]</span>
+    <span class="na">steps</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="na">uses</span><span class="pi">:</span> <span class="s">actions/checkout@v1</span>
+    <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Set up Python version</span>
+      <span class="na">uses</span><span class="pi">:</span> <span class="s">actions/setup-python@v2</span>
+      <span class="na">with</span><span class="pi">:</span>
+        <span class="na">python-version</span><span class="pi">:</span> <span class="s">PYTHON_VERSIONS</span> <span class="c1"># read the note below</span>
+    <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Install dependencies</span>
+      <span class="na">run</span><span class="pi">:</span> <span class="pi">|</span>
+        <span class="s">python -m pip install poetry</span>
+        <span class="s">poetry install</span>
+    <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Test with tox</span>
+      <span class="na">run</span><span class="pi">:</span> <span class="s">poetry run tox</span>
+</code></pre></div></div>
+
+<blockquote>
+  <p>Having an issue with templating. So replace the constant as followed: PLATFORMS = $, PYTHON_VERSIONS = $
 A few words about the different fields:</p>
+</blockquote>
 
 <ul>
   <li><strong><code class="language-plaintext highlighter-rouge">on</code></strong>: this field defines the type of event that is going to trigger the pipeline.</li>
