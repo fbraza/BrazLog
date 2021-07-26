@@ -77,7 +77,7 @@ window.onload = wrap_img;
        • <span class="read-time" title="Estimated read time">
     
     
-      7 min read
+      10 min read
     
 </span></p>
 
@@ -98,11 +98,11 @@ window.onload = wrap_img;
   <div class="post-content e-content" itemprop="articleBody">
     <h2 id="the-storage-account">The storage account</h2>
 
-<p>A storage account provides a unique namespace in Azure for your data. It supports blobs (including data lake storage Gen2), queue, table store and Azure files. Every object that you store in Azure Storage has an address that includes your globally unique storage account name. For example, the combination of the account name and the Azure Storage blob endpoint forms the base address for the objects in your storage account.</p>
+<p>A storage account provides a unique namespace in Azure for your data. It supports blobs (including data lake storage Gen2), queue, table store and Azure files. Each object that you store in Azure Storage has an address that includes your <strong>globally unique</strong> storage account name. For example, the combination of the account name and the Azure Storage blob endpoint forms the base address for the objects in your storage account.</p>
 
 <p><img src="/BrazLog/images/2021-07-27-03-data-storage.png" alt="" /></p>
 
-<p>Azure storage is a manged service that provide durable (think redundancy), secure (think encryption and access control), scalable. Because it is fully managed Microsoft handles maintenance and any critical problems. A single Azure subscription can host up to 200 storage accounts each of them holding up to 500 TB of data.  Azure storage includes four types of data that are accessible via HTTP or HTTPS using SDKs or REST API:</p>
+<p>Azure storage is a manged service that provides durable (<em>think redundancy</em>), secure (<em>think encryption and access control</em>), scalable storage. Because it is fully managed, Microsoft handles maintenance and any critical problems. A single Azure subscription can host <strong>up to 200</strong> storage accounts each of them holding up to <strong>500 TB</strong> of data.  Azure storage includes four types of data stores that are accessible via <code class="language-plaintext highlighter-rouge">HTTP</code> or <code class="language-plaintext highlighter-rouge">HTTPS</code> using SDKs or REST API:</p>
 
 <p><img src="/BrazLog/images/2021-07-27-04-data-storage.png" alt="" /></p>
 
@@ -110,7 +110,7 @@ window.onload = wrap_img;
 
 <h4 id="create-and-access-storage-account"><strong>Create and access storage account</strong></h4>
 
-<p>You can create storage account on the portal or using de Azure CLI. There are several parameters to control the configuration of the storage account. See below a few of them:</p>
+<p>You create storage account on the portal or using Azure CLI. There are several parameters to control the configuration of the storage account with the CLI app. See below a few of them:</p>
 
 <table>
   <thead>
@@ -139,14 +139,14 @@ window.onload = wrap_img;
   </tbody>
 </table>
 
-<p>To access the services from a storage account you make call through a REST API or use the different SDKs available in several programming languages. Once you have your corresponding library / SDK available you are ready to connect to your storage account. For that you need two things:</p>
+<p>To access the services from a storage account you make call through a REST API or use the different SDKs available in several programming languages. Once you have your corresponding library / SDK available, you are ready to connect to your storage account. For that you need two things:</p>
 
 <ul>
-  <li>Access key: you have two keys by storage account to rotate them for security</li>
-  <li>REST API endpoint: see the figure about storage service and endpoint above.</li>
+  <li><strong>An Access key</strong>: you have two keys by storage account to rotate them for security</li>
+  <li><strong>A REST API endpoint</strong>: see the table above for the different type of endpoints.</li>
 </ul>
 
-<p>The simplest way to connect with the informations is to use <strong>storage account connection strings</strong>. A connection string provides all needed connectivity information in a single text string. <strong>BUT BE CAREFUL</strong> do not put the sensitive information as a plain text. Rather store connectivity information in a Database, environment variable or configuration file (if <code class="language-plaintext highlighter-rouge">config</code> file do not track it with your version control service). You can also use <em>shared access signatures</em> to give an fine-grained access (time-limited, can restrict permissions).</p>
+<p>The simplest way to connect with the informations, is to use <strong>storage account connection strings</strong>. A connection string provides all needed connectivity information in a single text string. <strong>BUT BE CAREFUL</strong>, do not put the sensitive information as a plain text. Instead, store connectivity information in a Database, environment variable or configuration file (if <code class="language-plaintext highlighter-rouge">config</code> file do not track it with your version control service). You can also use <em>shared access signatures</em> to give an fine-grained access (time-limited, can restrict permissions).</p>
 
 <blockquote>
   <p>For an <code class="language-plaintext highlighter-rouge">.env</code> file, create it and add the following variable:</p>
@@ -169,56 +169,21 @@ window.onload = wrap_img;
 
 <p>Azure storage provides several tools for security:</p>
 
-<h5 id="encryption-at-rest">Encryption at rest</h5>
+<p><strong>Encryption at rest:</strong> A Storage Service Encryption (SSE) with a 256-AES cipher is used. SSE automatically encrypts data when writing to Azure Storage. Decryption happens automatically when reading data (SSE is included here and not charged for storage). For VMs, you can encrypt the virtual hard disks with Azure Disk Encryption. Keys are stored in Azure key Vault that manages disk encryption keys and secrets.</p>
 
-<ul>
-  <li>Storage Service Encryption (SSE) with a 256-AES cipher. SSE automatically encrypts data when writing to Azure Storage. Deryption happens automatically when reading data (SSE is included here and not charged for storage)</li>
-  <li>for VMs, you can encrypt the virtual hard disks with Azure Disk Encryption. Keys are stored in Azure key Vault that manage disk encryption keys and secrets</li>
-</ul>
+<p><strong>Encryption in transit:</strong> One rule here: Always use <strong>HTTPS</strong>!</p>
 
-<h5 id="encryption-in-transit">Encryption in transit</h5>
+<p><strong>Cross-origin resource sharing (CORS):</strong> support CORS uses the HTTP headers so that web application from one domain can access resources from a server at a different domain. With CORS web apps ensure that only authorized content is loaded. CORS is an option you can enable on Storage accounts.</p>
 
-<ul>
-  <li>Always use <strong>HTTPS</strong>.</li>
-</ul>
+<p><strong>Role-based access control (RBAC)</strong>: Azure storage supports Azure Active Directory (think kerberos) and RBAC for resources management and data operations to ensure that the client has the right permissions to access the data. RBAC can be scoped at the subscription, resource group, storage account or individual container or queue level.</p>
 
-<h5 id="cross-origin-resource-sharing-cors-support">Cross-origin resource sharing (CORS) support</h5>
-
-<ul>
-  <li>CORS uses the HTTP headers so that web application from one domain can access resources from a server at a different domain. With CORS web apps ensure that only authorized content is loaded. CORS is an option you can enable on Storage accounts.</li>
-</ul>
-
-<h5 id="role-based-access-control-rbac">Role-based access control (RBAC)</h5>
-
-<ul>
-  <li>Azure storage supports Azure Active Directory (think kerberos) and RBAC for resources management and data operations to ensure that the client has the right permissions to access the data.</li>
-  <li>RBAC can be scoped at the subscription, resource group, storage account or individual container or queue level</li>
-</ul>
-
-<h5 id="storage-account-keys">Storage account keys</h5>
+<p><strong>Storage account keys:</strong> We have ywo keys by storage account and the possibility to rotate them. <em>Do not share storage account keys with external third-party applications</em>.</p>
 
 <p><img src="/home/fbraza/Documents/BLOG/BrazLog/images/2021-07-27-05-data-storage.png" alt="" /></p>
 
-<ul>
-  <li>Two keys by storage account.</li>
-  <li>Possibility to rotate your keys.</li>
-  <li><em>Do not share storage account keys with external third-party applications</em></li>
-</ul>
+<p><strong>Shared access signature (SAS):</strong> As a best practice, use SAS for external third-party clients. A SAS is a string that contains a security token that can be attached to a URI. Two types of SAS: <em>service-level</em> (read access a specific resource) &amp; <em>account-level</em> (more permissions like creating files).</p>
 
-<h5 id="shared-access-signature-sas">Shared access signature (SAS)</h5>
-
-<ul>
-  <li>As a best practice, use SAS for external third-party clients.</li>
-  <li>A SAS is a string that contains a security token that can be attached to a URI.</li>
-  <li>Two types of SAS: <em>service-level</em> (read access a specific resource) &amp; <em>account-level</em> (more permissions like creating files)</li>
-</ul>
-
-<h5 id="azure-defender-for-storage">Azure defender for Storage</h5>
-
-<ul>
-  <li>It detects unusual and potentially harmful attempts to access or exploit storage accounts</li>
-  <li>Azure Defender for Storage is currently available for Blob storage, Azure Files, and Azure Data Lake Storage Gen2.</li>
-</ul>
+<p><strong>Azure defender for Storage:</strong> It detects unusual and potentially harmful attempts to access or exploit storage accounts. Azure Defender for Storage is currently available for Blob storage, Azure Files, and Azure Data Lake Storage Gen2.</p>
 
 <h3 id="azure-blob-storage">Azure Blob storage</h3>
 
@@ -232,7 +197,7 @@ window.onload = wrap_img;
   <li>Archive access tier that is only available for block blobs and is optimized for use case where retrieving data may take several hours (high latency). Data needs to be <strong>stored at least 180 days</strong>.</li>
 </ul>
 
-<p>Additionally Blob storage employs <em>redundancy options</em> which define whre and how data is replicated:</p>
+<p>Additionally Blob storage employs <em>redundancy options</em> which define where and how data is replicated:</p>
 
 <ul>
   <li><em>Locally redundant storage (LRS)</em> Data is copied synchronously three times within the primary region.</li>
@@ -266,7 +231,88 @@ window.onload = wrap_img;
 
 <h3 id="sql-server-on-azure-virtual-machines">SQL Server on Azure Virtual Machines</h3>
 
-<p>It is a version of SQL server running in a Azure VM. It’s basically just SQL Server. This is an Infrastructure as a service (IaaS) with which you need to update and patch both OS and SQL server yourself.</p>
+<p>It is a version of SQL server running in a Azure VM. It’s basically just SQL Server. This is an Infrastructure as a service (IaaS) with which you need to update and patch both OS and SQL server yourself. If your use case need such deployment here a few things to consider that we gather in the methodology column in the table below:</p>
+
+<p><img src="/BrazLog/images/2021-07-27-07-data-storage.png" alt="" /></p>
+
+<h3 id="sql-managed-instance--sql-database">SQL managed instance &amp; SQL database</h3>
+
+<p>They are considered as Platform as a Service (PaaS) deployments. These options propose a fully manage engine that automates most of the database management tasks (upgrades, patches, backups and monitoring). Both have a set of common features but have distinct use cases. Notably use the managed instances if you want to have access to some specific services withing your DB (Machine learning services for example). Additionally, you can specify if you want a single instance or several.</p>
+
+<p><img src="/BrazLog/images/2021-07-27-08-data-storage.png" alt="" /></p>
+
+<h3 id="purchasing-models-service-tiers-and-hardware-choices">Purchasing models, service tiers, and hardware choices</h3>
+
+<h4 id="purchasing-model">Purchasing model</h4>
+
+<p>The purchasing model had two options:</p>
+
+<ul>
+  <li>
+    <p>Based on virtual cores (vCore-based)</p>
+  </li>
+  <li>
+    <p>Based on database transaction units (DTU-based)</p>
+
+    <blockquote>
+      <p><strong><em>DTU is not available for managed instance</em></strong></p>
+    </blockquote>
+  </li>
+</ul>
+
+<p>Microsoft recomends using the <strong>vCore-based</strong> model because it allows to <strong>independently</strong> select compute and storage resources. You pay for compute resources, type and amount of data and log storage, backup storage locaiton (RA-GRS, ZRS or LRS). We focus on the vCore model for the next sections.</p>
+
+<h4 id="service-tier">Service tier</h4>
+
+<p>You choose service tier for performance and availability. It is recommended to start with <strong>General Purpose</strong> and adjust later based on your need. The specific features for each service tiers are show below.</p>
+
+<p><img src="/BrazLog/images/2021-07-27-09-data-storage.png" alt="" /></p>
+
+<h4 id="compute-tier">Compute tier</h4>
+
+<p>Compute tier choices concerns only the vCore-based model with General Purpose service tier. You can choose:</p>
+
+<ul>
+  <li><strong>Provisioned compute:</strong> for regular usage pattern, fixed amount of resources over time and you are billed regardless of usage. You need to manage the sizing compute resources depending on your workload.</li>
+  <li><strong>Serverless compute:</strong> for intermittent and unpredictable usage with lower average compute utilization over time. It provides automatic scaling for compute resources and you are billed only for the amount of compute used. This option also supports automatic pausing (in this setting you only pay for the storage).</li>
+</ul>
+
+<h3 id="plan-deploy-and-verify-azure-sql">Plan, deploy, and verify Azure SQL</h3>
+
+<p>There are several steps to setup your Azure SQL solution. let’s dive into some of them</p>
+
+<p><img src="/BrazLog/images/2021-07-27-10-data-storage.png" alt="" /></p>
+
+<ol>
+  <li>
+    <p><strong>The server</strong></p>
+
+    <p>For Azure SQL managed instance, giving a server name is the same as in SQL Server. For Databases and elastic pools an Azure SQL Database server is required. This is a logical server that acts as a central administrative point for single or pooled database. It contains logins, firewall rules, auditing rules, threat detections policies and failover groups. For Azure SQL Database server the <strong><em>name must be unique across all Azure</em></strong></p>
+  </li>
+  <li>
+    <p><strong>Compute &amp; Storage</strong></p>
+
+    <p>If you are migrating use a size similar to what you have on-premises. You may use some tools like the Data Migration Assistant SKU to estimate the number of vCores and the Data max size.</p>
+  </li>
+  <li>
+    <p><strong>Networking</strong></p>
+
+    <p>Choices for Azure SQL Database or Managed Instance are different:</p>
+
+    <ul>
+      <li>For SQL Databases the default is <code class="language-plaintext highlighter-rouge">No access</code>. You can then choose a select or private endpoint. You can also add your client IP address if you want to connect from your current client.</li>
+      <li>For Managed Instance you deploy inside an Azure virtual network with a dedicated subnet. As such you have a secure private IP. You can also enable public endpoint if you want to connect through the Internet without VPN. This access is disabled by default</li>
+    </ul>
+  </li>
+  <li>
+    <p><strong>Data collations</strong></p>
+
+    <p>It is to tell the database engine how to treat certain characters it affects the characteristic of several operations. In SQL server it is defined by OS locale. In Azure SQL managed instance you can set collation upon the creation of the instance (cannot be changed later for the instance but can be changed at the database or column level). With SQL Database you cannot change it at the server level but can alter it at the database level.</p>
+  </li>
+  <li>
+    <p><strong>Security</strong></p>
+  </li>
+</ol>
 
   </div><!-- from https://github.com/utterance/utterances -->
 <script src="https://utteranc.es/client.js"
