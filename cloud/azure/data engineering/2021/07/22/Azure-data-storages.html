@@ -4,19 +4,19 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="twitter:card" content="summary_large_image" /><!-- Begin Jekyll SEO tag v2.6.1 -->
-<title>Understand Azure Account storage &amp; Azure SQL | Braza Faouzi</title>
+<title>Understand Azure Account storage &amp; Azure SQL (article in progress) | Braza Faouzi</title>
 <meta name="generator" content="Jekyll v4.1.1" />
-<meta property="og:title" content="Understand Azure Account storage &amp; Azure SQL" />
+<meta property="og:title" content="Understand Azure Account storage &amp; Azure SQL (article in progress)" />
 <meta property="og:locale" content="en_US" />
 <meta name="description" content="An overview of Azure account storage &amp; Azure SQL" />
 <meta property="og:description" content="An overview of Azure account storage &amp; Azure SQL" />
-<link rel="canonical" href="https://fbraza.github.io/BrazLog/cloud/azure/2021/07/22/Azure-data-storages.html" />
-<meta property="og:url" content="https://fbraza.github.io/BrazLog/cloud/azure/2021/07/22/Azure-data-storages.html" />
+<link rel="canonical" href="https://fbraza.github.io/BrazLog/cloud/azure/data%20engineering/2021/07/22/Azure-data-storages.html" />
+<meta property="og:url" content="https://fbraza.github.io/BrazLog/cloud/azure/data%20engineering/2021/07/22/Azure-data-storages.html" />
 <meta property="og:site_name" content="Braza Faouzi" />
 <meta property="og:type" content="article" />
 <meta property="article:published_time" content="2021-07-22T00:00:00-05:00" />
 <script type="application/ld+json">
-{"url":"https://fbraza.github.io/BrazLog/cloud/azure/2021/07/22/Azure-data-storages.html","@type":"BlogPosting","headline":"Understand Azure Account storage &amp; Azure SQL","dateModified":"2021-07-22T00:00:00-05:00","datePublished":"2021-07-22T00:00:00-05:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://fbraza.github.io/BrazLog/cloud/azure/2021/07/22/Azure-data-storages.html"},"description":"An overview of Azure account storage &amp; Azure SQL","@context":"https://schema.org"}</script>
+{"url":"https://fbraza.github.io/BrazLog/cloud/azure/data%20engineering/2021/07/22/Azure-data-storages.html","@type":"BlogPosting","headline":"Understand Azure Account storage &amp; Azure SQL (article in progress)","dateModified":"2021-07-22T00:00:00-05:00","datePublished":"2021-07-22T00:00:00-05:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://fbraza.github.io/BrazLog/cloud/azure/data%20engineering/2021/07/22/Azure-data-storages.html"},"description":"An overview of Azure account storage &amp; Azure SQL","@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 <link rel="stylesheet" href="/BrazLog/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="https://fbraza.github.io/BrazLog/feed.xml" title="Braza Faouzi" /><link rel="shortcut icon" type="image/x-icon" href="/BrazLog/images/favicon.ico"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Primer/15.2.0/primer.css" integrity="sha512-xTz2ys4coGAOz8vuV1NcQBkgVmKhsSEtjbqyMJbBHRplFuvKIUo6xhLHpAyPt9mfR6twHJgn9OgVLuqOvjeBhg==" crossorigin="anonymous" />
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css" integrity="sha512-1PKOgIY59xJ8Co8+NE6FZ+LOAZKjy+KY8iq0G4B3CyeY6wYHN3yt9PW0XpSriVlkMXe40PTKnXrLnZ9+fkDaog==" crossorigin="anonymous" />
@@ -71,13 +71,13 @@ window.onload = wrap_img;
         <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
 
   <header class="post-header">
-    <h1 class="post-title p-name" itemprop="name headline">Understand Azure Account storage &amp; Azure SQL</h1><p class="page-description">An overview of Azure account storage & Azure SQL</p><p class="post-meta post-meta-title"><time class="dt-published" datetime="2021-07-22T00:00:00-05:00" itemprop="datePublished">
+    <h1 class="post-title p-name" itemprop="name headline">Understand Azure Account storage &amp; Azure SQL (article in progress)</h1><p class="page-description">An overview of Azure account storage & Azure SQL</p><p class="post-meta post-meta-title"><time class="dt-published" datetime="2021-07-22T00:00:00-05:00" itemprop="datePublished">
         Jul 22, 2021
       </time>
        • <span class="read-time" title="Estimated read time">
     
     
-      10 min read
+      13 min read
     
 </span></p>
 
@@ -88,6 +88,9 @@ window.onload = wrap_img;
         &nbsp;
       
         <a class="category-tags-link" href="/BrazLog/categories/#Azure">Azure</a>
+        &nbsp;
+      
+        <a class="category-tags-link" href="/BrazLog/categories/#Data Engineering">Data Engineering</a>
         
       
       </p>
@@ -98,11 +101,11 @@ window.onload = wrap_img;
   <div class="post-content e-content" itemprop="articleBody">
     <h2 id="the-storage-account">The storage account</h2>
 
-<p>A storage account provides a unique namespace in Azure for your data. It supports blobs (including data lake storage Gen2), queue, table store and Azure files. Each object that you store in Azure Storage has an address that includes your <strong>globally unique</strong> storage account name. For example, the combination of the account name and the Azure Storage blob endpoint forms the base address for the objects in your storage account.</p>
+<p>A storage account provides a unique namespace in Azure for your data. It supports blobs (including data lake storage Gen2), queue, table store and Azure files. Each object that you store in Azure Storage has an address that includes your <strong>globally unique</strong> storage account name. A combination of the account name and the Azure Storage blob endpoint forms the base address to access objects in your storage account.</p>
 
 <p><img src="/BrazLog/images/2021-07-27-03-data-storage.png" alt="" /></p>
 
-<p>Azure storage is a manged service that provides durable (<em>think redundancy</em>), secure (<em>think encryption and access control</em>), scalable storage. Because it is fully managed, Microsoft handles maintenance and any critical problems. A single Azure subscription can host <strong>up to 200</strong> storage accounts each of them holding up to <strong>500 TB</strong> of data.  Azure storage includes four types of data stores that are accessible via <code class="language-plaintext highlighter-rouge">HTTP</code> or <code class="language-plaintext highlighter-rouge">HTTPS</code> using SDKs or REST API:</p>
+<p>Azure storage is a managed service that provides durable (<em>think redundancy</em>), secure (<em>think encryption and access control</em>), scalable storage. Because it is fully managed, Microsoft handles maintenance and any critical problems. A single Azure subscription can host <strong>up to 200</strong> storage accounts each of them holding up to <strong>500 TB</strong> of data.  Azure storage includes four types of data stores that are accessible via <code class="language-plaintext highlighter-rouge">HTTP</code> or <code class="language-plaintext highlighter-rouge">HTTPS</code> using SDKs or REST API:</p>
 
 <p><img src="/BrazLog/images/2021-07-27-04-data-storage.png" alt="" /></p>
 
@@ -122,7 +125,7 @@ window.onload = wrap_img;
   <tbody>
     <tr>
       <td style="text-align: left"><code class="language-plaintext highlighter-rouge">--name</code></td>
-      <td style="text-align: left">A <strong>storage account name</strong>.  Unique across all existing storage account names in Azure. It must be 3 to 24 characters long and can contain only lowercase letters and numbers.</td>
+      <td style="text-align: left">A <strong>storage account name</strong>. Unique across all existing storage account names in Azure. It must be 3 to 24 characters long and can contain only lowercase letters and numbers.</td>
     </tr>
     <tr>
       <td style="text-align: left"><code class="language-plaintext highlighter-rouge">--resource-group</code></td>
@@ -171,7 +174,7 @@ window.onload = wrap_img;
 
 <p><strong>Encryption at rest:</strong> A Storage Service Encryption (SSE) with a 256-AES cipher is used. SSE automatically encrypts data when writing to Azure Storage. Decryption happens automatically when reading data (SSE is included here and not charged for storage). For VMs, you can encrypt the virtual hard disks with Azure Disk Encryption. Keys are stored in Azure key Vault that manages disk encryption keys and secrets.</p>
 
-<p><strong>Encryption in transit:</strong> One rule here: Always use <strong>HTTPS</strong>!</p>
+<p><strong>Encryption in transit:</strong> One rule here: Always use <strong>HTTPS</strong>.</p>
 
 <p><strong>Cross-origin resource sharing (CORS):</strong> support CORS uses the HTTP headers so that web application from one domain can access resources from a server at a different domain. With CORS web apps ensure that only authorized content is loaded. CORS is an option you can enable on Storage accounts.</p>
 
@@ -311,8 +314,79 @@ window.onload = wrap_img;
   </li>
   <li>
     <p><strong>Security</strong></p>
+
+    <p>Opt-in for Azure defender it can detect several threats that we will describe later. Free at the beginning during 15 days.</p>
   </li>
 </ol>
+
+<h3 id="secure-your-azure-sql-deployment">Secure your Azure SQL deployment</h3>
+
+<h4 id="networking-security">Networking security</h4>
+
+<p>We are going to see the different layer of security one can leverage for the deployment of Azure SQL solutions. There are divived into 4 main groups: network security, identity &amp; access, data protection and security management:</p>
+
+<p><img src="/BrazLog/images/2021-07-27-11-data-storage.png" alt="" /></p>
+
+<p>For the network security you have four approach when dealing with a Azure SQL Database:</p>
+
+<ul>
+  <li>Allow access to Azure services (Less secure)</li>
+  <li>Use firewall rules</li>
+  <li>Use virtual network rules</li>
+  <li>Use Azure Private Link (most secure)</li>
+</ul>
+
+<p>For the network security of Azure SQL managed instance. You are in the situation of virtual network rules with a private endpoint. You cannot use Azure Private link with managed instances. See below for more details.</p>
+
+<p><img src="/BrazLog/images/2021-07-27-12-data-storage.png" alt="" /></p>
+
+<p>You have another layer of security that concerns the use of RBAC and Azure Directory (more a topic for Database Engineer)</p>
+
+<h4 id="data-encryption">Data encryption</h4>
+
+<p>Encrypted connections are forced in Azure SQL Database and Azure SQL Managed Instance. You can optionally specify the inbound Transport Layer Security (TLS).  Good practice to force encryption on the client to avoid sever negotiation.</p>
+
+<p>Transparent Data Encryption (TDE) provides encryption for data at rest and is on by default for all new Azure SQL Database instances.</p>
+
+<p><img src="/BrazLog/images/2021-07-27-13-data-storage.png" alt="" /></p>
+
+<p>For TDE you can use Azure manage your key or bring your own key with the Bring Your Own Key service (BYOK). In the latter scenario you are responsible for the control of the key life-cycle, key usage permissions and auditing operations on keys.</p>
+
+<p>You can also encrypt data at the column level. it is supported just in Azure SQL Database as it is in SQL server. You can also take advantage of the “Always Encrypted” feature. It uses client-side encryption of sensitive data using keys that are never given to the database system. The client encrypts query parameters.</p>
+
+<h4 id="dynamic-data-masking">Dynamic data masking</h4>
+
+<p>You can mask your data so that non-privileged users can’t see it but are still able to use query that include the data. For example if you have data with names and e-mail address you can mask columns with the following T-SQL commands:</p>
+
+<pre><code class="language-SQL">ALTER TABLE Data.Membership ALTER COLUMN FirstName
+ADD MASKED WITH (FUNCTION = 'partial(1, "xxxxx", 1)')
+
+ALTER TABLE Data.Membership ALTER COLUMN Email
+ADD MASKED WITH (FUNCTION = 'email()')
+
+ALTER TABLE Data.Membership ALTER COLUMN DiscountCode 
+ADD MASKED WITH (FUNCTION = 'random(1, 100)’)
+ 
+GRANT UNMASK to DataOfficers
+</code></pre>
+
+<p>Data has been masked however people with the face “DataOfficers” role have access to unmasked data.</p>
+
+<p><img src="/BrazLog/images/2021-07-27-14-data-storage.png" alt="" /></p>
+
+<h4 id="data-protection-wrap-up">Data protection wrap-up</h4>
+
+<p>To set up and configure data protection, you should:</p>
+
+<ul>
+  <li>Ensure that your apps enforce connection encryption.</li>
+  <li>Enable TDE. By default for new databases but you might need to enable it if you migrate your on-premises data.</li>
+  <li>Use Dynamic Data masking.</li>
+  <li>For advance protection you can configure the “Always Encrypted” feature.</li>
+</ul>
+
+<h3 id="manage-security">Manage security</h3>
+
 
   </div><!-- from https://github.com/utterance/utterances -->
 <script src="https://utteranc.es/client.js"
@@ -322,7 +396,7 @@ window.onload = wrap_img;
         theme="github-light"
         crossorigin="anonymous"
         async>
-</script><a class="u-url" href="/BrazLog/cloud/azure/2021/07/22/Azure-data-storages.html" hidden></a>
+</script><a class="u-url" href="/BrazLog/cloud/azure/data%20engineering/2021/07/22/Azure-data-storages.html" hidden></a>
 </article>
       </div>
     </main><footer class="site-footer h-card">
