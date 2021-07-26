@@ -1,20 +1,20 @@
 ---
-hide: true
-title: Understand Azure Account storage & Azure SQL
+hide: false
+title: Understand Azure Account storage & Azure SQL (article in progress)
 toc: false
 comments: true
 layout: post
 description: An overview of Azure account storage & Azure SQL
-categories: [Cloud, Azure]
+categories: [Cloud, Azure, Data Engineering]
 ---
 
 ## The storage account
 
-A storage account provides a unique namespace in Azure for your data. It supports blobs (including data lake storage Gen2), queue, table store and Azure files. Each object that you store in Azure Storage has an address that includes your **globally unique** storage account name. For example, the combination of the account name and the Azure Storage blob endpoint forms the base address for the objects in your storage account.
+A storage account provides a unique namespace in Azure for your data. It supports blobs (including data lake storage Gen2), queue, table store and Azure files. Each object that you store in Azure Storage has an address that includes your **globally unique** storage account name. A combination of the account name and the Azure Storage blob endpoint forms the base address to access objects in your storage account.
 
 ![]({{ site.baseurl }}/images/2021-07-27-03-data-storage.png)
 
-Azure storage is a manged service that provides durable (*think redundancy*), secure (*think encryption and access control*), scalable storage. Because it is fully managed, Microsoft handles maintenance and any critical problems. A single Azure subscription can host **up to 200** storage accounts each of them holding up to **500 TB** of data.  Azure storage includes four types of data stores that are accessible via `HTTP` or `HTTPS` using SDKs or REST API:
+Azure storage is a managed service that provides durable (*think redundancy*), secure (*think encryption and access control*), scalable storage. Because it is fully managed, Microsoft handles maintenance and any critical problems. A single Azure subscription can host **up to 200** storage accounts each of them holding up to **500 TB** of data.  Azure storage includes four types of data stores that are accessible via `HTTP` or `HTTPS` using SDKs or REST API:
 
 ![]({{ site.baseurl }}/images/2021-07-27-04-data-storage.png)
 
@@ -26,7 +26,7 @@ You create storage account on the portal or using Azure CLI. There are several p
 
 | Option             | Description                                                  |
 | :----------------- | :----------------------------------------------------------- |
-| `--name`           | A **storage account name**.  Unique across all existing storage account names in Azure. It must be 3 to 24 characters long and can contain only lowercase letters and numbers. |
+| `--name`           | A **storage account name**. Unique across all existing storage account names in Azure. It must be 3 to 24 characters long and can contain only lowercase letters and numbers. |
 | `--resource-group` | Use **your_resources_group_name** to place the storage account. |
 | `--location`       | Select a location near you (see below). If not specified the storage account will be created in the same location as your resource group. |
 | `--sku`            | This decides the storage account performance and replication model. Options include `Premium_LRS`, `Standard_GRS`, `Standard_LRS`, `Standard_RAGRS`, and `Standard_ZRS`. |
@@ -61,7 +61,7 @@ Azure storage provides several tools for security:
 
 **Encryption at rest:** A Storage Service Encryption (SSE) with a 256-AES cipher is used. SSE automatically encrypts data when writing to Azure Storage. Decryption happens automatically when reading data (SSE is included here and not charged for storage). For VMs, you can encrypt the virtual hard disks with Azure Disk Encryption. Keys are stored in Azure key Vault that manages disk encryption keys and secrets.
 
-**Encryption in transit:** One rule here: Always use **HTTPS**!
+**Encryption in transit:** One rule here: Always use **HTTPS**.
 
 **Cross-origin resource sharing (CORS):** support CORS uses the HTTP headers so that web application from one domain can access resources from a server at a different domain. With CORS web apps ensure that only authorized content is loaded. CORS is an option you can enable on Storage accounts.
 
@@ -178,3 +178,71 @@ There are several steps to setup your Azure SQL solution. let's dive into some o
    It is to tell the database engine how to treat certain characters it affects the characteristic of several operations. In SQL server it is defined by OS locale. In Azure SQL managed instance you can set collation upon the creation of the instance (cannot be changed later for the instance but can be changed at the database or column level). With SQL Database you cannot change it at the server level but can alter it at the database level.
 
 5. **Security**
+
+   Opt-in for Azure defender it can detect several threats that we will describe later. Free at the beginning during 15 days.
+
+### Secure your Azure SQL deployment
+
+#### Networking security
+
+We are going to see the different layer of security one can leverage for the deployment of Azure SQL solutions. There are divived into 4 main groups: network security, identity & access, data protection and security management:
+
+![]({{ site.baseurl }}/images/2021-07-27-11-data-storage.png)
+
+For the network security you have four approach when dealing with a Azure SQL Database:
+
+- Allow access to Azure services (Less secure)
+- Use firewall rules
+- Use virtual network rules
+- Use Azure Private Link (most secure)
+
+For the network security of Azure SQL managed instance. You are in the situation of virtual network rules with a private endpoint. You cannot use Azure Private link with managed instances. See below for more details.
+
+![]({{ site.baseurl }}/images/2021-07-27-12-data-storage.png)
+
+You have another layer of security that concerns the use of RBAC and Azure Directory (more a topic for Database Engineer)
+
+#### Data encryption
+
+Encrypted connections are forced in Azure SQL Database and Azure SQL Managed Instance. You can optionally specify the inbound Transport Layer Security (TLS).  Good practice to force encryption on the client to avoid sever negotiation. 
+
+Transparent Data Encryption (TDE) provides encryption for data at rest and is on by default for all new Azure SQL Database instances. 
+
+![]({{ site.baseurl }}/images/2021-07-27-13-data-storage.png)
+
+For TDE you can use Azure manage your key or bring your own key with the Bring Your Own Key service (BYOK). In the latter scenario you are responsible for the control of the key life-cycle, key usage permissions and auditing operations on keys.
+
+You can also encrypt data at the column level. it is supported just in Azure SQL Database as it is in SQL server. You can also take advantage of the "Always Encrypted" feature. It uses client-side encryption of sensitive data using keys that are never given to the database system. The client encrypts query parameters.
+
+#### Dynamic data masking
+
+You can mask your data so that non-privileged users can't see it but are still able to use query that include the data. For example if you have data with names and e-mail address you can mask columns with the following T-SQL commands:
+
+```SQL
+ALTER TABLE Data.Membership ALTER COLUMN FirstName
+ADD MASKED WITH (FUNCTION = 'partial(1, "xxxxx", 1)')
+
+ALTER TABLE Data.Membership ALTER COLUMN Email
+ADD MASKED WITH (FUNCTION = 'email()')
+
+ALTER TABLE Data.Membership ALTER COLUMN DiscountCode 
+ADD MASKED WITH (FUNCTION = 'random(1, 100)’)
+ 
+GRANT UNMASK to DataOfficers
+```
+
+Data has been masked however people with the face "DataOfficers" role have access to unmasked data.
+
+![]({{ site.baseurl }}/images/2021-07-27-14-data-storage.png)
+
+#### Data protection wrap-up
+
+To set up and configure data protection, you should:
+
+- Ensure that your apps enforce connection encryption.
+- Enable TDE. By default for new databases but you might need to enable it if you migrate your on-premises data.
+- Use Dynamic Data masking.
+- For advance protection you can configure the "Always Encrypted" feature.
+
+### Manage security
+
