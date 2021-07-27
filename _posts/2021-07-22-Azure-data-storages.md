@@ -8,6 +8,8 @@ description: An overview of Azure account storage & Azure SQL
 categories: [Cloud, Azure, Data Engineering]
 ---
 
+We are going to talk about two main storage resources found in Azure: the storage account and the Azure SQL. The first provides to the user a unique space to store all kind of data. The second, a kind of SQL Server in the cloud, provides different solutions to deploy SQL relational databases. By going through these two solutions we are going to catch the specific features and options of each service and catch the recommended procedure to deploy them in a secure and scalable way.
+
 ## The storage account
 
 A storage account provides a unique namespace in Azure for your data. It supports blobs (including data lake storage Gen2), queue, table store and Azure files. Each object that you store in Azure Storage has an address that includes your **globally unique** storage account name. A combination of the account name and the Azure Storage blob endpoint forms the base address to access objects in your storage account.
@@ -31,7 +33,7 @@ You create storage account on the portal or using Azure CLI. There are several p
 | `--location`       | Select a location near you (see below). If not specified the storage account will be created in the same location as your resource group. |
 | `--sku`            | This decides the storage account performance and replication model. Options include `Premium_LRS`, `Standard_GRS`, `Standard_LRS`, `Standard_RAGRS`, and `Standard_ZRS`. |
 
-To access the services from a storage account you make call through a REST API or use the different SDKs available in several programming languages. Once you have your corresponding library / SDK available, you are ready to connect to your storage account. For that you need two things:
+To access the services from a storage account you make call through a REST API or use the different SDK available in several programming languages. Once you have your corresponding library / SDK available, you are ready to connect to your storage account. For that you need two things:
 
 - **An Access key**: you have two keys by storage account to rotate them for security
 - **A REST API endpoint**: see the table above for the different type of endpoints.
@@ -69,9 +71,12 @@ Azure storage provides several tools for security:
 
 **Storage account keys:** We have ywo keys by storage account and the possibility to rotate them. *Do not share storage account keys with external third-party applications*.
 
-![](/home/fbraza/Documents/BLOG/BrazLog/images/2021-07-27-05-data-storage.png)
+![]({{ site.baseurl }}/images/2021-07-27-05-data-storage.png)
 
-**Shared access signature (SAS):** As a best practice, use SAS for external third-party clients. A SAS is a string that contains a security token that can be attached to a URI. Two types of SAS: *service-level* (read access a specific resource) & *account-level* (more permissions like creating files).
+**Shared access signature (SAS):** As a best practice, use SAS for external third-party clients. A SAS, is a string that contains a security token that can be attached to a URI. Two types of SAS exist:
+
+- *service-level* (read access a specific resource) 
+- *account-level* (more permissions like creating files).
 
 **Azure defender for Storage:** It detects unusual and potentially harmful attempts to access or exploit storage accounts. Azure Defender for Storage is currently available for Blob storage, Azure Files, and Azure Data Lake Storage Gen2.
 
@@ -109,19 +114,19 @@ ADLS Gen2 is dedicated to big data analytics built on top of Azure Blob storage.
 
 ## Azure SQL
 
-There are three main deployment options and choices that can fit your need if you want to deal with Azure SQL services: deploy SQL Server on Azure VMs, deploy SQL managed instances or deploy SQL databases.
+There are three main deployment options and choices that can fit your need if you want to deal with Azure SQL services.
 
 ![]({{ site.baseurl }}/images/2021-07-27-06-data-storage.png)
 
 ### SQL Server on Azure Virtual Machines
 
-It is a version of SQL server running in a Azure VM. It's basically just SQL Server. This is an Infrastructure as a service (IaaS) with which you need to update and patch both OS and SQL server yourself. If your use case need such deployment here a few things to consider that we gather in the methodology column in the table below:
+It is a version of SQL server running in a Azure VM. It's basically just SQL Server. This is an Infrastructure as a service (IaaS) with which you need to update and patch both OS and SQL server yourself. If your use case need such deployment, here a few things to consider that we gather in the methodology column in the table below:
 
 ![]({{ site.baseurl }}/images/2021-07-27-07-data-storage.png)
 
 ### SQL managed instance & SQL database
 
-They are considered as Platform as a Service (PaaS) deployments. These options propose a fully manage engine that automates most of the database management tasks (upgrades, patches, backups and monitoring). Both have a set of common features but have distinct use cases. Notably use the managed instances if you want to have access to some specific services withing your DB (Machine learning services for example). Additionally, you can specify if you want a single instance or several.  
+They are considered as Platform as a Service (PaaS) deployments. These options propose a fully managed engine that automates most of the database management tasks (upgrades, patches, backups and monitoring). Both have a set of common features but have distinct use cases. Notably, use the managed instances if you want to have access to some specific services withing your DB (Machine learning services for example). Additionally, you can specify if you want a single instance or several. 
 
 ![]({{ site.baseurl }}/images/2021-07-27-08-data-storage.png)
 
@@ -129,19 +134,19 @@ They are considered as Platform as a Service (PaaS) deployments. These options p
 
 #### Purchasing model
 
-The purchasing model had two options:
+The purchasing model has two options:
 
 - Based on virtual cores (vCore-based)
 
 - Based on database transaction units (DTU-based)
 
-  > ***DTU is not available for managed instance***
+> ***DTU is not available for managed instance***
 
-Microsoft recomends using the **vCore-based** model because it allows to **independently** select compute and storage resources. You pay for compute resources, type and amount of data and log storage, backup storage locaiton (RA-GRS, ZRS or LRS). We focus on the vCore model for the next sections.
+Microsoft recommends using the **vCore-based** model because it allows to **independently** select compute and storage resources. You pay for compute resources, type and amount of data and log storage, backup storage location (RA-GRS, ZRS or LRS). We focus on the vCore model for the next sections.
 
 #### Service tier
 
-You choose service tier for performance and availability. It is recommended to start with **General Purpose** and adjust later based on your need. The specific features for each service tiers are show below.
+You choose service tier for performance and availability. It is recommended to start with **General Purpose** and adjust later based on your need. The specific features for each service tiers are shown below.
 
 ![]({{ site.baseurl }}/images/2021-07-27-09-data-storage.png)
 
@@ -150,7 +155,7 @@ You choose service tier for performance and availability. It is recommended to s
 Compute tier choices concerns only the vCore-based model with General Purpose service tier. You can choose:
 
 - **Provisioned compute:** for regular usage pattern, fixed amount of resources over time and you are billed regardless of usage. You need to manage the sizing compute resources depending on your workload.
-- **Serverless compute:** for intermittent and unpredictable usage with lower average compute utilization over time. It provides automatic scaling for compute resources and you are billed only for the amount of compute used. This option also supports automatic pausing (in this setting you only pay for the storage).
+- **Serverless compute:** for intermittent and unpredictable usage. It provides automatic scaling for compute resources and, you are billed only for the amount of compute used. This option also supports automatic pausing (in this setting you only pay for the storage).
 
 ### Plan, deploy, and verify Azure SQL
 
@@ -183,40 +188,52 @@ There are several steps to setup your Azure SQL solution. let's dive into some o
 
 ### Secure your Azure SQL deployment
 
+We are going to see the different layer of security one can leverage for the deployment of Azure SQL solutions. There are divived into 4 main groups: **network security, identity & access, data protection and security management**.
+
 #### Networking security
 
-We are going to see the different layer of security one can leverage for the deployment of Azure SQL solutions. There are divived into 4 main groups: network security, identity & access, data protection and security management:
+That is the first security layer you need to engineer and think about. Selective access to your database by services, applications and machines is critical to pave the way towards an secure database architecture. There are different way to tackle this.
 
-![]({{ site.baseurl }}/images/2021-07-27-11-data-storage.png)
+- With the `Allow access to Azure services and resources` option set to "yes", you permit to any resources from any region or subscription to access the SQL database. It is a very easy setup to get things up and running and get your SQL database connected to other Azure services as Azure VMs, Azure App Service. However, It is of good practice to not use this approach and prefer to set firewall rules instead of allowing all services to connect to your SQL database.
 
-For the network security you have four approach when dealing with a Azure SQL Database:
+- With `firewall rules` you add a unique firewall rule for each service or resource to connect. With thses rules you can permit to your on-premises environment to connect to your SQL database. You just need to also add the rules in your on-premise environment.
 
-- Allow access to Azure services (Less secure)
-- Use firewall rules
-- Use virtual network rules
-- Use Azure Private Link (most secure)
+  ![]({{ site.baseurl }}/images/2021-07-27-12A-data-storage.png)
 
-For the network security of Azure SQL managed instance. You are in the situation of virtual network rules with a private endpoint. You cannot use Azure Private link with managed instances. See below for more details.
+- Setting the connectivity between resources with firewall rules is tedious. First you will have to enter manually all rules and all IP addresses. Second you might struggle if some IPs are dynamic. Instead you can use virtual network rules that control access for specific networks that contains  machines and / or services. You can allow all connections that come from one specific virtual net- work. This simplifies the challenge of configuring access for all static and dynamic Ips. In Virtual networks your machines expose a private IP address. Beside having private Ips you still connect through a public endpoint.
 
-![]({{ site.baseurl }}/images/2021-07-27-12-data-storage.png)
+  ![]({{ site.baseurl }}/images/2021-07-27-12B-data-storage.png)
 
-You have another layer of security that concerns the use of RBAC and Azure Directory (more a topic for Database Engineer)
+- In the last scenario for Azure SQL database, we get rid of the public endpoint and make it private: this is the concept of **private link**. You can connect to your Database using a private endpoint. It means that it has a private IP within a specific virtual network. We still have our architecture with Virtual Network, but here rules are unnecessary. Resources that need to connect to the Database must have access to the virtual network where the endpoint is located. As such any connection coming from the Internet will be denied.
+
+- ![]({{ site.baseurl }}/images/2021-07-27-12C-data-storage.png)
+
+- You cannot use Azure Private link with managed instances. For an Azure SQL managed instance, you first need a specific subnet (here the MI-subnet). The subnet is a logical grouping in a virtual network. After the deployment the instances are configured similarly to a private endpoint in a database in Azure SQL Database. With standard networking practice you must enable access to the virtual network where the managed instances are 
+  located.
+
+  ![]({{ site.baseurl }}/images/2021-07-27-12D-data-storage.png)
+
+#### Identity
+
+This concerns the use of RBAC and Active Directory (more a topic for Database Engineer). Have a look to the security [best practices](https://docs.microsoft.com/en-us/azure/azure-sql/database/security-best-practice).
+
+For Azure directory there are a couple of rules to remember:
+
+- Use Azure AD managed identity for application that run on Azure virtual machines
+- Use Azure AD integrated authentication for for apps running on domain-joined machines outside Azure, assuming the domain has federated with Azure Active Directory.
+- Use Azure AD interactive with multifactor authentication for non-Azure machine that are not domain-joined
 
 #### Data encryption
 
-Encrypted connections are forced in Azure SQL Database and Azure SQL Managed Instance. You can optionally specify the inbound Transport Layer Security (TLS).  Good practice to force encryption on the client to avoid sever negotiation. 
+Encrypted connections are forced in Azure SQL Database and Azure SQL Managed Instance. You can optionally specify the inbound Transport Layer Security (TLS). It is of good practice to force encryption on the client to avoid sever negotiation. 
 
-Transparent Data Encryption (TDE) provides encryption for data at rest and is on by default for all new Azure SQL Database instances. 
-
-![]({{ site.baseurl }}/images/2021-07-27-13-data-storage.png)
-
-For TDE you can use Azure manage your key or bring your own key with the Bring Your Own Key service (BYOK). In the latter scenario you are responsible for the control of the key life-cycle, key usage permissions and auditing operations on keys.
+Transparent Data Encryption (TDE) provides encryption for data at rest and is on by default for all new Azure SQL Database instances. For TDE you can use Azure manage your key or bring your own key with the Bring Your Own Key service (BYOK). In the latter scenario you are responsible for the control of the key life-cycle, key usage permissions and auditing operations on keys.
 
 You can also encrypt data at the column level. it is supported just in Azure SQL Database as it is in SQL server. You can also take advantage of the "Always Encrypted" feature. It uses client-side encryption of sensitive data using keys that are never given to the database system. The client encrypts query parameters.
 
 #### Dynamic data masking
 
-You can mask your data so that non-privileged users can't see it but are still able to use query that include the data. For example if you have data with names and e-mail address you can mask columns with the following T-SQL commands:
+You can mask your data so that non-privileged users can't see it but are still able to use query that include the data. For example if you have data with names and e-mail addresses you can mask columns with the following T-SQL commands:
 
 ```SQL
 ALTER TABLE Data.Membership ALTER COLUMN FirstName
@@ -231,7 +248,13 @@ ADD MASKED WITH (FUNCTION = 'random(1, 100)’)
 GRANT UNMASK to DataOfficers
 ```
 
-Data has been masked however people with the face "DataOfficers" role have access to unmasked data.
+Data has been masked however people with the fake `DataOfficers` role have access to unmasked data. There are five masking functions:
+
+- Default that produce a full masking according to the data types of the deisgnated fields
+- Credit card
+- Email
+- Random number
+- Custom test
 
 ![]({{ site.baseurl }}/images/2021-07-27-14-data-storage.png)
 
@@ -244,5 +267,20 @@ To set up and configure data protection, you should:
 - Use Dynamic Data masking.
 - For advance protection you can configure the "Always Encrypted" feature.
 
-### Manage security
+#### Manage security
+
+Once your instance is secured (network, authentication and data), we need to manage security on an ongoing basis. This includes auditing, monitoring, data classification and in the case of Azure SQL, Azure Defender. Here let's give a few words about Azure Defender that is a unified package for advance SQL security capabilities that enables:
+
+- Vulnerability Assessment: a scanning service that provides visibility into security state and suggest approaches to address any potential concerns. You can activate the periodic recurring scans for database checking every seven days. Reports can be sent to admin and a storage account is needed to store the scanning results.
+- Advanced Threat Protection: uses advanced monitoring and artificial intelligence to detect whether any of the following threats have occurred: SQL injection, SQL injection vulnerability, Data exfiltration, unsafe action, brute force attempt, anomalous client login.
+
+#### Backup and restore
+
+Azure SQL manages backups and runs if the full recovery model is used. It can restore your database to any point in time. You can even restore a deleted database within the configured retention policy. Most interestingly your backups can be automatically encrypted if TDE is enabled on the logical server or instance. By default, a full database backup is taken once a week. Log backups occur every 5-10 minutes and differential backups every 12-24 hours. Backups files are stored in **Azure storage** in read-access geo-redundant storage (RA-GRS) by default (it is possible to set ZRS or LRS).
+
+The retention period for your data varies between 1 and 35 days. If not enough you can choose long-term retention (LTR). This option automatically creates full backups stored in RA-GRS by default for up to 10 years. LTR is available for Azure SQL Database and in preview for Azure SQL managed instanced.
+
+
+
+
 
