@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="twitter:card" content="summary_large_image" /><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Understand Azure Factory and Azure Synapse Analytics | Braza Faouzi</title>
+<meta name="generator" content="Jekyll v4.1.1" />
+<meta property="og:title" content="Understand Azure Factory and Azure Synapse Analytics" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="An overview of Azure Factory &amp; Azure Synapse Analytics features" />
+<meta property="og:description" content="An overview of Azure Factory &amp; Azure Synapse Analytics features" />
+<link rel="canonical" href="https://fbraza.github.io/BrazLog/cloud/azure/data%20engineering/2021/07/28/Azure-data-factory.html" />
+<meta property="og:url" content="https://fbraza.github.io/BrazLog/cloud/azure/data%20engineering/2021/07/28/Azure-data-factory.html" />
+<meta property="og:site_name" content="Braza Faouzi" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2021-07-28T00:00:00-05:00" />
+<script type="application/ld+json">
+{"url":"https://fbraza.github.io/BrazLog/cloud/azure/data%20engineering/2021/07/28/Azure-data-factory.html","@type":"BlogPosting","headline":"Understand Azure Factory and Azure Synapse Analytics","dateModified":"2021-07-28T00:00:00-05:00","datePublished":"2021-07-28T00:00:00-05:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://fbraza.github.io/BrazLog/cloud/azure/data%20engineering/2021/07/28/Azure-data-factory.html"},"description":"An overview of Azure Factory &amp; Azure Synapse Analytics features","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/BrazLog/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="https://fbraza.github.io/BrazLog/feed.xml" title="Braza Faouzi" /><link rel="shortcut icon" type="image/x-icon" href="/BrazLog/images/favicon.ico"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Primer/15.2.0/primer.css" integrity="sha512-xTz2ys4coGAOz8vuV1NcQBkgVmKhsSEtjbqyMJbBHRplFuvKIUo6xhLHpAyPt9mfR6twHJgn9OgVLuqOvjeBhg==" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css" integrity="sha512-1PKOgIY59xJ8Co8+NE6FZ+LOAZKjy+KY8iq0G4B3CyeY6wYHN3yt9PW0XpSriVlkMXe40PTKnXrLnZ9+fkDaog==" crossorigin="anonymous" />
+
+<script>
+function wrap_img(fn) {
+    if (document.attachEvent ? document.readyState === "complete" : document.readyState !== "loading") {
+        var elements = document.querySelectorAll(".post img");
+        Array.prototype.forEach.call(elements, function(el, i) {
+            if (el.getAttribute("title") && (el.className != "emoji")) {
+                const caption = document.createElement('figcaption');
+                var node = document.createTextNode(el.getAttribute("title"));
+                caption.appendChild(node);
+                const wrapper = document.createElement('figure');
+                wrapper.className = 'image';
+                el.parentNode.insertBefore(wrapper, el);
+                el.parentNode.removeChild(el);
+                wrapper.appendChild(el);
+                wrapper.appendChild(caption);
+            }
+        });
+    } else { document.addEventListener('DOMContentLoaded', fn); }
+}
+window.onload = wrap_img;
+</script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function(){
+    // add link icon to anchor tags
+    var elem = document.querySelectorAll(".anchor-link")
+    elem.forEach(e => (e.innerHTML = '<i class="fas fa-link fa-xs"></i>'));
+    });
+</script>
+</head>
+<body><header class="site-header">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/BrazLog/">Braza Faouzi</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/BrazLog/about/">About Me</a><a class="page-link" href="/BrazLog/search/">Search</a><a class="page-link" href="/BrazLog/categories/">Tags</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Understand Azure Factory and Azure Synapse Analytics</h1><p class="page-description">An overview of Azure Factory & Azure Synapse Analytics features</p><p class="post-meta post-meta-title"><time class="dt-published" datetime="2021-07-28T00:00:00-05:00" itemprop="datePublished">
+        Jul 28, 2021
+      </time>
+       • <span class="read-time" title="Estimated read time">
+    
+    
+      13 min read
+    
+</span></p>
+
+    
+      <p class="category-tags"><i class="fas fa-tags category-tags-icon"></i></i> 
+      
+        <a class="category-tags-link" href="/BrazLog/categories/#Cloud">Cloud</a>
+        &nbsp;
+      
+        <a class="category-tags-link" href="/BrazLog/categories/#Azure">Azure</a>
+        &nbsp;
+      
+        <a class="category-tags-link" href="/BrazLog/categories/#Data Engineering">Data Engineering</a>
+        
+      
+      </p>
+    
+
+    </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <h2 id="azure-data-factory">Azure Data Factory</h2>
+
+<p>As a data engineer you will move data. From source A to sink B and then from source B to sink C and so on. Sometimes you need to move data in a regular basis. You then need to schedule the batch movement of this data. You can have several different data sources and sinks and you need compatible tools to orchestrate the data movement different machine, services and applications. Azure Data Factory (ADF) is the service proposed by azure that can be used for such use cases. It provides a cloud-based ETL &amp; orchestration tool to move but also transform data between different data stores and machines.</p>
+
+<h3 id="anatomy-of-azure-data-factory">Anatomy of Azure Data Factory</h3>
+
+<p>Let’s see a very simple example of a orchestration pipeline with ADF. We are going to move a <strong><code class="language-plaintext highlighter-rouge">CSV</code></strong> file from a blob storage to a SQL database. See below a global picture of the key components of Data Factory for this job.</p>
+
+<p><img src="/BrazLog/images/2021-07-28-01-azure-data-factory.png" alt="" /></p>
+
+<ul>
+  <li>Data Factory permits to connect you to a large variety of data sources by using an tool called <strong>Linked Service</strong>. They are like connection strings that define the connection information needed to connect to external resources. As such it enables you to ingest data from several sources in order to process them. Additionally, Linked Services can fire up compute resources on demand to ingest / prepare data. For example you can start a HDInsight cluster to prepare data through a hive query.</li>
+  <li>Once the linked service is defined, you can point to the data you want to use thank to <strong>Datasets</strong> objects. A dataset is a named view of data that simply <strong>points or references the data you want to use</strong> in your activities as inputs and outputs. Datasets  identify data within different data stores, such as tables, files,  folders, and documents.</li>
+  <li><strong>Activities</strong> contain the processing and transformation logic of your ETL. Here we have an example with the <code class="language-plaintext highlighter-rouge">Copy Data</code> activity that is used to ingest from and land data into data stores. Other possibilities are available. Indeed you can use code-free transformations to process and clean the data using the <code class="language-plaintext highlighter-rouge">Mapping Data Flow</code> activity.  It can execute a stored procedure, Hive Query or push data into a machine learning model to perform analysis. Usually you will have several activities inside you pipeline. You can actually group them into sub-pipelines and decide to schedule them or run them based on specific triggers. in conclusion we distinguish three type of activities: <strong>data movement</strong>, <strong>data transformation</strong> and <strong>control activities</strong>.</li>
+  <li>The <strong>integration runtime</strong> provides the compute environment you need for your pipelines. There are three types of Integration runtime: Azure, Self-hosted and Azure-SSIS.</li>
+</ul>
+
+<h3 id="azure-data-factory-security">Azure Data Factory security</h3>
+
+<p>To create ADF instances, you need to be a member of the <strong>contributor</strong> or <strong>owner</strong> roles or an <strong>administrator</strong> of the Azure subscription. More specifically to create and manage resources from the Azure portal, you must be in the <strong>Data Factory Contributor</strong> role at the resource group level or above. If you manage resources with PowerShell or the SDK, the <strong>contributor</strong> role at the resource level or above is sufficient. Here some of the permissions you get once you have the contributor role:</p>
+
+<ul>
+  <li>Create, edit, delete data factories and child resources (i.e., datasets, linked services, pipelines, triggers and integaration runtimes).</li>
+  <li>Deploy Resources manager templates.</li>
+  <li>Manage App insights alerts for Data Factory</li>
+</ul>
+
+<h3 id="manage-interation-runtimes">Manage interation runtimes</h3>
+
+<p>In Data Factory, an activity defines the action to be performed. A  linked service defines a target data store or a compute service. An  integration runtime provides the infrastructure for the activity and  linked services. It is the compute infrastructure used by ADF. There are three types of integration runtimes:</p>
+
+<ul>
+  <li>Azure</li>
+  <li>Self-hosted</li>
+  <li>Azure-SSIS</li>
+</ul>
+
+<p>For copy activity you need to be careful with the type of integration runtime:</p>
+
+<ul>
+  <li>To copy data between two <strong>cloud data sources</strong> that both use AZURE IR, ADF will use the Azure runtime.</li>
+  <li>To copy data between <strong>a cloud data source and a data source from a private network</strong>, ADF should use the self-hosted.</li>
+  <li>For SSIS packages use the Azure SSIS</li>
+</ul>
+
+<h3 id="copy-activity-performance">Copy activity performance</h3>
+
+<p>ADF offers a serverless architecture that permits to develop pipelines to maximize data movement. but these pipelines can consume a lot of network bandwidth and IOPS. There are different ways of measuring and improving the performance of ADF <code class="language-plaintext highlighter-rouge">Copy</code> activity:</p>
+
+<ul>
+  <li>If you are using the Azure integration runtime check the Data Integration Unit (DIU). It is a measure that represents the power of a single unit in Azure Data Factory. Power is a combination of CPU,  memory, and network resource allocation.</li>
+  <li>If you are using the slef hosted integration runtime, try to increase concurrent workload by increasing the number of concurrent jobs by node or add more nodes.</li>
+  <li>Using a staged copy of your data can help also but in the case where your pipeline is slowing down a lot check the DIU.</li>
+</ul>
+
+<h3 id="data-factory-transformation-methods">Data Factory transformation methods</h3>
+
+<p>ADF offers a variety of methods to prepare / clean and transform the data. You can choose the one that best fit your needs depending on your projects.</p>
+
+<h4 id="transforming-data-using-mapping-data-flow">Transforming data using Mapping Data Flow</h4>
+
+<p>The Mapping Data Flows provide tools for establishing a wide set of data transformation without the need of code. The resulting data flows are executed on an Apache Spark cluster automatically provisionned when you execute the Mapping Data Flow. You have also the Wrangling Data Flow that to perform code free data cleaning and preparation. It allows to do basic data prepation in an interface very similar to excel.</p>
+
+<h4 id="transforming-data-using-compute-resources">Transforming data using compute resources</h4>
+
+<p>Azure Data Factory can spin-up compute resources to transform data using specific Big Data / SQL services. For example you can create a pipeline using an analytical data platform such as Spark pools in an Azure Synapse Analytics instance to perform a complex calculation using python. An alternative would be to run the data trasnformation in Azure Databricks using notebooks and code in Scala, Java, R or Python. Below is a table that contain most of the compute resources you can use for your data processing.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Compute environment</th>
+      <th>activities</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>On-demand HDInsight cluster or your own HDInsight cluster</td>
+      <td>Hive, Pig, Spark, MapReduce, Hadoop Streaming</td>
+    </tr>
+    <tr>
+      <td>Azure Batch</td>
+      <td>Custom activities</td>
+    </tr>
+    <tr>
+      <td>Azure Machine Learning Studio Machine</td>
+      <td>Learning activities: Batch Execution and Update Resource</td>
+    </tr>
+    <tr>
+      <td>Azure Machine Learning</td>
+      <td>Azure Machine Learning Execute Pipeline</td>
+    </tr>
+    <tr>
+      <td>Azure Data Lake Analytics</td>
+      <td>Data Lake Analytics U-SQL</td>
+    </tr>
+    <tr>
+      <td>Azure SQL, Azure SQL Data Warehouse, SQL Server</td>
+      <td>Stored Procedure</td>
+    </tr>
+    <tr>
+      <td>Azure Databricks</td>
+      <td>Notebook, Jar, Python</td>
+    </tr>
+    <tr>
+      <td>Azure Function</td>
+      <td>Azure Function activity</td>
+    </tr>
+  </tbody>
+</table>
+
+<h4 id="transforming-data-using-ssis-packages">Transforming data using SSIS packages</h4>
+
+<p>Azure Data Factory provides the ability to lift and shift existing SSIS workload, by creating an Azure-SSIS Integration Runtime to natively  execute SSIS packages.</p>
+
+<h3 id="data-factory-control-flow">Data Factory control flow</h3>
+
+<p>In ADF control flow permits to chain activities, branch them altogether based on conditions and define parameters at the pipeline level. It also includes some looping capacity where data is passed to a looping container (ForEach loop for example). Some of the common control flow are quoted below:</p>
+
+<ul>
+  <li><strong>Chaining activities:</strong> chain activities in a sequence</li>
+  <li><strong>Branching activities:</strong> depends on conditions like <code class="language-plaintext highlighter-rouge">if-condition</code> activity similar to an <code class="language-plaintext highlighter-rouge">if</code> statement in programming. When the condition evaluates to <code class="language-plaintext highlighter-rouge">true</code> a set of activities is executed. If <code class="language-plaintext highlighter-rouge">false</code> alternative activities are executed.</li>
+  <li><strong>Parameters:</strong> definition of parameters at the pipeline level which allows to pass arugments when invoking the pipeline on-demand or from a trigger.</li>
+  <li><strong>Looping containers:</strong> these containers defines repetition in a pipeline. You can use <code class="language-plaintext highlighter-rouge">ForEach</code> activity or the <code class="language-plaintext highlighter-rouge">Until</code> activity.</li>
+  <li><strong>Trigger based flows:</strong> pipelines can be triggered on-demand (event-based, blob posts) or by clock-time.</li>
+</ul>
+
+<h3 id="add-parameters-to-adf-components">Add parameters to ADF components</h3>
+
+<h4 id="parameterize-linked-services">Parameterize linked services</h4>
+
+<p>ADF provides the possibility to parameterize the following linked services:</p>
+
+<ul>
+  <li>Amazon Redshift</li>
+  <li>Azure Cosmos DB (SQL API)</li>
+  <li>Azure Database for MySQL</li>
+  <li>Azure SQL Database</li>
+  <li>Azure Synapse Analytics (formerly SQL DW)</li>
+  <li>MySQL</li>
+  <li>Oracle</li>
+  <li>SQL Server</li>
+  <li>Generic HTTP</li>
+  <li>Generic REST</li>
+</ul>
+
+<p><img src="/BrazLog/images/2021-07-28-02-azure-data-factory.png" alt="" /></p>
+
+<p>In the case you are using a connector not present in the list you can instead alter the JSON data that relates to the linked service. In linked service creation/edit blade -&gt; expand “Advanced” at the  bottom -&gt; check “Specify dynamic contents in JSON format” checkbox  -&gt; specify the linked service JSON payload.</p>
+
+<p><img src="/BrazLog/images/2021-07-28-03-azure-data-factory.png" alt="" /></p>
+
+<h4 id="global-parameters">Global parameters</h4>
+
+<p>Setting Global parameters allows you to use constants for consumption in pipeline expressions. A use-case for setting global parameters is when you have multiple pipelines where the parameters names and values are identical.</p>
+
+<h2 id="azure-synapse-analytics">Azure Synapse Analytics</h2>
+
+<p>Azure Synapse Analytics (ASA) is an integrated analytics platform which combines data warehousing, big data analytics, data integration and visualization into a single environment. You can use ASA to answer the following questions:</p>
+
+<ul>
+  <li><em>What happened:</em> This corresponds to <strong>descriptive analytics</strong> that involves the use of a Data warehouse using the dedicated SQL pool.</li>
+  <li><em>Why did it happen:</em> This corresponds to <strong>diagnostic analysis</strong> where you may need to extends your scope of analysis by exploring and finding more data. This can still be done with the SQL pool.</li>
+  <li><em>What will happen:</em> This corresponds to <strong>predictivie analysis</strong> based on previous trends or patterns, using the integrated Spark engine with the Azure Synapse Spark pools. These can be used with other services such as Azure Machine learning services or Azure Databricks.</li>
+  <li><em>What should I do</em>: This corresponds to <strong>prescriptive analysis</strong> where you need to take actions based on real-time or near-real time analysis of data using predictive analytics. ASA provides this capability by harnessing both Apache Spark, Azure Synapse link and by integrating streaming technologies such as Azure Stream Analytics. Power BI is integrated to the service allowing to build interactive dashboard for real-time analysis.</li>
+</ul>
+
+<p>As such ASA is the right choice if you need to do <strong>modern data warehousing</strong>, <strong>advanced analytics</strong>, <strong>Data exploration and discovery</strong>, <strong>real time analytics</strong> and <strong>data integration</strong> to ingest, prepare, model and serve the data to be used by downstream systems (outside or inside AZA).</p>
+
+<p><img src="/BrazLog/images/2021-07-28-01-azure-synapase-analytics.png" alt="" /></p>
+
+<h3 id="architecture-of-azure-synapse-analytics">Architecture of Azure Synapse Analytics</h3>
+
+<p><img src="/BrazLog/images/2021-07-28-02-azure-synapse-analytics.png" alt="" /></p>
+
+<p>We could divide the architecture in 4 main groups:</p>
+
+<ul>
+  <li><strong>Compute options:</strong> Provisioned SQL Pools (old Azure DW), on-demand SQL Pools (Serverless, can directly query Azure Data Lake, useful for ad-hoc analysis). We also got Provisioned Spark Pools (C#, Scala, Python, R, Java). be careful this is not Databricks.</li>
+  <li><strong>Orchestration options:</strong> Azure Data Factory with ADF Mapping Data Flows</li>
+  <li><strong>Storage options:</strong> Data Lake Store Gen2, a shared Metadata store that permits to share databases and tables between the different engines. You can for example access Spark tables with the SQL engines to create their own objects.</li>
+  <li><strong>Workspace options:</strong> Azure Synapse Studio (a complete development environment to use), Monitoring and Management.</li>
+</ul>
+
+<h3 id="provisioned-sql-pools-vs-on-demand-sql-pools">Provisioned SQL Pools VS on-demand SQL Pools</h3>
+
+<p>The dedicated model is referred to as dedicated SQL Pools. It refers to the <strong>data warehousing</strong> features that are generally available in Azure Synapse Analytics. Dedicated SQL pools represent a collection of resources (nodes) that are being provisioned when using Synapse SQL. Use the dedicated setup when you need (i) predictable performance and cost, (ii) create dedicated SQL pools to allocate processing power for <strong>data permanently stored in SQL tables</strong>.</p>
+
+<p>The serverless model is ideal for <strong>unplanned or ad hoc workloads</strong> as performing data exploration or preparing data for data virtualization.</p>
+
+<h3 id="spark-pools">Spark pools</h3>
+
+<p>Spark pool clusters are groups of computers that are treated as a single computer to handle the execution of commands issued from notebooks. Clusters allow processing of data to be parallelized across many computers to improve scale and performance. It consists of a <strong>Spark Driver</strong> and <strong>Worker nodes</strong>. The Driver node sends work to the Worker nodes and instructs them to pull data from a specified data source. Moreover, you can configure the number of nodes that are required to perform the task.</p>
+
+<blockquote>
+  <p>Some usage details:</p>
+
+  <ul>
+    <li>It takes around two minutes for fewer than 60 nodes and around 5 minutes for more to spin-up. The instance shut down automatically and by-default 5 minutes after the last job has been executed unless it is kept alive by a notebook connection.</li>
+    <li>You can create Spark pool with the portal, Power Shell or C# SDK</li>
+    <li>You can enable auto-scale to let pools automatically scale-up or down based on the workloads. Spark pools can be shut down with no loss of data since data is stored elsewhere on a Data Lake.</li>
+    <li>Spark pools can use Data Lake Store Gen2 and Blob storage.</li>
+    <li>Come with Anaconda librairies pre-installed.</li>
+  </ul>
+</blockquote>
+
+<p>If you need to process big data workloads that cannot be handle by Azure Synapse SQL use the Spark pools. If you have some Spark code already implemented use it! Do not re-implement it with Spark pools.</p>
+
+<h3 id="orchestration">Orchestration</h3>
+
+<p>Much of the functionality of Azure Synapse Pipelines come from the Azure Data Factory features and are commonly referred to as Pipelines. You can integrate data pipelines between SQL Pools, Spark Pools and SQL Serverless. For more details have a look to description above about Data Factory.</p>
+
+<h3 id="azure-synapse-and-data-warehouse-good-practices">Azure Synapse and data warehouse good practices</h3>
+
+<h4 id="loading-data">Loading data</h4>
+
+<p>Optimizing and speeding up data loads to minimize the impact on the  performance of ongoing queries is a key design goal in data warehousing. Analytical systems are a mixed of loading and querying workloads. Some need data in real-time, other load data periodically. So when you design your strategy for loading data you should ask some of the following questions:</p>
+
+<ul>
+  <li>Where is my data coming from?</li>
+  <li>Is the data new? or do you receive changes from existing datasets?</li>
+  <li>How often is the data being refreshed, added to or replaced?</li>
+  <li>What formats are the data coming in?</li>
+  <li>Is the data ingestible as-is? or are transformations and cleansing tasks required?</li>
+  <li>Should I transform the data prior to or after loading?</li>
+  <li>How complex or robust does the loading process have to be?</li>
+  <li>Which takes priority, loading or querying/analysis?</li>
+</ul>
+
+<p>There are different loading methods. You can directly load data with T-SQL and the <code class="language-plaintext highlighter-rouge">COPY</code> statement, loading data with the pipeline and the <code class="language-plaintext highlighter-rouge">Copy Data</code> activity or use T-SQL and polybase to define external tables.</p>
+
+<p>Polybase is tool that virtualizes the external data through the SQL pool, so that it can be queried in place like any other table. In Azure Synapse you can use polybase only with data stored in Azure Data Lake. Loading data with polybase implies to follow some steps:</p>
+
+<ul>
+  <li>First set the external data source like Azure Data Lake for example</li>
+  <li>Second create an database scoped credential to import data</li>
+  <li>Third Create the file format</li>
+</ul>
+
+<h4 id="optimizing-query-performance">Optimizing query performance</h4>
+
+<p>Before talking about performance let’s see quickly the architecture of SQL pools.</p>
+
+<p><img src="/BrazLog/images/2021-07-28-03-azure-synapse-analytics.png" alt="" /></p>
+
+<ul>
+  <li>
+    <p>Synapse SQL is a distributed computational architecture to process data across several nodes. Compute is uncoupled from storage allowing to scale compute resource independently of the data / storage. For dedicated pool scaling is based on the data warehouse unit (DWU) that is a combination of CPU, memory, and IO whereas scaling is done automatically for serverless SQL pool.</p>
+  </li>
+  <li>
+    <p>Applications connect and issue T-SQL commands to a Control node which is the single point of entry for Synapse SQL. it utilized a distributed processing engine to process data on worker nodes.</p>
+  </li>
+</ul>
+
+  </div><!-- from https://github.com/utterance/utterances -->
+<script src="https://utteranc.es/client.js"
+        repo="fbraza/BrazLog"
+        issue-term="title"
+        label="blogpost-comment"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+</script><a class="u-url" href="/BrazLog/cloud/azure/data%20engineering/2021/07/28/Azure-data-factory.html" hidden></a>
+</article>
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/BrazLog/"></data>
+
+  <div class="wrapper">
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col">
+        <p class="feed-subscribe">
+          <a href="/BrazLog/feed.xml">
+            <svg class="svg-icon orange">
+              <use xlink:href="/BrazLog/assets/minima-social-icons.svg#rss"></use>
+            </svg><span>Subscribe</span>
+          </a>
+        </p>
+      </div>
+      <div class="footer-col">
+        <p>Python · Scala · BigData · System Design · Data Engineering</p>
+      </div>
+    </div>
+
+    <div class="social-links"><ul class="social-media-list"><li><a rel="me" href="https://github.com/fbraza" title="fbraza"><svg class="svg-icon grey"><use xlink:href="/BrazLog/assets/minima-social-icons.svg#github"></use></svg></a></li><li><a rel="me" href="https://twitter.com/%40braza_faouzi" title="@braza_faouzi"><svg class="svg-icon grey"><use xlink:href="/BrazLog/assets/minima-social-icons.svg#twitter"></use></svg></a></li></ul>
+</div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>
