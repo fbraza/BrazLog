@@ -1,6 +1,6 @@
 ---
 hide: false
-title: Azure Data Engineer Notes: Storage accounts
+title: Azure Data Engineer Notes for Storage accounts
 toc: false
 comments: true
 layout: post

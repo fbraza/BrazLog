@@ -1,6 +1,6 @@
 ---
 hide: true
-title: Azure Data Engineer Notes: Azure Synapse Analytics
+title: Azure Data Engineer Notes for Azure Synapse Analytics
 toc: false
 comments: true
 layout: post

@@ -1,10 +1,10 @@
 ---
 hide: true
-title: Overview about Azure Cosmos DB
+title: Azure Data Engineer Notes for Azure Cosmos DB
 toc: false
 comments: true
 layout: post
-description: Notes about Cosmos DB
+description: Overview of Cosmos DB
 categories: [Cloud, Azure, Data Engineering]
 ---
 

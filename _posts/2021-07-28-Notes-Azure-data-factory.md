@@ -1,6 +1,6 @@
 ---
 hide: true
-title: Azure Data Engineer Notes: Azure Data Factory
+title: Azure Data Engineer Notes for Azure Data Factory
 toc: false
 comments: true
 layout: post
