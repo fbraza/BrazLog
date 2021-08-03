@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="twitter:card" content="summary_large_image" /><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Azure Data Engineer Notes for Azure Synapse Analytics | Braza Faouzi</title>
+<meta name="generator" content="Jekyll v4.1.1" />
+<meta property="og:title" content="Azure Data Engineer Notes for Azure Synapse Analytics" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Overview of Azure Synapse Analytics" />
+<meta property="og:description" content="Overview of Azure Synapse Analytics" />
+<link rel="canonical" href="https://fbraza.github.io/BrazLog/cloud/azure/data%20engineering/2021/07/27/Notes-Azure-synapse-analytics.html" />
+<meta property="og:url" content="https://fbraza.github.io/BrazLog/cloud/azure/data%20engineering/2021/07/27/Notes-Azure-synapse-analytics.html" />
+<meta property="og:site_name" content="Braza Faouzi" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2021-07-27T00:00:00-05:00" />
+<script type="application/ld+json">
+{"url":"https://fbraza.github.io/BrazLog/cloud/azure/data%20engineering/2021/07/27/Notes-Azure-synapse-analytics.html","@type":"BlogPosting","headline":"Azure Data Engineer Notes for Azure Synapse Analytics","dateModified":"2021-07-27T00:00:00-05:00","datePublished":"2021-07-27T00:00:00-05:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://fbraza.github.io/BrazLog/cloud/azure/data%20engineering/2021/07/27/Notes-Azure-synapse-analytics.html"},"description":"Overview of Azure Synapse Analytics","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/BrazLog/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="https://fbraza.github.io/BrazLog/feed.xml" title="Braza Faouzi" /><link rel="shortcut icon" type="image/x-icon" href="/BrazLog/images/favicon.ico"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Primer/15.2.0/primer.css" integrity="sha512-xTz2ys4coGAOz8vuV1NcQBkgVmKhsSEtjbqyMJbBHRplFuvKIUo6xhLHpAyPt9mfR6twHJgn9OgVLuqOvjeBhg==" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css" integrity="sha512-1PKOgIY59xJ8Co8+NE6FZ+LOAZKjy+KY8iq0G4B3CyeY6wYHN3yt9PW0XpSriVlkMXe40PTKnXrLnZ9+fkDaog==" crossorigin="anonymous" />
+
+<script>
+function wrap_img(fn) {
+    if (document.attachEvent ? document.readyState === "complete" : document.readyState !== "loading") {
+        var elements = document.querySelectorAll(".post img");
+        Array.prototype.forEach.call(elements, function(el, i) {
+            if (el.getAttribute("title") && (el.className != "emoji")) {
+                const caption = document.createElement('figcaption');
+                var node = document.createTextNode(el.getAttribute("title"));
+                caption.appendChild(node);
+                const wrapper = document.createElement('figure');
+                wrapper.className = 'image';
+                el.parentNode.insertBefore(wrapper, el);
+                el.parentNode.removeChild(el);
+                wrapper.appendChild(el);
+                wrapper.appendChild(caption);
+            }
+        });
+    } else { document.addEventListener('DOMContentLoaded', fn); }
+}
+window.onload = wrap_img;
+</script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function(){
+    // add link icon to anchor tags
+    var elem = document.querySelectorAll(".anchor-link")
+    elem.forEach(e => (e.innerHTML = '<i class="fas fa-link fa-xs"></i>'));
+    });
+</script>
+</head>
+<body><header class="site-header">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/BrazLog/">Braza Faouzi</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/BrazLog/about/">About Me</a><a class="page-link" href="/BrazLog/search/">Search</a><a class="page-link" href="/BrazLog/categories/">Tags</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Azure Data Engineer Notes for Azure Synapse Analytics</h1><p class="page-description">Overview of Azure Synapse Analytics</p><p class="post-meta post-meta-title"><time class="dt-published" datetime="2021-07-27T00:00:00-05:00" itemprop="datePublished">
+        Jul 27, 2021
+      </time>
+       • <span class="read-time" title="Estimated read time">
+    
+    
+      9 min read
+    
+</span></p>
+
+    
+      <p class="category-tags"><i class="fas fa-tags category-tags-icon"></i></i> 
+      
+        <a class="category-tags-link" href="/BrazLog/categories/#Cloud">Cloud</a>
+        &nbsp;
+      
+        <a class="category-tags-link" href="/BrazLog/categories/#Azure">Azure</a>
+        &nbsp;
+      
+        <a class="category-tags-link" href="/BrazLog/categories/#Data Engineering">Data Engineering</a>
+        
+      
+      </p>
+    
+
+    </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <p>I am going to share my notes taken during the preparation for the Azure Data Engineer certification (DP-203). I will share them through a series of articles that cover the main concepts and features behind the Azure services needed for Data Engineering. The last set of articles will be focused on cloud architectures and pattern with Azure. If you want to access a specific topic have click to the desirable article below:</p>
+
+<ul>
+  <li>Cosmos DB</li>
+  <li>Azure SQL</li>
+  <li>Azure Synapse Analytics</li>
+  <li>Azure Data Factory</li>
+  <li>Azure Databricks</li>
+  <li>Azure Event Hub and Azure Stream Analytics</li>
+</ul>
+
+<p>Here, we are going to talk about the Azure Synapse Analytics service which provides a comprehensive approach for ETL / ELT. It allows you to ingest data, prepare and train it (Synapse SQL and Spark pool) and serve it to a Data warehouse. Several connectors exists to then analyze and visualize the data like power BI. We are going to focus mainly and the SQL solutions proposed by Azure Synapse and see their features.</p>
+
+<h2 id="azure-synapse-analytics">Azure Synapse Analytics</h2>
+
+<p>Azure Synapse Analytics (ASA) is an integrated analytics platform which combines data warehousing, big data analytics, data integration and visualization into a single environment. You can use ASA to answer the following questions:</p>
+
+<ul>
+  <li><em>What happened:</em> This corresponds to <strong>descriptive analytics</strong> that involves the use of a Data warehouse using the dedicated SQL pool.</li>
+  <li><em>Why did it happen:</em> This corresponds to <strong>diagnostic analysis</strong> where you may need to extends your scope of analysis by exploring and finding more data. This can still be done with the SQL pool.</li>
+  <li><em>What will happen:</em> This corresponds to <strong>predictivie analysis</strong> based on previous trends or patterns, using the integrated Spark engine with the Azure Synapse Spark pools. These can be used with other services such as Azure Machine learning services or Azure Databricks.</li>
+  <li><em>What should I do</em>: This corresponds to <strong>prescriptive analysis</strong> where you need to take actions based on real-time or near-real time analysis of data using predictive analytics. ASA provides this capability by harnessing both Apache Spark, Azure Synapse link and by integrating streaming technologies such as Azure Stream Analytics. Power BI is integrated to the service allowing to build interactive dashboard for real-time analysis.</li>
+</ul>
+
+<p>As such ASA is the right choice if you need to do <strong>modern data warehousing</strong>, <strong>advanced analytics</strong>, <strong>Data exploration and discovery</strong>, <strong>real time analytics</strong> and <strong>data integration</strong> to ingest, prepare, model and serve the data to be used by downstream systems (outside or inside AZA).</p>
+
+<p><img src="/home/fbraza/Documents/BLOG/BrazLog/images/2021-07-28-01-azure-synapse-analytics.png" alt="" /></p>
+
+<h2 id="architecture-of-azure-synapse-analytics">Architecture of Azure Synapse Analytics</h2>
+
+<p><img src="/home/fbraza/Documents/BLOG/BrazLog/images/2021-07-28-02-azure-synapse-analytics.png" alt="" /></p>
+
+<p>We could divide the architecture in 4 main groups:</p>
+
+<ul>
+  <li><strong>Compute options:</strong> Provisioned SQL Pools (old Azure DW), on-demand SQL Pools (Serverless, can directly query Azure Data Lake, useful for ad-hoc analysis). We also got Provisioned Spark Pools (C#, Scala, Python, R, Java). be careful this is not Databricks.</li>
+  <li><strong>Orchestration options:</strong> Azure Data Factory with ADF Mapping Data Flows</li>
+  <li><strong>Storage options:</strong> Data Lake Store Gen2, a shared Metadata store that permits to share databases and tables between the different engines. You can for example access Spark tables with the SQL engines to create their own objects.</li>
+  <li><strong>Workspace options:</strong> Azure Synapse Studio (a complete development environment to use), Monitoring and Management.</li>
+</ul>
+
+<h3 id="synapse-sql-pools">Synapse SQL Pools</h3>
+
+<p>You have two approaches for the Synapses SQL pool:</p>
+
+<ul>
+  <li>The dedicated model is referred to as dedicated SQL Pools. It refers to the <strong>data warehousing</strong> features that are generally available in Azure Synapse Analytics. Dedicated SQL pools represent a collection of resources (nodes) that are being provisioned when using Synapse SQL. Use the dedicated setup when you need (i) predictable performance and cost, (ii) create dedicated SQL pools to allocate processing power for <strong>data permanently stored in SQL tables</strong>.</li>
+  <li>The serverless model is ideal for <strong>unplanned or ad hoc workloads</strong> as performing data exploration or preparing data for data virtualization.</li>
+</ul>
+
+<p>With Synapse SQL pool you can import Big Data by different ways. You can:</p>
+
+<ul>
+  <li>
+    <p>directly load data with T-SQL and the <code class="language-plaintext highlighter-rouge">COPY</code> statement</p>
+
+    <div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">COPY</span> <span class="k">INTO</span> <span class="p">[</span><span class="n">dbo</span><span class="p">].[</span><span class="n">YOUR_TABLE</span><span class="p">]</span> <span class="k">FROM</span> <span class="s1">'https://URI_TO_YOUR_BLOB'</span>
+<span class="k">WITH</span> <span class="p">(</span>
+	<span class="n">FIELDTERMINATOR</span><span class="o">=</span><span class="s1">','</span><span class="p">,</span>
+	<span class="n">ROWTERMINATOR</span><span class="o">=</span><span class="s1">'0x0A'</span>
+<span class="p">);</span>
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>load data with the pipeline and the <code class="language-plaintext highlighter-rouge">Copy Data</code> activity</p>
+  </li>
+  <li>
+    <p>use <strong>T-SQL and PolyBase</strong> to define external tables. Polybase is tool that virtualizes the external data through the SQL pool, so that it can be queried in place like any other table. <strong>In Azure Synapse you can use Polybase only with data stored in Azure Data Lake</strong>. Loading data with polybase implies to follow some steps (First set the external data source typically Azure Data Lake. Second create an database scoped credential to import data. Third Create the file format.)</p>
+  </li>
+</ul>
+
+<h4 id="architecture-of-synapse-sql">Architecture of Synapse SQL</h4>
+
+<p><img src="/home/fbraza/Documents/BLOG/BrazLog/images/2021-07-28-04-azure-synapse-analytics.png" alt="" /></p>
+
+<ul>
+  <li>Synapse SQL is a distributed computational architecture to process data across several nodes.</li>
+  <li>Compute is uncoupled from storage allowing to scale compute resource independently of the data / storage. For dedicated pool scaling is based on the data warehouse unit (DWU) that is a combination of CPU, memory, and IO whereas scaling is done automatically for serverless SQL pool.</li>
+  <li>Query are sent to the control node. The control node will use the <strong>massively parallel processing engine</strong> (MPP engine) to distribute the query across several worker nodes. The MPP engine optimizes the queries for parallel processing.</li>
+  <li>The compute nodes store all of the user data in Azure Storage (Data Lake). More interestingly note the presence of a <strong>Data Movement Service</strong> implemented to optimize the movement of Data across nodes.</li>
+</ul>
+
+<h4 id="usage-cost">Usage cost</h4>
+
+<p>To monitor usage cost, Azure uses a metric called <strong>Data Warehousing Unit</strong> (DWU) that is a bundle of resources (CPU, memory and IOs). You need to specify the number of DWU you need for the pool. If you want higher performance for your workload at any point in time, just increase the numbers of DWU.</p>
+
+<h4 id="create-an-azure-synapse-analytics-instance">Create an Azure Synapse Analytics instance</h4>
+
+<p>The procedure is very similar to create an Azure SQL instance. You need to specify the <code class="language-plaintext highlighter-rouge">SQL pool name</code> and choose a <code class="language-plaintext highlighter-rouge">Server</code>. If you already have deployed SQL server you can use them. Otherwise create one.</p>
+
+<p><img src="/home/fbraza/Documents/BLOG/BrazLog/images/2021-07-28-05-azure-synapse-analytics.png" alt="" /></p>
+
+<h3 id="designing-tables-in-azure-synapse-analytics">Designing Tables in Azure Synapse Analytics</h3>
+
+<p>The concepts described now are some definitions of common Data Warehousing approaches and do not strictly apply to Azure Synapse. Typically in a data warehouse you have three types of tables:</p>
+
+<ul>
+  <li><strong>Integration tables</strong> that are used to integrate the raw data into the staging area.</li>
+  <li><strong>Fact tables</strong> that contain quantitative data generally loaded from transactional table (e.g, sales).</li>
+  <li><strong>Dimension tables</strong> that contain attribute data that does not change frequently and use to make joins with the fact tables.</li>
+</ul>
+
+<p>When using Azure Synapse Analytics or another data warehousing tool like Hive, you have different choice for the persistence of your tables. In Azure Synapse you have:</p>
+
+<ul>
+  <li><strong>Regular tables</strong> that are stored in Azure storage as part of the SQL.</li>
+  <li><strong>Temporary tables</strong> that last as long as the session and use local storage for performance.</li>
+  <li><strong>External tables</strong> that are useful to first load data. In Azure, external tables point to and reference data in an Azure Storage blob or Azure Data Lake.</li>
+</ul>
+
+<p>When created tables you need to choose the types of tables you want. be careful choosing the type will have impact on performance:</p>
+
+<ul>
+  <li>
+    <p><strong>Hash-distributed tables</strong> - The table rows are distributed across the Compute nodes by using a deterministic hash function to assign each row to one <strong>distribution</strong>. A distribution is the basic unit of storage and processing for parallel queries. This particularly good for querying large tables (<em>more than 2 GB</em>) or if you have frequent <code class="language-plaintext highlighter-rouge">INSERT, UPDATE, DELETE</code> operations.</p>
+
+    <blockquote>
+      <p>The choice of the distributed columns is important. <code class="language-plaintext highlighter-rouge">NULLABLE</code> columns are bad candidates as they are going to generate the same hashed result. As such, rows will end up on the same skewed distribution. Similarly, fact tables with columns containing default values or date values are not good candidates for hashed distribution. Large fact tables or historical transaction tables are usually stored as hash-distributed tables. These tables usually have a surrogate key that is monotonically increasing and are used in <code class="language-plaintext highlighter-rouge">JOIN</code> with other facts or dimension tables. These surrogate keys are good candidates for distributing the data as they are unique.</p>
+    </blockquote>
+  </li>
+  <li>
+    <p><strong>Replicated tables</strong> - A table that is replicated caches a full copy of the table on each compute node. Consequently, replicating a table removes the need to transfer data among compute nodes before a join or aggregation. Replicated tables are best utilized with small tables. Extra storage is required and there is additional overhead that is incurred when writing data, which make large tables impractical.</p>
+  </li>
+  <li>
+    <p><strong>Round-robin tables</strong> - A round-robin distributed table distributes data evenly across the table but without any further optimization. A distribution is first chosen at random and then buffers of rows are assigned to distributions sequentially. <strong>It is recommended to load data into a round-robin table</strong> for staging. <code class="language-plaintext highlighter-rouge">JOIN</code> operations on round-robin tables require reshuffling data, which takes additional time.</p>
+
+    <blockquote>
+      <p>Dimension tables or other lookup tables are stored as round-robin tables. These tables connects to more than one fact tables and optimizing for one <code class="language-plaintext highlighter-rouge">JOIN</code> may not be the best idea. Usually, dimension tables are smaller which may leave some distributions empty when hash distributed whereas round-robin by definition, guarantees a uniform data distribution.</p>
+    </blockquote>
+  </li>
+</ul>
+
+<h3 id="spark-pools">Spark pools</h3>
+
+<p>Spark pool clusters are groups of computers that are treated as a single computer to handle the execution of commands issued from notebooks. Clusters allow processing of data to be parallelized across many computers to improve scale and performance. It consists of a <strong>Spark Driver</strong> and <strong>Worker nodes</strong>. The Driver node sends work to the Worker nodes and instructs them to pull data from a specified data source. Moreover, you can configure the number of nodes that are required to perform the task.</p>
+
+<blockquote>
+  <p>Some usage details:</p>
+
+  <ul>
+    <li>It takes around two minutes for fewer than 60 nodes and around 5 minutes for more to spin-up. The instance shut down automatically and by-default 5 minutes after the last job has been executed unless it is kept alive by a notebook connection.</li>
+    <li>You can create Spark pool with the portal, Power Shell or C# SDK</li>
+    <li>You can enable auto-scale to let pools automatically scale-up or down based on the workloads. Spark pools can be shut down with no loss of data since data is stored elsewhere on a Data Lake.</li>
+    <li>Spark pools can use Data Lake Store Gen2 and Blob storage.</li>
+    <li>Come with Anaconda librairies pre-installed.</li>
+  </ul>
+</blockquote>
+
+<p>If you need to process big data workloads that cannot be handle by Azure Synapse SQL use the Spark pools. If you have some Spark code already implemented use it! Do not re-implement it with Spark pools.</p>
+
+
+  </div><!-- from https://github.com/utterance/utterances -->
+<script src="https://utteranc.es/client.js"
+        repo="fbraza/BrazLog"
+        issue-term="title"
+        label="blogpost-comment"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+</script><a class="u-url" href="/BrazLog/cloud/azure/data%20engineering/2021/07/27/Notes-Azure-synapse-analytics.html" hidden></a>
+</article>
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/BrazLog/"></data>
+
+  <div class="wrapper">
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col">
+        <p class="feed-subscribe">
+          <a href="/BrazLog/feed.xml">
+            <svg class="svg-icon orange">
+              <use xlink:href="/BrazLog/assets/minima-social-icons.svg#rss"></use>
+            </svg><span>Subscribe</span>
+          </a>
+        </p>
+      </div>
+      <div class="footer-col">
+        <p>Python · Scala · BigData · System Design · Data Engineering</p>
+      </div>
+    </div>
+
+    <div class="social-links"><ul class="social-media-list"><li><a rel="me" href="https://github.com/fbraza" title="fbraza"><svg class="svg-icon grey"><use xlink:href="/BrazLog/assets/minima-social-icons.svg#github"></use></svg></a></li><li><a rel="me" href="https://twitter.com/%40braza_faouzi" title="@braza_faouzi"><svg class="svg-icon grey"><use xlink:href="/BrazLog/assets/minima-social-icons.svg#twitter"></use></svg></a></li></ul>
+</div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>

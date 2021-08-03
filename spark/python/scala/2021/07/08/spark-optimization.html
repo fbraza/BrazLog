@@ -99,7 +99,7 @@ window.onload = wrap_img;
     </header>
 
   <div class="post-content e-content" itemprop="articleBody">
-    <p>Apache Spark is an analytics engine designed to be particularly efficient to process Big Data. You can use Spark on an on-premise or a cloud-deployed Hadoop cluster or through the Databricks platform. In any of these setups, using Spark efficiently is critical if you want to control and reduce costs. For that you should be able to diagnose and resolve some common performance issues. These usually fall into the five following categories: spill, skew, shuffle, storage and serialization. Here we are going to go over each of them to understand what they are, see how to identify them and mitigate their impact on your workflow.</p>
+    <p>Apache Spark is an in-memory processing and analytics engine designed to be particularly efficient to process Big Data. You can use Spark on an on-premise or a cloud-deployed Hadoop cluster or through the Databricks platform. In any of these setups, using Spark efficiently is critical if you want to control and reduce costs. For that you should be able to diagnose and resolve some common performance issues. These usually fall into the five following categories: spill, skew, shuffle, storage and serialization. Here we are going to go over each of them to understand what they are, see how to identify them and mitigate their impact on your workflow.</p>
 
 <h2 id="skew">Skew</h2>
 
@@ -339,9 +339,9 @@ window.onload = wrap_img;
 <p>Measures to mitigate these issues are pretty simple:</p>
 
 <ul>
-  <li>avoid using tiny files if possible or merge them into bigger files before performing any operations on your data.</li>
+  <li>avoid using tiny files if possible, or merge them into bigger files before performing any operations on your data.</li>
   <li>keep in mind that the reading / scanning problem cannot be solved by adding more resources to your workers. Everything is handled by the driver.</li>
-  <li>partition your data according to your needs. Avoid over-partitioning if not necessary although this will depend on the data problem you are tackling.</li>
+  <li>partition your data according to your needs. Avoid over-partitioning, if not necessary, although this will depend on the data problem you are tackling.</li>
 </ul>
 
 <h2 id="serialization">Serialization</h2>
@@ -364,7 +364,7 @@ window.onload = wrap_img;
 
 <ul>
   <li>process manually RDDs (writing <code class="language-plaintext highlighter-rouge">map()</code> and / or <code class="language-plaintext highlighter-rouge">lambda</code> functions).</li>
-  <li>use user-defined functions (UDFs) that are useful and easy-to-use to extend Spark SQL functionalities. However they are “black-box” and prevent several Spark optimization processes including the way Spark deals with Java objects. For example using UDFs in PySpark will bring you back to the double serialization issue.</li>
+  <li>use user-defined functions (UDFs) that are useful and easy-to-use to extend Spark SQL functionalities. However, UDFs are “black-box” and prevent several Spark optimization processes including the way Spark deals with Java objects. For example, using UDFs in PySpark will bring you back to the double serialization issue.</li>
 </ul>
 
 <h3 id="mitigating-storage-issues-1">Mitigating storage issues</h3>
