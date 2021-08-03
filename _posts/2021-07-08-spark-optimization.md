@@ -7,7 +7,7 @@ description: Tricks to optimize your workflow on Spark
 categories: [Spark, Python, Scala]
 ---
 
-Apache Spark is an analytics engine designed to be particularly efficient to process Big Data. You can use Spark on an on-premise or a cloud-deployed Hadoop cluster or through the Databricks platform. In any of these setups, using Spark efficiently is critical if you want to control and reduce costs. For that you should be able to diagnose and resolve some common performance issues. These usually fall into the five following categories: spill, skew, shuffle, storage and serialization. Here we are going to go over each of them to understand what they are, see how to identify them and mitigate their impact on your workflow.
+Apache Spark is an in-memory processing and analytics engine designed to be particularly efficient to process Big Data. You can use Spark on an on-premise or a cloud-deployed Hadoop cluster or through the Databricks platform. In any of these setups, using Spark efficiently is critical if you want to control and reduce costs. For that you should be able to diagnose and resolve some common performance issues. These usually fall into the five following categories: spill, skew, shuffle, storage and serialization. Here we are going to go over each of them to understand what they are, see how to identify them and mitigate their impact on your workflow.
 
 ## Skew
 
@@ -186,9 +186,9 @@ On the Spark UI you have access to some interesting metrics to monitor file scan
 
 Measures to mitigate these issues are pretty simple:
 
-- avoid using tiny files if possible or merge them into bigger files before performing any operations on your data.
+- avoid using tiny files if possible, or merge them into bigger files before performing any operations on your data.
 - keep in mind that the reading / scanning problem cannot be solved by adding more resources to your workers. Everything is handled by the driver.
-- partition your data according to your needs. Avoid over-partitioning if not necessary although this will depend on the data problem you are tackling.
+- partition your data according to your needs. Avoid over-partitioning, if not necessary, although this will depend on the data problem you are tackling.
 
 ## Serialization
 
@@ -207,7 +207,7 @@ The project Tungsten in 2004 and the design of the DataFrame API were critical s
 All these theoretical details are not easy to grasp but shed light on a very important aspect of Spark: **each time you will get away from the DataFrame API in your code, you will lose all these optimizations and encounter some performance hits.** This is notably the case when you:
 
 - process manually RDDs (writing `map()` and / or `lambda` functions).
-- use user-defined functions (UDFs) that are useful and easy-to-use to extend Spark SQL functionalities. However they are "black-box" and prevent several Spark optimization processes including the way Spark deals with Java objects. For example using UDFs in PySpark will bring you back to the double serialization issue.
+- use user-defined functions (UDFs) that are useful and easy-to-use to extend Spark SQL functionalities. However, UDFs are "black-box" and prevent several Spark optimization processes including the way Spark deals with Java objects. For example, using UDFs in PySpark will bring you back to the double serialization issue.
 
 ### Mitigating storage issues
 
