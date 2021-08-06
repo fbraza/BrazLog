@@ -167,3 +167,34 @@ To make your storage account a Data Lake Storage Gen2, you need to enable this o
 
 ![]({{site.baseurl}}/images/2021-08-02-Notes-Azure-storage/fig09.png)
 
+## Monitoring the Storage account
+
+To monitor your Azure storage account you can:
+
+- Use Azure Monitor to view information as the amount of storage used
+- Use the `Insights` tab in the Azure storage account to access similar metrics
+- Use the classic `Diagnostic` settings that are available for Azure storage account and that permit to record and write selected metrics.
+- Define some loggin aspects for the storage account.
+- **Storage metrics** are recorded in Tables tores. Their names start by `$`.
+- **Storage logs** are recorded in a Blob container named `$logs`
+
+### The `Insights` tab
+
+![]({{site.baseurl}}/images/2021-08-02-Notes-Azure-storage/fig10.png)
+
+### The Azure Monitor
+
+![]({{site.baseurl}}/images/2021-08-02-Notes-Azure-storage/fig11.png)
+
+### The classic `Diagnostic` settings
+
+![]({{site.baseurl}}/images/2021-08-02-Notes-Azure-storage/fig12.png)
+
+> Notice the `Logging` part where you can record logs for READ, WRITE and DELETE requests. You can also set a specific retention period
+
+## Conclusion
+
+We tried here to cover the most basic features of the Azure storage account by giving you an overview of the main concepts and services. You can start from here and start digging into the Microsoft documentation that provide much more deep explanation for each services. I am sharing with you some links that might be useful to look at to broaden your knowledge about storage in Azure:
+
+- [Big Data and Azure Data Lake Storage Gen2: Ingest, process, visualize and download data](https://docs.microsoft.com/en-us/azure/storage/blobs/data-lake-storage-data-scenarios#download-the-data)
+- [Azure Data Lake Storage Gen2: Best practices](https://docs.microsoft.com/en-us/azure/storage/blobs/data-lake-storage-best-practices)
