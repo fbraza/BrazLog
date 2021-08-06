@@ -77,7 +77,7 @@ window.onload = wrap_img;
        • <span class="read-time" title="Estimated read time">
     
     
-      9 min read
+      10 min read
     
 </span></p>
 
@@ -320,6 +320,43 @@ window.onload = wrap_img;
 
 <p><img src="/BrazLog/images/2021-08-02-Notes-Azure-storage/fig09.png" alt="" /></p>
 
+<h2 id="monitoring-the-storage-account">Monitoring the Storage account</h2>
+
+<p>To monitor your Azure storage account you can:</p>
+
+<ul>
+  <li>Use Azure Monitor to view information as the amount of storage used</li>
+  <li>Use the <code class="language-plaintext highlighter-rouge">Insights</code> tab in the Azure storage account to access similar metrics</li>
+  <li>Use the classic <code class="language-plaintext highlighter-rouge">Diagnostic</code> settings that are available for Azure storage account and that permit to record and write selected metrics.</li>
+  <li>Define some loggin aspects for the storage account.</li>
+  <li><strong>Storage metrics</strong> are recorded in Tables tores. Their names start by <code class="language-plaintext highlighter-rouge">$</code>.</li>
+  <li><strong>Storage logs</strong> are recorded in a Blob container named <code class="language-plaintext highlighter-rouge">$logs</code></li>
+</ul>
+
+<h3 id="the-insights-tab">The <code class="language-plaintext highlighter-rouge">Insights</code> tab</h3>
+
+<p><img src="/BrazLog/images/2021-08-02-Notes-Azure-storage/fig10.png" alt="" /></p>
+
+<h3 id="the-azure-monitor">The Azure Monitor</h3>
+
+<p><img src="/BrazLog/images/2021-08-02-Notes-Azure-storage/fig11.png" alt="" /></p>
+
+<h3 id="the-classic-diagnostic-settings">The classic <code class="language-plaintext highlighter-rouge">Diagnostic</code> settings</h3>
+
+<p><img src="/BrazLog/images/2021-08-02-Notes-Azure-storage/fig12.png" alt="" /></p>
+
+<blockquote>
+  <p>Notice the <code class="language-plaintext highlighter-rouge">Logging</code> part where you can record logs for READ, WRITE and DELETE requests. You can also set a specific retention period</p>
+</blockquote>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>We tried here to cover the most basic features of the Azure storage account by giving you an overview of the main concepts and services. You can start from here and start digging into the Microsoft documentation that provide much more deep explanation for each services. I am sharing with you some links that might be useful to look at to broaden your knowledge about storage in Azure:</p>
+
+<ul>
+  <li><a href="https://docs.microsoft.com/en-us/azure/storage/blobs/data-lake-storage-data-scenarios#download-the-data">Big Data and Azure Data Lake Storage Gen2: Ingest, process, visualize and download data</a></li>
+  <li><a href="https://docs.microsoft.com/en-us/azure/storage/blobs/data-lake-storage-best-practices">Azure Data Lake Storage Gen2: Best practices</a></li>
+</ul>
 
   </div><!-- from https://github.com/utterance/utterances -->
 <script src="https://utteranc.es/client.js"
