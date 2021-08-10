@@ -11,7 +11,6 @@ categories: [Cloud, Azure, Data Engineering]
 I am going to share my notes taken during the preparation for the Azure Data Engineer certification (DP-203). I will share them through a series of articles that cover the main concepts and features behind the Azure services needed for Data Engineering. All articles are treated following a same structure. We describe the Azure services and highlight their specific features, security & monitoring practices. The last set of articles will be focused on cloud architectures and pattern with Azure. If you want to access a specific topic you can choose the topic just below:
 
 - Cosmos DB
-- Azure Storage Account
 - Azure SQL
 - Azure Synapse Analytics
 - Azure Data Factory
@@ -75,41 +74,52 @@ Once you created your storage account, you can have access to it and use the fou
 
 You have several ways of authorizing the access to your storage account:
 
--  **First by using the storage account access keys**. You get two keys for your storage account. The keys give access to all services and all data within the storage account. So giving the key is similar to make the new user an administrator. You can rotate keys for security purpose. If you rotate `key1` for `key2`, regenerate the `key1`.
+- **First by using the storage account access keys**. You get two keys for your storage account. The keys give access to all services and all data within the storage account. So giving the key is similar to make the new user an administrator. You can rotate keys for security purpose. If you rotate `key1` for `key2`, regenerate the `key1`. If you share the account access key we often talk about a **shared key**.
 
-- **Second by using Azure Active Directory.** You can authorized users in Azure AD to work with Azure blob storage. For this you need to assign the required RBAC roles to users who want to use Azure Blob Storage. The default roles are (i) *Storage Blob Data Contributor* (read/write/delete permissions on Blob resources), *Storage Blob Data Reader* (read only access)
+- >**Second by using shared access signatures** (SAS). You can grant secure and temporary access at the level of the storage account without the need of compromising the storage account keys. There you can define which services you want to give access to and what kind of permissions the users will have. The user does not need to have a identity registered in Azure AD. You can also define access with `Permissions` and `expiry data/time` at the level of your blob object with the help of the shared keys. There you can specify the allowed IP addresses. To sign the shared access signature, it uses the storage account key. It return a `Blob SAS Token` or `Blob SAS URL`.
 
-- **Third by using shared access signatures**. You can grant secure and temporary access at the level of the storage account without the need of compromising the storage account keys. There you can define which services you want to give access to and what kind of permissions the users will have. See below what it looks like to give permissions with shared keys'
+  >With Shared Key and SAS authorization, Azure RBAC and ACLs have no effect.
 
-  ![]({{site.baseurl}}/images/2021-08-02-Notes-Azure-storage/fig06.png)
+- **Third by using RBAC or ACLs.** Both require the user or application to have an identity in Azure AD. RBAC grants coarse-grain access (to the whole storage account). You cannot decide to which blob, files or directory the user will have access but just define wether he will have read and write access over the container. If you want to grant fine-grained access to files and directories use the Azure ACLs.
 
-  You can also define access with `Permissions` and `expiry data/time` at the level of your blob object with the help of the shared keys. There you can specify the allowed IP addresses. To sign the shared access signature it uses the storage account key. It return a `Blob SAS Token` or `Blob SAS URL`.
+### RBAC
 
-![]({{site.baseurl}}/images/2021-08-02-Notes-Azure-storage/fig07.png)
+![]({{site.baseurl}}/images/2021-08-02-Notes-Azure-storage/fig13.png)
 
-- **Fourth by using the string connection key** with the AZ CLI or one of the available SDKs
+- Identities who want to access the storage can be, users or group as administrators in Azure AD. It can also be a created in Azure AD or it could be a **service principal** that is an identity you create for an application. All these Azure AD identities are called **Security Principals**.
 
-  > For this you need two things:
-  >
-  > - ***\*An Access key\****: you have two keys by storage account to rotate them for security
-  > - ***\*A REST API endpoint\****: see the table above for the different type of endpoints.
-  >
-  > The simplest way to connect with the informations, is to use ***\*storage account connection strings\****. A connection string provides all needed connectivity information in a single text string. ***\*BUT BE CAREFUL\****, do not put the sensitive information as a plain text. Instead, store connectivity information in a Database, environment variable or configuration file (if `config` file do not track it with your version control service). You can also use **shared access signatures** to give an fine-grained access (time-limited, can restrict permissions).
-  >
-  > For an `.env` file, create it and add the following variable:
-  >
-  > ```text
-  > AZURE_STORAGE_CONNECTION_STRING=<value>
-  > ```
-  >
-  > Then use the Azure CLI do generate the connection string:
-  >
-  > ```text
-  > az storage account show-connection-string \
-  >   --resource-group NAME_OF_YOUR_RESOURCE_GROUP \
-  >   --query connectionString \
-  >   --name NAME_OF_THE_STORAGE_ACCOUNT
-  > ```
+- With RBAC we can set pre-defined roles that hold a set of permissions:
+
+  | Role                                                         | Description                                                  |
+  | :----------------------------------------------------------- | :----------------------------------------------------------- |
+  | [Storage Blob Data Owner](https://docs.microsoft.com/en-us/azure/role-based-access-control/built-in-roles#storage-blob-data-owner) | Full access to Blob storage containers and data. This access permits the security principal to set the owner an item, and to modify the ACLs of all items. |
+  | [Storage Blob Data Contributor](https://docs.microsoft.com/en-us/azure/role-based-access-control/built-in-roles#storage-blob-data-owner) | Read, write, and delete access to Blob storage containers and blobs. This access does not permit the security principal to set the ownership of an item, but it can modify the ACL of items that are owned by the security principal. |
+  | [Storage Blob Data Reader](https://docs.microsoft.com/en-us/azure/role-based-access-control/built-in-roles#storage-blob-data-reader) | Read and list Blob storage containers and blobs.             |
+
+- With these coarse grain access roles, security principals have access to ALL the data in a Data Lake or ALL the data in a container.
+
+### ACL
+
+ACLs enables you to apply "finer grain" level access to Data Lake Gen 2 directories and files. In other words you can associate a security principal with an access level for files or directories. These associations are captured in an access control list (ACL). Azure AD uses POSIX standards to define the file access.
+
+> RBAC are processed before ACLs. Consequently if you are granting permissions to a security principal using RBAC the ACL will not be applied. 
+
+The level of permissions for files are:
+
+| File        | Directory                                                    |                                                              |
+| :---------- | :----------------------------------------------------------- | ------------------------------------------------------------ |
+| Read (R)    | Can read the contents of a file                              | Requires **Read** and **Execute** to list the contents of the directory |
+| Write (W)   | Can write or append to a file                                | Requires **Write** and **Execute** to create child items in a directory |
+| Execute (X) | Does not mean anything in the context of Data Lake Storage Gen2 | Required to traverse the child items of a directory          |
+
+Or using the short forms:
+
+| Numeric form | Short form | What it means          |
+| :----------- | :--------- | :--------------------- |
+| 7            | `RWX`      | Read + Write + Execute |
+| 5            | `R-X`      | Read + Execute         |
+| 4            | `R--`      | Read                   |
+| 0            | `---`      | No permissions         |
 
 # Storage Redundancy
 
