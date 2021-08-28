@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="twitter:card" content="summary_large_image" /><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Azure Data Engineer Notes for Stream Analytics | Braza Faouzi</title>
+<meta name="generator" content="Jekyll v4.1.1" />
+<meta property="og:title" content="Azure Data Engineer Notes for Stream Analytics" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Overview of Azure Storage Accounts" />
+<meta property="og:description" content="Overview of Azure Storage Accounts" />
+<link rel="canonical" href="https://fbraza.github.io/BrazLog/cloud/azure/data%20engineering/2021/08/04/Notes-Azure-stream-analytics.html" />
+<meta property="og:url" content="https://fbraza.github.io/BrazLog/cloud/azure/data%20engineering/2021/08/04/Notes-Azure-stream-analytics.html" />
+<meta property="og:site_name" content="Braza Faouzi" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2021-08-04T00:00:00-05:00" />
+<script type="application/ld+json">
+{"url":"https://fbraza.github.io/BrazLog/cloud/azure/data%20engineering/2021/08/04/Notes-Azure-stream-analytics.html","@type":"BlogPosting","headline":"Azure Data Engineer Notes for Stream Analytics","dateModified":"2021-08-04T00:00:00-05:00","datePublished":"2021-08-04T00:00:00-05:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://fbraza.github.io/BrazLog/cloud/azure/data%20engineering/2021/08/04/Notes-Azure-stream-analytics.html"},"description":"Overview of Azure Storage Accounts","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/BrazLog/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="https://fbraza.github.io/BrazLog/feed.xml" title="Braza Faouzi" /><link rel="shortcut icon" type="image/x-icon" href="/BrazLog/images/favicon.ico"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Primer/15.2.0/primer.css" integrity="sha512-xTz2ys4coGAOz8vuV1NcQBkgVmKhsSEtjbqyMJbBHRplFuvKIUo6xhLHpAyPt9mfR6twHJgn9OgVLuqOvjeBhg==" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css" integrity="sha512-1PKOgIY59xJ8Co8+NE6FZ+LOAZKjy+KY8iq0G4B3CyeY6wYHN3yt9PW0XpSriVlkMXe40PTKnXrLnZ9+fkDaog==" crossorigin="anonymous" />
+
+<script>
+function wrap_img(fn) {
+    if (document.attachEvent ? document.readyState === "complete" : document.readyState !== "loading") {
+        var elements = document.querySelectorAll(".post img");
+        Array.prototype.forEach.call(elements, function(el, i) {
+            if (el.getAttribute("title") && (el.className != "emoji")) {
+                const caption = document.createElement('figcaption');
+                var node = document.createTextNode(el.getAttribute("title"));
+                caption.appendChild(node);
+                const wrapper = document.createElement('figure');
+                wrapper.className = 'image';
+                el.parentNode.insertBefore(wrapper, el);
+                el.parentNode.removeChild(el);
+                wrapper.appendChild(el);
+                wrapper.appendChild(caption);
+            }
+        });
+    } else { document.addEventListener('DOMContentLoaded', fn); }
+}
+window.onload = wrap_img;
+</script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function(){
+    // add link icon to anchor tags
+    var elem = document.querySelectorAll(".anchor-link")
+    elem.forEach(e => (e.innerHTML = '<i class="fas fa-link fa-xs"></i>'));
+    });
+</script>
+</head>
+<body><header class="site-header">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/BrazLog/">Braza Faouzi</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/BrazLog/about/">About Me</a><a class="page-link" href="/BrazLog/search/">Search</a><a class="page-link" href="/BrazLog/categories/">Tags</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Azure Data Engineer Notes for Stream Analytics</h1><p class="page-description">Overview of Azure Storage Accounts</p><p class="post-meta post-meta-title"><time class="dt-published" datetime="2021-08-04T00:00:00-05:00" itemprop="datePublished">
+        Aug 4, 2021
+      </time>
+       • <span class="read-time" title="Estimated read time">
+    
+    
+      11 min read
+    
+</span></p>
+
+    
+      <p class="category-tags"><i class="fas fa-tags category-tags-icon"></i></i> 
+      
+        <a class="category-tags-link" href="/BrazLog/categories/#Cloud">Cloud</a>
+        &nbsp;
+      
+        <a class="category-tags-link" href="/BrazLog/categories/#Azure">Azure</a>
+        &nbsp;
+      
+        <a class="category-tags-link" href="/BrazLog/categories/#Data Engineering">Data Engineering</a>
+        
+      
+      </p>
+    
+
+    </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <p>I am going to share my notes taken during the preparation for the Azure Data Engineer certification (DP-203). I will share them through a series of articles that cover the main concepts and features behind the Azure services needed for Data Engineering. All articles are treated following a same structure. We describe the Azure services and highlight their specific features, security &amp; monitoring practices. The last set of articles will be focused on cloud architectures and pattern with Azure. If you want to access a specific topic you can choose the topic just below:</p>
+
+<ul>
+  <li>Cosmos DB</li>
+  <li>Azure Storage Account</li>
+  <li>Azure SQL</li>
+  <li>Azure Synapse Analytics</li>
+  <li>Azure Data Factory</li>
+  <li>Azure Databricks</li>
+  <li>Azure Event Hub and Azure Stream Analytics</li>
+  <li>Big Data Architectures on Azure</li>
+</ul>
+
+<p>Here, we are going to talk about the azure storage accounts which provides to the user a unique space to store all kind of data. We are going to catch the specific features and options of this service and capture the recommended procedures to deploy them in a secure and scalable way.</p>
+
+<h2 id="definition">Definition</h2>
+
+<p>Azure Stream Analytics is a real-time analytics and complex event-processing service. It can be used to analyze and process high volumes of streaming data from several sources at the same time. This service is typically used for analysis of real-time telemetry data from IoT enabled devices, web logs and clikcstream analysis, Geospatial analytics. The most commonly adopted method for processing data streams is to analyze new data continuously as it arrives from an event producer, such as Azure Event Hubs. This “live” approach requires more processing power to run computations but offers the ability to gain near-real-time insights. Using a service like Azure Stream Analytics, you can execute calculations and aggregations against arriving data using temporal analysis. The results of those queries can be sent to a Power BI dashboard for real-time visualization and analysis.</p>
+
+<p>You can ingest data from <strong>Azure Event Hubs, Azure IoT and Azure Blob storage</strong>. Azure Event Hubs is a Big Data streaming platform and an event ingestion service that you can use to receive and process millions of events per second. This permits to capture you data in near real-time. The service is fully managed by Microsoft. Interestingly you can also perform queries on your streamed data using the SQL query language allowing to select certain aspects of the input data. Once ingested or processed the data is send to an output stream (Cosmos DB, Azure SQL Database or Azure Synapse SQL for data warehousing, PowerBI).</p>
+
+<p>Using this service is particularly convenient as no time will be spent in creating an streaming analytics environment. Indeed everything is managed by Azure and provide a 99,9% SLA over tone year. You are billed based on consumption of Streaming Units, so no upfront cost.</p>
+
+<p><img src="/home/fbraza/Documents/BLOG/BrazLog/images/2021-08-04-01-azure-stream-analytics.png" alt="" /></p>
+
+<p>When we use Azure Streams analytics we talk about jobs. A defined job is based on one or more data inputs. Each input is a connection to an existing data source. We have two types of input:</p>
+
+<ul>
+  <li><strong>The Data stream input</strong>: it is an unbounded sequence of events over time. A Azure Stream job <strong>MUST</strong> contain at least one data stream input.</li>
+  <li><strong>The Reference data input</strong>: it is data that slowly changed over time and is stored in Azure Storage to perform correlation and lookups.</li>
+</ul>
+
+<p>You can define output for each job where the data will be send out. Different destination can be chosen as outputs:</p>
+
+<ul>
+  <li>Azure SQL Database.</li>
+  <li>Azure Synapse Analytics.</li>
+  <li>Azure Cosmos DB.</li>
+  <li>Azure Blob storage and Azure Data Lake Gen2.</li>
+  <li>PowerBI for vizualization.</li>
+</ul>
+
+<h2 id="using-stream-analytics">Using Stream Analytics</h2>
+
+<h3 id="create-a-stream-analytics-job">Create a stream Analytics Job</h3>
+
+<ol>
+  <li>
+    <p>Sign in to the Azure portal.</p>
+  </li>
+  <li>
+    <p>Select <strong>Create a resource</strong> in the upper left-hand corner of the Azure portal.</p>
+  </li>
+  <li>
+    <p>Select <strong>Analytics</strong> &gt; <strong>Stream Analytics job</strong> from the results list.</p>
+  </li>
+  <li>
+    <p>Fill out the Stream Analytics job page with the following information:</p>
+
+    <table>
+      <thead>
+        <tr>
+          <th style="text-align: left"><strong>Setting</strong></th>
+          <th style="text-align: left"><strong>Suggested value</strong></th>
+          <th style="text-align: left"><strong>Description</strong></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td style="text-align: left">Job name</td>
+          <td style="text-align: left">MyASAJob</td>
+          <td style="text-align: left">Enter a name to identify your Stream Analytics job. Stream Analytics job name can contain alphanumeric characters, hyphens, and underscores only and it must be between 3 and 63 characters long.</td>
+        </tr>
+        <tr>
+          <td style="text-align: left">Subscription</td>
+          <td style="text-align: left"><Your subscription=""></Your></td>
+          <td style="text-align: left">Select the Azure subscription that you want to use for this job.</td>
+        </tr>
+        <tr>
+          <td style="text-align: left">Resource group</td>
+          <td style="text-align: left">asaquickstart-resourcegroup</td>
+          <td style="text-align: left">Select the same resource group as your IoT Hub.</td>
+        </tr>
+        <tr>
+          <td style="text-align: left">Location</td>
+          <td style="text-align: left"><select the="" region="" that="" is="" closest="" to="" your="" users=""></select></td>
+          <td style="text-align: left">Select geographic location where you can host your Stream Analytics job. Use the location that’s closest to your users for better performance and to reduce the data transfer cost.</td>
+        </tr>
+        <tr>
+          <td style="text-align: left">Streaming units</td>
+          <td style="text-align: left">1</td>
+          <td style="text-align: left">Streaming units represent the computing resources that are required to execute a job. By default, this value is set to 1. To learn about scaling streaming units, refer to <a href="https://docs.microsoft.com/en-us/azure/stream-analytics/stream-analytics-streaming-unit-consumption">understanding and adjusting streaming units</a> article.</td>
+        </tr>
+        <tr>
+          <td style="text-align: left">Hosting environment</td>
+          <td style="text-align: left">Cloud</td>
+          <td style="text-align: left">Stream Analytics jobs can be deployed to cloud or edge. Cloud allows you to deploy to Azure Cloud, and Edge allows you to deploy to an IoT Edge device.</td>
+        </tr>
+      </tbody>
+    </table>
+  </li>
+</ol>
+
+<blockquote>
+  <p><strong>Azure Stream Analytics can run in the cloud, for large-scale analytics, or run on IoT Edge or Azure Stack for ultra-low latency analytics.</strong> Azure Stream Analytics uses the same tools and query language on both cloud and the edge</p>
+</blockquote>
+
+<p><img src="/home/fbraza/Documents/BLOG/BrazLog/images/2021-08-04-02-azure-stream-analytics.png" alt="Azure Stream Analytics can run in the cloud, for large-scale analytics, or run on IoT Edge or Azure Stack for ultra-low latency analytics." /></p>
+
+<p><img src="/home/fbraza/Documents/BLOG/BrazLog/images/2021-08-04-03-azure-stream-analytics.png" alt="" /></p>
+
+<h2 id="configure-job-input">Configure job input</h2>
+
+<p>In this section, you will configure an IoT Hub device input to the Stream Analytics job. Use the IoT Hub you created in the previous section of the quickstart.</p>
+
+<ol>
+  <li>
+    <p>Navigate to your Stream Analytics job.</p>
+  </li>
+  <li>
+    <p>Select <strong>Inputs</strong> &gt; <strong>Add Stream input</strong> &gt; <strong>IoT Hub</strong>.</p>
+  </li>
+  <li>
+    <p>Fill out the <strong>IoT Hub</strong> page with the following values:</p>
+
+    <table>
+      <thead>
+        <tr>
+          <th style="text-align: left"><strong>Setting</strong></th>
+          <th style="text-align: left"><strong>Suggested value</strong></th>
+          <th style="text-align: left"><strong>Description</strong></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td style="text-align: left">Input alias</td>
+          <td style="text-align: left">IoTHubInput</td>
+          <td style="text-align: left">Enter a name to identify the job’s input.</td>
+        </tr>
+        <tr>
+          <td style="text-align: left">Subscription</td>
+          <td style="text-align: left">Your subscription</td>
+          <td style="text-align: left">Select the Azure subscription that has the storage account you created. The storage account can be in the same or in a different subscription. This example assumes that you have created storage account in the same subscription.</td>
+        </tr>
+        <tr>
+          <td style="text-align: left">IoT Hub</td>
+          <td style="text-align: left">MyASAIoTHub</td>
+          <td style="text-align: left">Enter the name of the IoT Hub you created in the previous section.</td>
+        </tr>
+      </tbody>
+    </table>
+  </li>
+  <li>
+    <p>Choose carefully the <code class="language-plaintext highlighter-rouge">event serialization format</code> (JSON, CSV or AVRO) based on you file data.</p>
+  </li>
+  <li>
+    <p>Leave other options to default values and select <strong>Save</strong> to save the settings.</p>
+  </li>
+</ol>
+
+<p><img src="/home/fbraza/Documents/BLOG/BrazLog/images/2021-08-04-04-azure-stream-analytics.png" alt="" /></p>
+
+<h3 id="configure-job-output">Configure job output</h3>
+
+<ol>
+  <li>
+    <p>Navigate to the Stream Analytics job that you created earlier.</p>
+  </li>
+  <li>
+    <p>Select <strong>Outputs</strong> &gt; <strong>Add</strong> &gt; <strong>Blob storage</strong>.</p>
+  </li>
+  <li>
+    <p>Fill out the <strong>Blob storage</strong> page with the following values:</p>
+
+    <table>
+      <thead>
+        <tr>
+          <th style="text-align: left"><strong>Setting</strong></th>
+          <th style="text-align: left"><strong>Suggested value</strong></th>
+          <th style="text-align: left"><strong>Description</strong></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td style="text-align: left">Output alias</td>
+          <td style="text-align: left">BlobOutput</td>
+          <td style="text-align: left">Enter a name to identify the job’s output.</td>
+        </tr>
+        <tr>
+          <td style="text-align: left">Subscription</td>
+          <td style="text-align: left"><Your subscription=""></Your></td>
+          <td style="text-align: left">Select the Azure subscription that has the storage account you created. The storage account can be in the same or in a different subscription. This example assumes that you have created storage account in the same subscription.</td>
+        </tr>
+        <tr>
+          <td style="text-align: left">Storage account</td>
+          <td style="text-align: left">asaquickstartstorage</td>
+          <td style="text-align: left">Choose or enter the name of the storage account. Storage account names are automatically detected if they are created in the same subscription.</td>
+        </tr>
+        <tr>
+          <td style="text-align: left">Container</td>
+          <td style="text-align: left">container1</td>
+          <td style="text-align: left">Select the existing container that you created in your storage account.</td>
+        </tr>
+      </tbody>
+    </table>
+  </li>
+  <li>
+    <p>Leave other options to default values and select <strong>Save</strong> to save the settings.</p>
+  </li>
+</ol>
+
+<h2 id="azure-event-hubs">Azure Event Hubs</h2>
+
+<p>It is a cloud-based, event-processing service that can receive and process millions of events per second.</p>
+
+<p>An entity that sends data to the Event Hubs is called a <em>publisher</em>. An entity that reads data from the Event Hubs is called a <em>consumer</em> or a <em>subscriber</em>. Azure Event Hubs sits between these two entities to divide the production (from the publisher) and consumption (to a subscriber) of an event stream. Azure Event Hubs act as a buffer between publisher and consumer.</p>
+
+<p><img src="https://docs.microsoft.com/en-us/learn/modules/enable-reliable-messaging-for-big-data-apps-using-event-hubs/media/2-event-hub-overview.png" alt="An illustration showing an Azure Event Hub placed between four publishers and two subscribers. The Event Hub receives multiple events from the publishers, serializes the events into data streams, and makes the data streams available to subscribers." /></p>
+
+<h3 id="events">Events</h3>
+
+<p>An <strong>event</strong> is a small packet of information (a <em>datagram</em>) that contains a notification. Events can be published individually, or in batches, but a single publication (individual or batch) can’t exceed 1 MB.</p>
+
+<h3 id="pricing">Pricing</h3>
+
+<p>There are three pricing tiers for Azure Event Hubs: Basic, Standard, and Dedicated. The tiers differ in terms of supported connections, the number of available Consumer groups, and throughput. When using Azure CLI to create an Event Hubs namespace, if you don’t specify a pricing tier, the default of <strong>Standard</strong> (20 Consumer groups, 1000 Brokered connections) is assigned.</p>
+
+<h2 id="create-and-configure-new-azure-event-hubs">Create and configure new Azure Event Hubs</h2>
+
+<p>To create an Event Hub you need to define the Event Hubs <strong>namespace</strong>, then create an Event Hub in that namespace.</p>
+
+<h3 id="define-an-event-hubs-namespace">Define an Event Hubs namespace</h3>
+
+<p>An Event Hubs namespace is a containing entity for managing one or more Event Hubs. Creating an Event Hubs namespace typically involves the following configuration:</p>
+
+<ul>
+  <li>
+    <p><strong>Define namespace-level settings</strong>: Define the namespace capacity (configured using <strong>throughput units</strong>), pricing tier, and performance metrics. These settings apply to all the Event Hubs within that namespace. If you don’t define these settings, a default value is used: <code class="language-plaintext highlighter-rouge">1</code> for capacity and <code class="language-plaintext highlighter-rouge">Standard</code> for pricing tier. Select a <strong>unique name for the namespace</strong>. Access it through this URL: <code class="language-plaintext highlighter-rouge">namespace.servicebus.windows.net</code></p>
+  </li>
+  <li>
+    <p>You can define the following properties Define the following optional properties:</p>
+    <ul>
+      <li>Enable Kafka. This option enables Kafka apps to publish events to the Event Hub.</li>
+      <li>Make this namespace zone redundant. Zone-redundancy replicates data across separate data centers with their independent power, networking, and cooling infrastructures.</li>
+      <li>Enable Auto-Inflate and Auto-Inflate Maximum Throughput Units. <strong>Auto-Inflate provides an automatic scale-up option</strong> by increasing the number of throughput units up to a maximum value. This option is useful to avoid throttling in situations when incoming or outgoing data rates exceed the currently set number of throughput units.</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="azure-cli-commands-to-create-an-event-hubs-namespace">Azure CLI commands to create an Event Hubs namespace</h3>
+
+<p>To create a new Event Hubs namespace, use the <code class="language-plaintext highlighter-rouge">az eventhubs namespace</code> commands. Here’s a brief description of the subcommands you’ll use in the exercise.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: left">Command</th>
+      <th style="text-align: left">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: left"><code class="language-plaintext highlighter-rouge">create</code></td>
+      <td style="text-align: left">Create the Event Hubs namespace.</td>
+    </tr>
+    <tr>
+      <td style="text-align: left"><code class="language-plaintext highlighter-rouge">authorization-rule</code></td>
+      <td style="text-align: left">All Event Hubs within the same Event Hubs namespace share common connection credentials. You’ll need these credentials when you configure apps to send and receive messages using the Event Hub. This command returns the connection string for your Event Hubs namespace.</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="configure-a-new-event-hub">Configure a new Event Hub</h3>
+
+<p>After you create the Event Hubs namespace, you can create an Event Hub. When creating a new Event Hub, there are several mandatory parameters.</p>
+
+<p>The following parameters are required to create an Event Hub:</p>
+
+<ul>
+  <li>
+    <p>Event Hub name</p>
+
+    <p>- Event Hub name that is unique within your subscription and:</p>
+
+    <ul>
+      <li>Is between 1 and 50 characters long.</li>
+      <li>Contains only letters, numbers, periods, hyphens, and underscores.</li>
+      <li>Starts and ends with a letter or number.</li>
+    </ul>
+  </li>
+  <li>
+    <p><strong>Partition Count</strong> - The number of partitions required in an Event Hub (between 2 and 32). The partition count should be directly related to the expected number of concurrent consumers and can’t be changed after the hub has been created. The partition separates the message stream so that consumer or receiver apps only need to read a specific subset of the data stream. If not defined, this value defaults to <em>4</em>.</p>
+  </li>
+  <li>
+    <p><strong>Message Retention</strong> - The number of days (between 1 and 7) that messages will remain available if the data stream needs to be replayed for any reason. If not defined, this value defaults to <em>7</em>.</p>
+  </li>
+</ul>
+
+<p>You can also optionally configure an Event Hub to stream data to an Azure Blob storage or Azure Data Lake Store account.</p>
+
+<h3 id="azure-cli-commands-to-create-an-event-hub">Azure CLI commands to create an Event Hub</h3>
+
+<p>To create a new Event Hub with the Azure CLI, you’ll run the <code class="language-plaintext highlighter-rouge">az eventhubs eventhub</code> command set. Here’s a brief description of the subcommands we’ll be using.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: left">Command</th>
+      <th style="text-align: left">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: left"><code class="language-plaintext highlighter-rouge">create</code></td>
+      <td style="text-align: left">Creates the Event Hub in a specified namespace.</td>
+    </tr>
+    <tr>
+      <td style="text-align: left"><code class="language-plaintext highlighter-rouge">show</code></td>
+      <td style="text-align: left">Displays the details of your Event Hub.</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="windowing-functions">Windowing functions</h2>
+
+<p>You can perform operations on data contained in temporal windows. All the windowing operations output results at the <strong>end</strong> of the window.</p>
+
+<p><img src="/home/fbraza/Documents/BLOG/BrazLog/images/2021-08-04-07-azure-stream-analytics.png" alt="" /></p>
+
+<p>Azure Stream analytics has support for five windowing functions:</p>
+
+<ul>
+  <li>
+    <p><strong>Tumbling window</strong>: here the data stream is segmented into distinct time segments. The windows don’t repeat and <strong>DO NOT OVERLAP</strong>. an event cannot belong to more than one tumbling window.</p>
+
+    <p><img src="/home/fbraza/Documents/BLOG/BrazLog/images/2021-08-04-08-azure-stream-analytics.png" alt="" /></p>
+  </li>
+  <li>
+    <p><strong>Hopping window</strong>: these windows hop forward in time by a fixed period. It may be easy to think of them as Tumbling windows that can overlap.</p>
+
+    <p><img src="/home/fbraza/Documents/BLOG/BrazLog/images/2021-08-04-09-azure-stream-analytics.png" alt="" /></p>
+  </li>
+  <li>
+    <p><strong>Session window</strong>: this windowing function group events that arrive at similar times, filtering out periods of time where there is no data. It has three main parameters: timeout, maximum duration, and partitioning key (optional).</p>
+
+    <p><img src="/home/fbraza/Documents/BLOG/BrazLog/images/2021-08-04-10-azure-stream-analytics.png" alt="" /></p>
+  </li>
+  <li>
+    <p><strong>Snapshot windows</strong>: this function groups events that have the same timestamp. Unlike other windowing types, which require a specific window function (such as <code class="language-plaintext highlighter-rouge">SessionWindow()</code>), you can apply a snapshot window by adding <code class="language-plaintext highlighter-rouge">System.Timestamp()</code> to the <code class="language-plaintext highlighter-rouge">GROUP BY</code> clause.</p>
+
+    <p><img src="/home/fbraza/Documents/BLOG/BrazLog/images/2021-08-04-11-azure-stream-analytics.png" alt="" /></p>
+  </li>
+</ul>
+
+  </div><!-- from https://github.com/utterance/utterances -->
+<script src="https://utteranc.es/client.js"
+        repo="fbraza/BrazLog"
+        issue-term="title"
+        label="blogpost-comment"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+</script><a class="u-url" href="/BrazLog/cloud/azure/data%20engineering/2021/08/04/Notes-Azure-stream-analytics.html" hidden></a>
+</article>
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/BrazLog/"></data>
+
+  <div class="wrapper">
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col">
+        <p class="feed-subscribe">
+          <a href="/BrazLog/feed.xml">
+            <svg class="svg-icon orange">
+              <use xlink:href="/BrazLog/assets/minima-social-icons.svg#rss"></use>
+            </svg><span>Subscribe</span>
+          </a>
+        </p>
+      </div>
+      <div class="footer-col">
+        <p>Python · Scala · BigData · System Design · Data Engineering</p>
+      </div>
+    </div>
+
+    <div class="social-links"><ul class="social-media-list"><li><a rel="me" href="https://github.com/fbraza" title="fbraza"><svg class="svg-icon grey"><use xlink:href="/BrazLog/assets/minima-social-icons.svg#github"></use></svg></a></li><li><a rel="me" href="https://twitter.com/%40braza_faouzi" title="@braza_faouzi"><svg class="svg-icon grey"><use xlink:href="/BrazLog/assets/minima-social-icons.svg#twitter"></use></svg></a></li></ul>
+</div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>

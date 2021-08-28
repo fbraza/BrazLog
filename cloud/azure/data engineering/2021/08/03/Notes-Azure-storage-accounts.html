@@ -77,7 +77,7 @@ window.onload = wrap_img;
        • <span class="read-time" title="Estimated read time">
     
     
-      11 min read
+      13 min read
     
 </span></p>
 
@@ -396,6 +396,30 @@ window.onload = wrap_img;
 <p>To make your storage account a Data Lake Storage Gen2, you need to enable this option when creating your account.</p>
 
 <p><img src="/BrazLog/images/2021-08-02-Notes-Azure-storage/fig09.png" alt="" /></p>
+
+<h2 id="guidelines-to-use-the-table-service">Guidelines to use the Table service</h2>
+
+<p>Designing tables for use with the Azure storage table service is very different from design considerations for a relational database. Consider the following guidelines:</p>
+
+<h3 id="design-your-table-service-solution-to-be-read-efficient">Design your Table service solution to be read-efficient</h3>
+
+<ul>
+  <li><strong><em>Design for querying in read-heavy applications.</em></strong> When you are designing your tables, think about the queries (especially the latency sensitive ones) that you will execute before you think about how you will update your entities. This typically results in an efficient and performant solution.</li>
+  <li><strong><em>Specify both <code class="language-plaintext highlighter-rouge">PartitionKey</code> and <code class="language-plaintext highlighter-rouge">RowKey</code> in your queries.</em></strong> <em>Point queries</em> such as these are the most efficient table service queries.</li>
+  <li><strong><em>Consider storing duplicate copies of entities.</em></strong> Table storage is cheap so consider storing the same entity multiple times (with different keys) to enable more efficient queries.</li>
+  <li><strong><em>Consider denormalizing your data.</em></strong> Table storage is cheap so consider denormalizing your data. For example, store summary entities so that queries for aggregate data only need to access a single entity.</li>
+  <li><strong><em>Use compound key values.</em></strong> The only keys you have are <strong><code class="language-plaintext highlighter-rouge">PartitionKey</code></strong> and <strong><code class="language-plaintext highlighter-rouge">RowKey</code></strong>. For example, use compound key values to enable alternate keyed access paths to entities.</li>
+  <li><strong><em>Use query projection.</em></strong> You can reduce the amount of data that you transfer over the network by using queries that select just the fields you need.</li>
+</ul>
+
+<h3 id="design-your-table-service-solution-to-be-write-efficient">Design your Table service solution to be write-efficient</h3>
+
+<ul>
+  <li><strong><em>Do not create hot partitions.</em></strong> Choose keys that enable you to spread your requests across multiple partitions at any point of time.</li>
+  <li><strong><em>Avoid spikes in traffic.</em></strong> Smooth the traffic over a reasonable period of time and avoid spikes in traffic.</li>
+  <li><strong><em>Don’t necessarily create a separate table for each type of entity.</em></strong> When you require atomic transactions across entity types, you can store these multiple entity types in the same partition in the same table.</li>
+  <li><strong><em>Consider the maximum throughput you must achieve.</em></strong> You must be aware of the scalability targets for the Table service and ensure that your design will not cause you to exceed them.</li>
+</ul>
 
 <h2 id="monitoring-the-storage-account">Monitoring the Storage account</h2>
 

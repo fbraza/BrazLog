@@ -77,7 +77,7 @@ window.onload = wrap_img;
        • <span class="read-time" title="Estimated read time">
     
     
-      19 min read
+      21 min read
     
 </span></p>
 
@@ -240,14 +240,7 @@ window.onload = wrap_img;
   </thead>
   <tbody>
     <tr>
-      <td style="text-align: center"><strong>Best for</strong></td>
       <td style="text-align: center"> </td>
-      <td style="text-align: center">Offers budget oriented balanced compute and storage options.</td>
-      <td style="text-align: center">Most business workloads. Auto-scaling storage size up to 100 TB, fluid vertical and horizontal compute scaling, fast database restore.</td>
-      <td style="text-align: center">OLTP applications with high transaction rate and low IO latency. Offers highest resilience to failures and fast failovers using multiple synchronously updated replicas.</td>
-    </tr>
-    <tr>
-      <td style="text-align: center"><strong>Available in resource type:</strong></td>
       <td style="text-align: center"> </td>
       <td style="text-align: center">SQL Database / SQL Managed Instance</td>
       <td style="text-align: center">Single Azure SQL Database</td>
@@ -475,7 +468,13 @@ located.</p>
 
 <h3 id="dynamic-data-masking">Dynamic Data masking</h3>
 
-<p>Dynamic data masking is a technique used to limit the exposure of sensitive data to non-privileged users. You can mask your data so that non-privileged users can’t see it but are still able to use query that include the data. For example if you have data with names and e-mail addresses you can mask columns with the following T-SQL commands:</p>
+<p>Dynamic data masking is a technique used to limit the exposure of sensitive data to non-privileged users. You can mask your data so that non-privileged users can’t see it but are still able to use query that include the data.</p>
+
+<blockquote>
+  <p>Administrator are always excluded from the masking rules.</p>
+</blockquote>
+
+<p>For example if you have data with names and e-mail addresses you can mask columns with the following T-SQL commands:</p>
 
 <pre><code class="language-SQL">ALTER TABLE Data.Membership ALTER COLUMN FirstName
 ADD MASKED WITH (FUNCTION = 'partial(1, "xxxxx", 1)')
@@ -485,7 +484,7 @@ ADD MASKED WITH (FUNCTION = 'email()')
 
 ALTER TABLE Data.Membership ALTER COLUMN DiscountCode 
 ADD MASKED WITH (FUNCTION = 'random(1, 100)’)
- 
+
 GRANT UNMASK to DataOfficers
 </code></pre>
 
@@ -509,8 +508,12 @@ GRANT UNMASK to DataOfficers
 
 <blockquote>
   <ul>
-    <li>You have one distinct built-in certificate by database server</li>
-    <li>You can also use customer-managed keys for the encryption (Bring Your Own Key service - BYOK). Here the encryptions keys can be managed by by the Azure Key vault service. With this scenario you are responsible for the control of the key life-cycle, key usage permissions and auditing operations on keys.</li>
+    <li>
+      <p>You have one distinct built-in certificate by database server</p>
+    </li>
+    <li>
+      <p>You can also use customer-managed keys for the encryption (Bring Your Own Key service - BYOK). Here the encryptions keys can be managed by by the Azure Key vault service. With this scenario you are responsible for the control of the key life-cycle, key usage permissions and auditing operations on keys.</p>
+    </li>
     <li>
       <p>To enable TDE for SQL server here the steps yo must follow:</p>
 
@@ -551,6 +554,51 @@ GRANT UNMASK to DataOfficers
   </li>
 </ul>
 
+<h4 id="column-level-security">Column-level Security</h4>
+
+<p>This approach permits to control access to columns in a Table. It is based on users context. You can grant grant access via the SQL user or Azure AD. The way you implement column-level security is by granting access to only the column you want a user to view. The ones that you do not include in the granting process will be unavailable. To do this follow the following steps:</p>
+
+<ul>
+  <li>
+    <p>Create a test user first and grant him access to some columns:</p>
+
+    <div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">CREATE</span> <span class="k">USER</span> <span class="n">TestUser</span> <span class="k">WITHOUT</span> <span class="n">LOGIN</span><span class="p">;</span>
+  
+<span class="k">GRANT</span> <span class="k">SELECT</span> <span class="k">ON</span> <span class="n">myTable</span> <span class="p">(</span><span class="n">ID</span><span class="p">,</span> <span class="n">FirstName</span><span class="p">,</span> <span class="n">LastName</span><span class="p">)</span> <span class="k">TO</span> <span class="n">TestUser</span><span class="p">;</span>
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>Switch to the user context and try selecting all the columns:</p>
+
+    <div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">-- Change context to testUser</span>
+<span class="k">EXECUTE</span> <span class="k">AS</span> <span class="k">USER</span> <span class="o">=</span> <span class="s1">'TestUser'</span><span class="p">;</span>
+<span class="c1">-- This will give an error message</span>
+<span class="k">SELECT</span> <span class="o">*</span> <span class="k">FROM</span> <span class="n">myTable</span><span class="p">;</span>
+<span class="c1">-- Specify the columns</span>
+<span class="k">SELECT</span> <span class="n">ID</span><span class="p">,</span> <span class="n">FirstName</span><span class="p">,</span> <span class="n">LastName</span>
+<span class="k">FROM</span> <span class="n">myTable</span>
+  
+<span class="n">REVERT</span><span class="p">;</span>
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>Always good to make test on a test user before implementing it for real users.</p>
+  </li>
+</ul>
+
+<h4 id="row-level-security">Row-level Security</h4>
+
+<p>You can encrypt data at row-level preventing people to be able to access records with specific values. This is not Permission-based but <strong>Predicate-based</strong>. For that you need to define your security policy by creating a security predicate known as ab <em>Inline Table-Valued Function</em> (iTVF). There many possible predicate but a common one is the <strong>Filter-Predicate</strong>. it will silently filter the rows the user does not have access to for read operations. The different steps to implement Row-level encryption are the following:</p>
+
+<ul>
+  <li>Create a Table (<code class="language-plaintext highlighter-rouge">CREATE TABLE ...</code>).</li>
+  <li>Insert rows (<code class="language-plaintext highlighter-rouge">INSERT INTO ...</code>).</li>
+  <li>Create users (<code class="language-plaintext highlighter-rouge">CREATE USER ...</code>).</li>
+  <li>Create schema (<code class="language-plaintext highlighter-rouge">CREATE SCHEMA</code>).</li>
+  <li>Create  security predicate (<code class="language-plaintext highlighter-rouge">CREATE FUNCTION</code>).</li>
+  <li>Create security policy and bind it to the security predicate (<code class="language-plaintext highlighter-rouge">CREATE SECURITY POLICY</code>).</li>
+</ul>
+
 <h2 id="manage-security">Manage security</h2>
 
 <p>Once your instance is secured (network, authentication and data), we need to manage security on an ongoing basis. This includes auditing, monitoring, data classification and in the case of Azure SQL, Azure Defender. Here let’s give a few words about Azure Defender that is a unified package for advance SQL security capabilities that enables:</p>
@@ -570,13 +618,15 @@ GRANT UNMASK to DataOfficers
   </ul>
 </blockquote>
 
-<h2 id="monitor-and-mange-your-azure-sql-deployment">Monitor and mange your Azure SQL deployment</h2>
+<h2 id="manage-and-monitor-your-azure-sql-deployment">Manage and monitor your Azure SQL deployment</h2>
 
-<h4 id="backup-and-restore">Backup and restore</h4>
+<h3 id="data-discovery--classification">Data Discovery &amp; Classification</h3>
+
+<h3 id="backup-and-restore">Backup and restore</h3>
 
 <p>Azure SQL manages backups and runs if the full recovery model is used. It can restore your database to any point in time. You can even restore a deleted database within the configured retention policy. Most interestingly your backups can be automatically encrypted if TDE is enabled on the logical server or instance. By default, a full database backup is taken once a week. Log backups occur every 5-10 minutes and differential backups every 12-24 hours. Backups files are stored in <strong>Azure storage</strong> in read-access geo-redundant storage (RA-GRS) by default (it is possible to set ZRS or LRS).</p>
 
-<p>The retention period for your data varies between 1 and 35 days. If not enough you can choose long-term retention (LTR). This option automatically creates full backups stored in RA-GRS by default for up to 10 years. LTR is available for Azure SQL Database and in preview for Azure SQL managed instanced.</p>
+<p>The retention period for your data varies between 1 and 35 days. If not enough you can choose long-term retention (LTR). This option automatically creates full backups stored in RA-GRS by default for up to 10 years. LTR is available for Azure SQL Database and in preview - <em>at time of writing</em> - for Azure SQL managed instanced.</p>
 
 <h3 id="tuning-performance-in-azure-sql">Tuning performance in Azure SQL</h3>
 
@@ -619,8 +669,7 @@ GRANT UNMASK to DataOfficers
   <li><code class="language-plaintext highlighter-rouge">DROP_INDEX = disabled</code></li>
 </ul>
 
-<h3 id="data-discovery--classification">Data Discovery &amp; Classification</h3>
-
+<h3 id="monitor-azure-sql-database">Monitor Azure SQL Database</h3>
 
   </div><!-- from https://github.com/utterance/utterances -->
 <script src="https://utteranc.es/client.js"
