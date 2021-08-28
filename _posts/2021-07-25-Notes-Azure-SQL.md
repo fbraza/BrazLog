@@ -43,16 +43,16 @@ It is a version of SQL server running in a Azure VM. It's basically just SQL Ser
 
 Known as the **D**atabase Transaction **U**nit purchasing model. This model is based on a bundled measure of compute, storage and I/O resources.  There are different service tiers available for the DTU model:
 
-|                              |                      Basic |                   Standard |                    Premium |
-| :--------------------------- | -------------------------: | -------------------------: | -------------------------: |
+|                              | Basic                      | Standard                   | Premium                    |
+|:---------------------------- | --------------------------:| --------------------------:| --------------------------:|
 | **Target workload**          | Development and production | Development and production | Development and production |
-| **Uptime SLA**               |                     99.99% |                     99.99% |                     99.99% |
-| **Maximum backup retention** |                     7 days |                    35 days |                    35 days |
-| **CPU**                      |                        Low |          Low, Medium, High |               Medium, High |
-| **IOPS (approximate)***      |           1-4 IOPS per DTU |           1-4 IOPS per DTU |           >25 IOPS per DTU |
-| **IO latency (approximate)** | 5 ms (read), 10 ms (write) | 5 ms (read), 10 ms (write) |          2 ms (read/write) |
-| **Columnstore indexing**     |                        N/A |               S3 and above |                  Supported |
-| **In-memory OLTP**           |                        N/A |                        N/A |                  Supported |
+| **Uptime SLA**               | 99.99%                     | 99.99%                     | 99.99%                     |
+| **Maximum backup retention** | 7 days                     | 35 days                    | 35 days                    |
+| **CPU**                      | Low                        | Low, Medium, High          | Medium, High               |
+| **IOPS (approximate)***      | 1-4 IOPS per DTU           | 1-4 IOPS per DTU           | >25 IOPS per DTU           |
+| **IO latency (approximate)** | 5 ms (read), 10 ms (write) | 5 ms (read), 10 ms (write) | 2 ms (read/write)          |
+| **Columnstore indexing**     | N/A                        | S3 and above               | Supported                  |
+| **In-memory OLTP**           | N/A                        | N/A                        | Supported                  |
 
 Note that the backup retention time is different across the different tiers. However you can still enabled a `Long-Retention` period up to 10 years. In [memory OLTP](https://docs.microsoft.com/en-us/azure/azure-sql/in-memory-oltp-overview#benefits-of-in-memory-technology) is enabled for the `premuim` tier. Premium are chosen for intensive I/O workload.
 
@@ -81,28 +81,27 @@ It is designed for business workload that need highly scalable storage (+100TB) 
 
 Please see below a table that contains all strucutre the difference between the differnet tiers and display more specific details.
 
-|                -                |       Resource type        |                       General Purpose                        |                          Hyperscale                          |                      Business Critical                       |
-| :-----------------------------: | :------------------------: | :----------------------------------------------------------: | :----------------------------------------------------------: | :----------------------------------------------------------: |
-|          **Best for**           |                            | Offers budget oriented balanced compute and storage options. | Most business workloads. Auto-scaling storage size up to 100 TB, fluid vertical and horizontal compute scaling, fast database restore. | OLTP applications with high transaction rate and low IO latency. Offers highest resilience to failures and fast failovers using multiple synchronously updated replicas. |
-| **Available in resource type:** |                            |             SQL Database / SQL Managed Instance              |                  Single Azure SQL Database                   |             SQL Database / SQL Managed Instance              |
-|        **Compute size**         |        SQL Database        |                        1 to 80 vCores                        |                        1 to 80 vCores                        |                       1 to 128 vCores                        |
-|                                 |    SQL Managed Instance    |             4, 8, 16, 24, 32, 40, 64, 80 vCores              |                             N/A                              |             4, 8, 16, 24, 32, 40, 64, 80 vCores              |
-|                                 | SQL Managed Instance pools |            2, 4, 8, 16, 24, 32, 40, 64, 80 vCores            |                             N/A                              |                             N/A                              |
-|        **Storage type**         |            All             |                        Remote storage                        |             Tiered remote and local SSD storage              |                      Local SSD storage                       |
-|        **Database size**        |        SQL Database        |                         1 GB – 4 TB                          |                        40 GB - 100 TB                        |                         1 GB – 4 TB                          |
-|                                 |    SQL Managed Instance    |                         32 GB – 8 TB                         |                             N/A                              |                         32 GB – 4 TB                         |
-|        **Storage size**         |        SQL Database        |                         1 GB – 4 TB                          |                        40 GB - 100 TB                        |                         1 GB – 4 TB                          |
-|                                 |    SQL Managed Instance    |                         32 GB – 8 TB                         |                             N/A                              |                         32 GB – 4 TB                         |
-|         **TempDB size**         |        SQL Database        |                       32 GB per vCore                        |                       32 GB per vCore)                       |                       32 GB per vCore                        |
-|                                 |    SQL Managed Instance    |                       24 GB per vCore                        |                             N/A                              |             Up to 4 TB - limited by storage size             |
-|    **Log write throughput**     |        SQL Database        | **Single databases**: 4.5 MB/s per vCore (max 50 MB/s) **Elastic pools**: 6 MB/s per vCore (max 62.5 MB/s) |                           100 MB/s                           | **Single databases**: 12 MB/s per vCore (max 96 MB/s), **Elastic pools**: 15 MB/s per vCore (max 120 MB/s) |
-|                                 |    SQL Managed Instance    |                3 MB/s per vCore (max 22 MB/s)                |                             N/A                              |                4 MB/s per vcore (max 48 MB/s)                |
-|        **Availability**         |            All             |                            99.99%                            | 99.95% with one secondary replica, 99.99% with more replicas |     99.99%, 99.995% with zone redundant single database.     |
-|           **Backups**           |            All             |            RA-GRS, 1-35 days (7 days by default)             |      RA-GRS, 7 days, fast point-in-time recovery (PITR)      |            RA-GRS, 1-35 days (7 days by default)             |
-|       **In-memory OLTP**        |                            |                             N/A                              | Partial support. Memory-optimized table types, table variables, and natively compiled modules are supported. |                          Available                           |
-|     **Read-only replicas**      |                            |            0 built-in 0 - 4 using geo-replication            |                        0 - 4 built-in                        |  1 built-in, included in price 0 - 4 using geo-replication   |
-|       **Pricing/billing**       |        SQL Database        | vCore, reserved storage, and backup storage are charged. IOPS is not charged. | vCore for each replica and used storage are charged. IOPS not yet charged. | vCore, reserved storage, and backup storage are charged. IOPS is not charged. |
-|                                 |    SQL Managed Instance    | vCore, reserved storage, and backup storage is charged. IOPS is not charged |                                                              |                                                              |
+| -                        | Resource type              | General Purpose                                                                                            | Hyperscale                                                                                                   | Business Critical                                                                                          |
+|:------------------------:|:--------------------------:|:----------------------------------------------------------------------------------------------------------:|:------------------------------------------------------------------------------------------------------------:|:----------------------------------------------------------------------------------------------------------:|
+|                          |                            | SQL Database / SQL Managed Instance                                                                        | Single Azure SQL Database                                                                                    | SQL Database / SQL Managed Instance                                                                        |
+| **Compute size**         | SQL Database               | 1 to 80 vCores                                                                                             | 1 to 80 vCores                                                                                               | 1 to 128 vCores                                                                                            |
+|                          | SQL Managed Instance       | 4, 8, 16, 24, 32, 40, 64, 80 vCores                                                                        | N/A                                                                                                          | 4, 8, 16, 24, 32, 40, 64, 80 vCores                                                                        |
+|                          | SQL Managed Instance pools | 2, 4, 8, 16, 24, 32, 40, 64, 80 vCores                                                                     | N/A                                                                                                          | N/A                                                                                                        |
+| **Storage type**         | All                        | Remote storage                                                                                             | Tiered remote and local SSD storage                                                                          | Local SSD storage                                                                                          |
+| **Database size**        | SQL Database               | 1 GB – 4 TB                                                                                                | 40 GB - 100 TB                                                                                               | 1 GB – 4 TB                                                                                                |
+|                          | SQL Managed Instance       | 32 GB – 8 TB                                                                                               | N/A                                                                                                          | 32 GB – 4 TB                                                                                               |
+| **Storage size**         | SQL Database               | 1 GB – 4 TB                                                                                                | 40 GB - 100 TB                                                                                               | 1 GB – 4 TB                                                                                                |
+|                          | SQL Managed Instance       | 32 GB – 8 TB                                                                                               | N/A                                                                                                          | 32 GB – 4 TB                                                                                               |
+| **TempDB size**          | SQL Database               | 32 GB per vCore                                                                                            | 32 GB per vCore)                                                                                             | 32 GB per vCore                                                                                            |
+|                          | SQL Managed Instance       | 24 GB per vCore                                                                                            | N/A                                                                                                          | Up to 4 TB - limited by storage size                                                                       |
+| **Log write throughput** | SQL Database               | **Single databases**: 4.5 MB/s per vCore (max 50 MB/s) **Elastic pools**: 6 MB/s per vCore (max 62.5 MB/s) | 100 MB/s                                                                                                     | **Single databases**: 12 MB/s per vCore (max 96 MB/s), **Elastic pools**: 15 MB/s per vCore (max 120 MB/s) |
+|                          | SQL Managed Instance       | 3 MB/s per vCore (max 22 MB/s)                                                                             | N/A                                                                                                          | 4 MB/s per vcore (max 48 MB/s)                                                                             |
+| **Availability**         | All                        | 99.99%                                                                                                     | 99.95% with one secondary replica, 99.99% with more replicas                                                 | 99.99%, 99.995% with zone redundant single database.                                                       |
+| **Backups**              | All                        | RA-GRS, 1-35 days (7 days by default)                                                                      | RA-GRS, 7 days, fast point-in-time recovery (PITR)                                                           | RA-GRS, 1-35 days (7 days by default)                                                                      |
+| **In-memory OLTP**       |                            | N/A                                                                                                        | Partial support. Memory-optimized table types, table variables, and natively compiled modules are supported. | Available                                                                                                  |
+| **Read-only replicas**   |                            | 0 built-in 0 - 4 using geo-replication                                                                     | 0 - 4 built-in                                                                                               | 1 built-in, included in price 0 - 4 using geo-replication                                                  |
+| **Pricing/billing**      | SQL Database               | vCore, reserved storage, and backup storage are charged. IOPS is not charged.                              | vCore for each replica and used storage are charged. IOPS not yet charged.                                   | vCore, reserved storage, and backup storage are charged. IOPS is not charged.                              |
+|                          | SQL Managed Instance       | vCore, reserved storage, and backup storage is charged. IOPS is not charged                                |                                                                                                              |                                                                                                            |
 
 ### Create, deploy, and verify Azure SQL
 
@@ -128,7 +127,7 @@ Next you can decide which data source you want to use. You can start from scratc
 ![](/home/fbraza/Documents/BLOG/BrazLog/images/2021-07-27-10-Azure-SQL.png)
 
 > **Notes about `Database collation`:
->
+> 
 > - In SQL server it is defined by OS locale. 
 > - In Azure SQL managed instance you can set collation upon the creation of the instance (cannot be changed later for the instance but can be changed at the database or column level). 
 > - With SQL Database you cannot change it at the server level but can alter it at the database level.
@@ -141,7 +140,7 @@ Elastic pools are a cost effective solution you can choose when you need to mana
 
 Similarly to single Azure SQL single Database you can choose between the DTU-based or the vCore-based pricing models. You can also specify the minimum and maximum number of resources shared between the databases that are added to the pool. As such, the database that are not used a lot will not consume much resources in the pool.
 
-## Geo-replication 
+## Geo-replication
 
 This feature allows you to create a readable databases on a server in the same or different region. This particularly useful if you want to ensure business continuity so that an application recovers quickly from some unpredicted disaster and initiate a failover to the secondary database.
 
@@ -183,7 +182,11 @@ located.
 
 ### Dynamic Data masking
 
-Dynamic data masking is a technique used to limit the exposure of sensitive data to non-privileged users. You can mask your data so that non-privileged users can't see it but are still able to use query that include the data. For example if you have data with names and e-mail addresses you can mask columns with the following T-SQL commands:
+Dynamic data masking is a technique used to limit the exposure of sensitive data to non-privileged users. You can mask your data so that non-privileged users can't see it but are still able to use query that include the data. 
+
+> Administrator are always excluded from the masking rules.
+
+For example if you have data with names and e-mail addresses you can mask columns with the following T-SQL commands:
 
 ```SQL
 ALTER TABLE Data.Membership ALTER COLUMN FirstName
@@ -194,14 +197,14 @@ ADD MASKED WITH (FUNCTION = 'email()')
 
 ALTER TABLE Data.Membership ALTER COLUMN DiscountCode 
 ADD MASKED WITH (FUNCTION = 'random(1, 100)’)
- 
+
 GRANT UNMASK to DataOfficers
 ```
 
 There are different policies in place to mask the data:
 
 - `Default` - This is a full masking of the data. For numeric data types the value will be set to `0` and for strings,`XXX` characters are used to mask fields.
--  `Credit card` - Here only the last four digits of the credit card are shown.
+- `Credit card` - Here only the last four digits of the credit card are shown.
 - `Email` - This exposes the first letter and replaces the domain with `XXX`.com.
 - `Random number` - This function generate a random number based on the selected boundaries and the actual data type.
 - `Custom text` - Here you can define the exposed prefix, the padding string and the exposed suffix,
@@ -215,9 +218,11 @@ Once data masking is et up, you can identify when a user tries to access data fr
 It is used to **protect data at rest** for an Azure SQL database. When using TDE, your data, but also backups and transaction logs are encrypted at rest. With the default settings TDE uses a **database encryption key** that is protected by a **built-in server certificate**.
 
 > - You have one distinct built-in certificate by database server
+> 
 > - You can also use customer-managed keys for the encryption (Bring Your Own Key service - BYOK). Here the encryptions keys can be managed by by the Azure Key vault service. With this scenario you are responsible for the control of the key life-cycle, key usage permissions and auditing operations on keys.
+> 
 > - To enable TDE for SQL server here the steps yo must follow:
->
+>   
 >   - Create a master key.
 >   - Create or obtain a certificate protected by the master key.
 >   - Create a database encryption key and protect it by using the certificate.
@@ -241,6 +246,45 @@ To be able to use this feature you need to
 - Encrypt columns on SQL server / instance where you can also choose the type of encryption and the key store (Azure key vault)
   - This will create the new master key, the new encryption key and encrypt your column.
 
+#### Column-level Security
+
+This approach permits to control access to columns in a Table. It is based on users context. You can grant grant access via the SQL user or Azure AD. The way you implement column-level security is by granting access to only the column you want a user to view. The ones that you do not include in the granting process will be unavailable. To do this follow the following steps:
+
+- Create a test user first and grant him access to some columns:
+  
+  ```sql
+  CREATE USER TestUser WITHOUT LOGIN;
+  
+  GRANT SELECT ON myTable (ID, FirstName, LastName) TO TestUser;
+  ```
+
+- Switch to the user context and try selecting all the columns:
+  
+  ```sql
+  -- Change context to testUser
+  EXECUTE AS USER = 'TestUser';
+  -- This will give an error message
+  SELECT * FROM myTable;
+  -- Specify the columns
+  SELECT ID, FirstName, LastName
+  FROM myTable
+  
+  REVERT;
+  ```
+
+- Always good to make test on a test user before implementing it for real users.
+
+#### Row-level Security
+
+You can encrypt data at row-level preventing people to be able to access records with specific values. This is not Permission-based but **Predicate-based**. For that you need to define your security policy by creating a security predicate known as ab *Inline Table-Valued Function* (iTVF). There many possible predicate but a common one is the **Filter-Predicate**. it will silently filter the rows the user does not have access to for read operations. The different steps to implement Row-level encryption are the following:
+
+- Create a Table (`CREATE TABLE ...`).
+- Insert rows (`INSERT INTO ...`).
+- Create users (`CREATE USER ...`).
+- Create schema (`CREATE SCHEMA`).
+- Create  security predicate (`CREATE FUNCTION`).
+- Create security policy and bind it to the security predicate (`CREATE SECURITY POLICY`).
+
 ## Manage security
 
 Once your instance is secured (network, authentication and data), we need to manage security on an ongoing basis. This includes auditing, monitoring, data classification and in the case of Azure SQL, Azure Defender. Here let's give a few words about Azure Defender that is a unified package for advance SQL security capabilities that enables:
@@ -249,18 +293,20 @@ Once your instance is secured (network, authentication and data), we need to man
 - **Advanced Threat Protection:** uses advanced monitoring and artificial intelligence to detect whether any of the following threats have occurred: SQL injection, SQL injection vulnerability, Data exfiltration, unsafe action, brute force attempt, anomalous client login.
 
 > For example if you need to prevent data leakage here what you should do:
->
+> 
 > - Enable Advanced threat detection
 > - Configure the service to send alerts for threat detections of type "Data Exfiltration"
 > - Configure the service to send email alerts to the IT
 
-## Monitor and mange your Azure SQL deployment
+## Manage and monitor your Azure SQL deployment
 
-#### Backup and restore
+### Data Discovery & Classification
+
+### Backup and restore
 
 Azure SQL manages backups and runs if the full recovery model is used. It can restore your database to any point in time. You can even restore a deleted database within the configured retention policy. Most interestingly your backups can be automatically encrypted if TDE is enabled on the logical server or instance. By default, a full database backup is taken once a week. Log backups occur every 5-10 minutes and differential backups every 12-24 hours. Backups files are stored in **Azure storage** in read-access geo-redundant storage (RA-GRS) by default (it is possible to set ZRS or LRS).
 
-The retention period for your data varies between 1 and 35 days. If not enough you can choose long-term retention (LTR). This option automatically creates full backups stored in RA-GRS by default for up to 10 years. LTR is available for Azure SQL Database and in preview for Azure SQL managed instanced.
+The retention period for your data varies between 1 and 35 days. If not enough you can choose long-term retention (LTR). This option automatically creates full backups stored in RA-GRS by default for up to 10 years. LTR is available for Azure SQL Database and in preview - *at time of writing* - for Azure SQL managed instanced.
 
 ### Tuning performance in Azure SQL
 
@@ -268,11 +314,11 @@ The retention period for your data varies between 1 and 35 days. If not enough y
 
 Automatic tuning ensures peak performance and stable workloads for Azure SQL Database and Azure SQL Managed Instance   through continuous performance tuning based on AI and machine learning. The automatic tuning options available for both Azure SQL Database and Azure SQL Managed Instance are the following:
 
-| Automatic tuning option                                      | Single database and pooled database support | Instance database support |
-| :----------------------------------------------------------- | ------------------------------------------- | ------------------------- |
-| **CREATE INDEX** - Identifies indexes that may improve performance of your workload, creates indexes, and automatically verifies that performance of queries has improved. | Yes                                         | No                        |
+| Automatic tuning option                                                                                                                                                                                                                                                                                                                                                                                                                                                             | Single database and pooled database support | Instance database support |
+|:----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------- | ------------------------- |
+| **CREATE INDEX** - Identifies indexes that may improve performance of your workload, creates indexes, and automatically verifies that performance of queries has improved.                                                                                                                                                                                                                                                                                                          | Yes                                         | No                        |
 | **DROP INDEX** - Drops unused (over the last 90 days) and duplicate indexes. Unique indexes,  including indexes supporting primary key and unique constraints, are  never dropped. This option may be automatically disabled when queries  with index hints are present in the workload, or when the workload  performs partition switching. On Premium and Business Critical service  tiers, this option will never drop unused indexes, but will drop  duplicate indexes, if any. | Yes                                         | No                        |
-| **FORCE LAST GOOD PLAN**  (automatic plan correction) - Identifies Azure SQL queries using an  execution plan that is slower than the previous good plan, and queries  using the last known good plan instead of the regressed plan. |                                             |                           |
+| **FORCE LAST GOOD PLAN**  (automatic plan correction) - Identifies Azure SQL queries using an  execution plan that is slower than the previous good plan, and queries  using the last known good plan instead of the regressed plan.                                                                                                                                                                                                                                                |                                             |                           |
 
 By default the following parameters will be enabled or disabled:
 
@@ -280,7 +326,4 @@ By default the following parameters will be enabled or disabled:
 - `CREATE_INDEX = disabled`
 - `DROP_INDEX = disabled`
 
-
-
-### Data Discovery & Classification
-
+### Monitor Azure SQL Database
