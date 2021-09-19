@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="twitter:card" content="summary_large_image" /><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Some notes about React | Braza Faouzi</title>
+<meta name="generator" content="Jekyll v4.1.1" />
+<meta property="og:title" content="Some notes about React" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="A post with my notes about React" />
+<meta property="og:description" content="A post with my notes about React" />
+<link rel="canonical" href="https://fbraza.github.io/BrazLog/frontend/react/javascript/2021/09/14/raw-react.html" />
+<meta property="og:url" content="https://fbraza.github.io/BrazLog/frontend/react/javascript/2021/09/14/raw-react.html" />
+<meta property="og:site_name" content="Braza Faouzi" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2021-09-14T00:00:00-05:00" />
+<script type="application/ld+json">
+{"url":"https://fbraza.github.io/BrazLog/frontend/react/javascript/2021/09/14/raw-react.html","@type":"BlogPosting","headline":"Some notes about React","dateModified":"2021-09-14T00:00:00-05:00","datePublished":"2021-09-14T00:00:00-05:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://fbraza.github.io/BrazLog/frontend/react/javascript/2021/09/14/raw-react.html"},"description":"A post with my notes about React","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/BrazLog/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="https://fbraza.github.io/BrazLog/feed.xml" title="Braza Faouzi" /><link rel="shortcut icon" type="image/x-icon" href="/BrazLog/images/favicon.ico"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Primer/15.2.0/primer.css" integrity="sha512-xTz2ys4coGAOz8vuV1NcQBkgVmKhsSEtjbqyMJbBHRplFuvKIUo6xhLHpAyPt9mfR6twHJgn9OgVLuqOvjeBhg==" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css" integrity="sha512-1PKOgIY59xJ8Co8+NE6FZ+LOAZKjy+KY8iq0G4B3CyeY6wYHN3yt9PW0XpSriVlkMXe40PTKnXrLnZ9+fkDaog==" crossorigin="anonymous" />
+
+<script>
+function wrap_img(fn) {
+    if (document.attachEvent ? document.readyState === "complete" : document.readyState !== "loading") {
+        var elements = document.querySelectorAll(".post img");
+        Array.prototype.forEach.call(elements, function(el, i) {
+            if (el.getAttribute("title") && (el.className != "emoji")) {
+                const caption = document.createElement('figcaption');
+                var node = document.createTextNode(el.getAttribute("title"));
+                caption.appendChild(node);
+                const wrapper = document.createElement('figure');
+                wrapper.className = 'image';
+                el.parentNode.insertBefore(wrapper, el);
+                el.parentNode.removeChild(el);
+                wrapper.appendChild(el);
+                wrapper.appendChild(caption);
+            }
+        });
+    } else { document.addEventListener('DOMContentLoaded', fn); }
+}
+window.onload = wrap_img;
+</script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function(){
+    // add link icon to anchor tags
+    var elem = document.querySelectorAll(".anchor-link")
+    elem.forEach(e => (e.innerHTML = '<i class="fas fa-link fa-xs"></i>'));
+    });
+</script>
+</head>
+<body><header class="site-header">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/BrazLog/">Braza Faouzi</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/BrazLog/about/">About Me</a><a class="page-link" href="/BrazLog/search/">Search</a><a class="page-link" href="/BrazLog/categories/">Tags</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Some notes about React</h1><p class="page-description">A post with my notes about React</p><p class="post-meta post-meta-title"><time class="dt-published" datetime="2021-09-14T00:00:00-05:00" itemprop="datePublished">
+        Sep 14, 2021
+      </time>
+       • <span class="read-time" title="Estimated read time">
+    
+    
+      4 min read
+    
+</span></p>
+
+    
+      <p class="category-tags"><i class="fas fa-tags category-tags-icon"></i></i> 
+      
+        <a class="category-tags-link" href="/BrazLog/categories/#FrontEnd">FrontEnd</a>
+        &nbsp;
+      
+        <a class="category-tags-link" href="/BrazLog/categories/#React">React</a>
+        &nbsp;
+      
+        <a class="category-tags-link" href="/BrazLog/categories/#JavaScript">JavaScript</a>
+        
+      
+      </p>
+    
+
+    </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <p>With JavaScript you can manupulate the DOM (Document Object Model). The DOM is how data is represented in a webpage. It is represented as a hierarchical tree with leaves / nodes that are elements of the web document.</p>
+
+<blockquote>
+  <p>JavaScipt sees the DOM as an object that holds all the data.</p>
+</blockquote>
+
+<h2 id="manipulating-the-dom-with-javascript">Manipulating the DOM with JavaScript</h2>
+
+<p>We can use JavaScript code to manipulate the DOM namely create or modify specific elements. Read this snippet of HTML:</p>
+
+<pre><code class="language-HTML">&lt;html&gt;
+&lt;header&gt;
+&lt;/header&gt;
+&lt;body&gt;
+  &lt;script type="module"&gt;
+    const rootElement = document.createElement('div')
+    rootElement.setAttribute('id', 'root')
+    document.body.append(rootElement)
+    const divElement = document.createElement('div')
+    divElement.textContent = 'Hello World'
+    divElement.className = 'container'
+    rootElement.append(divElement)
+  &lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+
+<p>Focus on what is happening in the script element:</p>
+
+<pre><code class="language-JavaScript">const rootElement = document.createElement('div') // 1
+rootElement.setAttribute('id', 'root')            // 2
+document.body.append(rootElement)                 // 3
+const divElement = document.createElement('div')  // 4
+divElement.textContent = 'Hello World'            // 5
+divElement.className = 'container'                // 6
+rootElement.append(divElement)                    // 7
+</code></pre>
+
+<p>Let’s break down what is happening here:</p>
+
+<ol>
+  <li>We create an <code class="language-plaintext highlighter-rouge">div</code> element</li>
+  <li>We add it an attribute <code class="language-plaintext highlighter-rouge">id</code> with value <code class="language-plaintext highlighter-rouge">root</code></li>
+  <li>We append this <code class="language-plaintext highlighter-rouge">div</code> element to the <code class="language-plaintext highlighter-rouge">&lt;body&gt;&lt;/body&gt;</code>. Notice how we access the body sarting from <code class="language-plaintext highlighter-rouge">document</code></li>
+  <li>Next, we create a new <code class="language-plaintext highlighter-rouge">div</code> element</li>
+  <li>We add it some text content</li>
+  <li>We define its class name</li>
+  <li>We append the the <code class="language-plaintext highlighter-rouge">&lt;div id=root&gt;</code> with the second <code class="language-plaintext highlighter-rouge">div</code></li>
+</ol>
+
+<h2 id="manipulating-the-dom-with-react">Manipulating the DOM with React</h2>
+
+<p>React is the most widely used frontend framework in the world and it’s using the same APIs that we’re using when it creates DOM nodes. React abstracts away the imperative browser API from you to give you a much more declarative API to work with. With that in mind, you need two JavaScript files to write React applications for the web:</p>
+
+<ul>
+  <li><strong>React</strong>: responsible for creating React elements (kinda like <code class="language-plaintext highlighter-rouge">document.createElement()</code>)</li>
+  <li><strong>ReactDOM</strong>: responsible for rendering React elements to the DOM (kinda like <code class="language-plaintext highlighter-rouge">rootElement.append()</code>)</li>
+</ul>
+
+<pre><code class="language-JavaScript">const divElement = 'div'
+const divContainerProps = {className: 'container' children: 'Hello World'}
+const reactDivContainer = React.createElement(divElement, divContainerProps)
+ReactDOM.render(reactDivContainer, document.getElementById('root'))
+</code></pre>
+
+<p>The difference is quite srtiking here. We are using raw React and no JSX. Let’s break down the code:</p>
+
+<ol>
+  <li><code class="language-plaintext highlighter-rouge">divElement</code> is a variable that holds a string describing the element we want</li>
+  <li><code class="language-plaintext highlighter-rouge">divContainerProps</code> is a variable that holds an object with properties as field and their respective values</li>
+  <li><code class="language-plaintext highlighter-rouge">React.createElement()</code> create the element using both variables</li>
+  <li>Then we append our new <code class="language-plaintext highlighter-rouge">div</code> to the <code class="language-plaintext highlighter-rouge">div id='root'</code> element</li>
+</ol>
+
+<p>Note that if you want to make quick test with an npm library you can use <a href="https://unpkg.com/">UNPKG</a>. This is a tool to use everything that is on npm by just putting an URL in a script tag. Once your page is loaded with these scripts you have access in the web console to some global variables. For react these are <code class="language-plaintext highlighter-rouge">React</code> and <code class="language-plaintext highlighter-rouge">ReactDOM</code>.</p>
+
+<p>Run the following command in the browser console:</p>
+
+<pre><code class="language-JavaScript">React
+</code></pre>
+
+<p>This should return:</p>
+
+<pre><code class="language-JavaScript">Object { Fragment: Symbol("react.fragment"), StrictMode: Symbol("react.strict_mode"), Profiler: Symbol("react.profiler"), Suspense: Symbol("react.suspense"), Children: {…}, Component: Component(props, context, updater), PureComponent: PureComponent(props, context, updater), __SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED: {…}, cloneElement: cloneElementWithValidation(element, props, children), createContext: createContext(defaultValue, calculateChangedBits)
+, … }​
+Children: Object { map: mapChildren(children, func, context), forEach: forEachChildren(children, forEachFunc, forEachContext), count: countChildren(children)
+, … }
+Component: function Component(props, context, updater)
+Fragment: Symbol("react.fragment")
+Profiler: Symbol("react.profiler")
+PureComponent: function PureComponent(props, context, updater)
+StrictMode: Symbol("react.strict_mode")
+Suspense: Symbol("react.suspense")
+__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED: Object { ReactCurrentDispatcher: {…}, ReactCurrentOwner: {…}, IsSomeRendererActing: {…}, … }
+cloneElement: function cloneElementWithValidation(element, props, children)
+createContext: function createContext(defaultValue, calculateChangedBits)
+createElement: function createElementWithValidation(type, props, children)
+createFactory: function createFactoryWithValidation(type)
+createRef: function createRef()
+forwardRef: function forwardRef(render)
+isValidElement: function isValidElement(object)
+lazy: function lazy(ctor)
+memo: function memo(type, compare)
+useCallback: function useCallback(callback, deps)
+useContext: function useContext(Context, unstable_observedBits)
+useDebugValue: function useDebugValue(value, formatterFn)
+useEffect: function useEffect(create, deps)
+useImperativeHandle: function useImperativeHandle(ref, create, deps)
+useLayoutEffect: function useLayoutEffect(create, deps)
+useMemo: function useMemo(create, deps)
+useReducer: function useReducer(reducer, initialArg, init)
+useRef: function useRef(initialValue)
+useState: function useState(initialState)
+version: "17.0.0"
+&lt;prototype&gt;: Object { … }
+</code></pre>
+
+<h2 id="manipulating-the-dom-with-jsx">Manipulating the DOM with JSX</h2>
+
+<p>JSX is more intuitive than the raw React API and is easier to understand when reading the code. It’s fairly simple HTML-like syntactic sugar on top of the raw React APIs:</p>
+
+<div class="language-jsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">const</span> <span class="nx">ui</span> <span class="o">=</span> <span class="p">&lt;</span><span class="nt">h1</span> <span class="na">id</span><span class="p">=</span><span class="s">"greeting"</span><span class="p">&gt;</span>Hey there<span class="p">&lt;/</span><span class="nt">h1</span><span class="p">&gt;</span>
+
+<span class="c1">// ↓ ↓ ↓ ↓ compiles to ↓ ↓ ↓ ↓</span>
+
+<span class="kd">const</span> <span class="nx">ui</span> <span class="o">=</span> <span class="nx">React</span><span class="p">.</span><span class="nx">createElement</span><span class="p">(</span><span class="dl">'</span><span class="s1">h1</span><span class="dl">'</span><span class="p">,</span> <span class="p">{</span><span class="na">id</span><span class="p">:</span> <span class="dl">'</span><span class="s1">greeting</span><span class="dl">'</span><span class="p">,</span> <span class="na">children</span><span class="p">:</span> <span class="dl">'</span><span class="s1">Hey there</span><span class="dl">'</span><span class="p">})</span>
+</code></pre></div></div>
+
+<p>Babel compiles JSX down to <code class="language-plaintext highlighter-rouge">React.createElement()</code> calls.</p>
+
+<p>These two examples are identical:</p>
+
+<div class="language-jsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">const</span> <span class="nx">element</span> <span class="o">=</span> <span class="p">(</span>
+  <span class="p">&lt;</span><span class="nt">h1</span> <span class="na">className</span><span class="p">=</span><span class="s">"greeting"</span><span class="p">&gt;</span>
+    Hello, world!
+  <span class="p">&lt;/</span><span class="nt">h1</span><span class="p">&gt;</span>
+<span class="p">);</span>
+</code></pre></div></div>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">const</span> <span class="nx">element</span> <span class="o">=</span> <span class="nx">React</span><span class="p">.</span><span class="nx">createElement</span><span class="p">(</span>
+  <span class="dl">'</span><span class="s1">h1</span><span class="dl">'</span><span class="p">,</span>
+  <span class="p">{</span><span class="na">className</span><span class="p">:</span> <span class="dl">'</span><span class="s1">greeting</span><span class="dl">'</span><span class="p">},</span>
+  <span class="dl">'</span><span class="s1">Hello, world!</span><span class="dl">'</span>
+<span class="p">);</span>
+</code></pre></div></div>
+
+<p><code class="language-plaintext highlighter-rouge">React.createElement()</code> creates an javascript object that holds the “identity” of your element.</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// Note: this structure is simplified</span>
+<span class="kd">const</span> <span class="nx">element</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="na">type</span><span class="p">:</span> <span class="dl">'</span><span class="s1">h1</span><span class="dl">'</span><span class="p">,</span>
+  <span class="na">props</span><span class="p">:</span> <span class="p">{</span>
+    <span class="na">className</span><span class="p">:</span> <span class="dl">'</span><span class="s1">greeting</span><span class="dl">'</span><span class="p">,</span>
+    <span class="na">children</span><span class="p">:</span> <span class="dl">'</span><span class="s1">Hello, world!</span><span class="dl">'</span>
+  <span class="p">}</span>
+<span class="p">};</span>
+</code></pre></div></div>
+
+<p>These objects are called “<strong>React elements</strong>”. You can think of them as descriptions of what you want to see on the screen. React reads these objects and uses them to construct the DOM and keep it up to date.</p>
+
+<h3 id="interpolation-with-jsx">Interpolation with JSX</h3>
+
+<p>Let’s have a look to this code</p>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;body&gt;</span>
+  <span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">"root"</span><span class="nt">&gt;&lt;/div&gt;</span>
+  <span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"https://unpkg.com/react@17.0.0/umd/react.development.js"</span><span class="nt">&gt;&lt;/script&gt;</span>
+  <span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"https://unpkg.com/react-dom@17.0.0/umd/react-dom.development.js"</span><span class="nt">&gt;&lt;/script&gt;</span>
+  <span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"https://unpkg.com/@babel/standalone@7.12.4/babel.js"</span><span class="nt">&gt;&lt;/script&gt;</span>
+  <span class="nt">&lt;script </span><span class="na">type=</span><span class="s">"text/babel"</span><span class="nt">&gt;</span>
+    <span class="kd">const</span> <span class="nx">className</span> <span class="o">=</span> <span class="dl">'</span><span class="s1">container</span><span class="dl">'</span>
+    <span class="kd">const</span> <span class="nx">children</span> <span class="o">=</span> <span class="dl">'</span><span class="s1">Hello World</span><span class="dl">'</span>
+    <span class="kd">const</span> <span class="nx">element</span> <span class="o">=</span> <span class="o">&lt;</span><span class="nx">div</span> <span class="nx">className</span><span class="o">=</span><span class="p">{</span><span class="nx">className</span><span class="p">}</span><span class="o">&gt;</span><span class="p">{</span><span class="nx">children</span><span class="p">}</span><span class="o">&lt;</span><span class="sr">/div</span><span class="err">&gt;
+</span>
+    <span class="nx">ReactDOM</span><span class="p">.</span><span class="nx">render</span><span class="p">(</span><span class="nx">element</span><span class="p">,</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="dl">'</span><span class="s1">root</span><span class="dl">'</span><span class="p">))</span>
+  <span class="nt">&lt;/script&gt;</span>
+<span class="nt">&lt;/body&gt;</span>
+</code></pre></div></div>
+
+<blockquote>
+  <p>Notice that we <code class="language-plaintext highlighter-rouge">type="text/babel"</code> to transpile the JSX syntax to javascript.</p>
+</blockquote>
+
+<p>We use interpolation with the <code class="language-plaintext highlighter-rouge">{}</code> to move from JSX to the JavaScript world. Using interpolation tells the compiler that code inside <code class="language-plaintext highlighter-rouge">{}</code> should not be changed and considered as pure JavaScript code.</p>
+
+  </div><!-- from https://github.com/utterance/utterances -->
+<script src="https://utteranc.es/client.js"
+        repo="fbraza/BrazLog"
+        issue-term="title"
+        label="blogpost-comment"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+</script><a class="u-url" href="/BrazLog/frontend/react/javascript/2021/09/14/raw-react.html" hidden></a>
+</article>
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/BrazLog/"></data>
+
+  <div class="wrapper">
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col">
+        <p class="feed-subscribe">
+          <a href="/BrazLog/feed.xml">
+            <svg class="svg-icon orange">
+              <use xlink:href="/BrazLog/assets/minima-social-icons.svg#rss"></use>
+            </svg><span>Subscribe</span>
+          </a>
+        </p>
+      </div>
+      <div class="footer-col">
+        <p>Python · Scala · BigData · System Design · Data Engineering</p>
+      </div>
+    </div>
+
+    <div class="social-links"><ul class="social-media-list"><li><a rel="me" href="https://github.com/fbraza" title="fbraza"><svg class="svg-icon grey"><use xlink:href="/BrazLog/assets/minima-social-icons.svg#github"></use></svg></a></li><li><a rel="me" href="https://twitter.com/%40braza_faouzi" title="@braza_faouzi"><svg class="svg-icon grey"><use xlink:href="/BrazLog/assets/minima-social-icons.svg#twitter"></use></svg></a></li></ul>
+</div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>
