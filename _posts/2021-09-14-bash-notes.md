@@ -1,5 +1,5 @@
 ---
-hide: true
+hide: false
 title: Some notes about BASH programming
 toc: false
 comments: true
@@ -8,11 +8,11 @@ description: A post to keep track of some BASH programming construct
 categories: [Bash, DevOps, Linux]
 ---
 
-This pages will serve as a reference for my perigrination with BASH. A good place to keep track of BASH constructs that I met during my personal and professional projects.
+This page will serve as a reference for my perigrination with BASH. A good place to keep track of BASH constructs that I met during my personal and professional projects.
 
 ## A basic command line interface
 
-To setup a command line interface for your scripts, you can use the following code:
+To setup a command line interface for your bash scripts, you can follow this code snippet:
 
 ```bash
 THISSCRIPT=$(basename $0)
@@ -27,8 +27,8 @@ usage() {
     echo "Params:"
     echo "        -a1|--argument1: description ... "
     echo "        -a2|--argument2: description ... "
-    echo "      -an|--argumentn: description ... "
-    echo "        -h|--help: description ... "
+    echo "        -an|--argumentn: description ... "
+    echo "         -h|--help: description ... "
     echo ""
     echo "Examples:"
     echo ""
@@ -69,7 +69,7 @@ done
 [[ -z "$VAR" ]] && { echo >$2 "$THISSCRIPT ERROR: please specify a value for VAR"; exit 1; }
 ```
 
-### Notes
+### Code explanation
 
 * To get the name of the script file  
   
@@ -105,9 +105,3 @@ done
   ```bash
   echo >$2 "your text"
   ```
-
-## Parse and construct a folder path
-
-if you need to always use the same folder structure, you can construct the same path with bash scripting.
-
-For example imagine you have the following path
