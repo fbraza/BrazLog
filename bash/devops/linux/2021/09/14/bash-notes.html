@@ -99,11 +99,11 @@ window.onload = wrap_img;
     </header>
 
   <div class="post-content e-content" itemprop="articleBody">
-    <p>This pages will serve as a reference for my perigrination with BASH. A good place to keep track of BASH constructs that I met during my personal and professional projects.</p>
+    <p>This page will serve as a reference for my perigrination with BASH. A good place to keep track of BASH constructs that I met during my personal and professional projects.</p>
 
 <h2 id="a-basic-command-line-interface">A basic command line interface</h2>
 
-<p>To setup a command line interface for your scripts, you can use the following code:</p>
+<p>To setup a command line interface for your bash scripts, you can follow this code snippet:</p>
 
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">THISSCRIPT</span><span class="o">=</span><span class="si">$(</span><span class="nb">basename</span> <span class="nv">$0</span><span class="si">)</span>
 <span class="nv">VAR</span><span class="o">=</span><span class="s2">""</span>
@@ -117,8 +117,8 @@ usage<span class="o">()</span> <span class="o">{</span>
     <span class="nb">echo</span> <span class="s2">"Params:"</span>
     <span class="nb">echo</span> <span class="s2">"        -a1|--argument1: description ... "</span>
     <span class="nb">echo</span> <span class="s2">"        -a2|--argument2: description ... "</span>
-    <span class="nb">echo</span> <span class="s2">"      -an|--argumentn: description ... "</span>
-    <span class="nb">echo</span> <span class="s2">"        -h|--help: description ... "</span>
+    <span class="nb">echo</span> <span class="s2">"        -an|--argumentn: description ... "</span>
+    <span class="nb">echo</span> <span class="s2">"         -h|--help: description ... "</span>
     <span class="nb">echo</span> <span class="s2">""</span>
     <span class="nb">echo</span> <span class="s2">"Examples:"</span>
     <span class="nb">echo</span> <span class="s2">""</span>
@@ -159,7 +159,7 @@ usage<span class="o">()</span> <span class="o">{</span>
 <span class="o">[[</span> <span class="nt">-z</span> <span class="s2">"</span><span class="nv">$VAR</span><span class="s2">"</span> <span class="o">]]</span> <span class="o">&amp;&amp;</span> <span class="o">{</span> <span class="nb">echo</span> <span class="o">&gt;</span><span class="nv">$2</span> <span class="s2">"</span><span class="nv">$THISSCRIPT</span><span class="s2"> ERROR: please specify a value for VAR"</span><span class="p">;</span> <span class="nb">exit </span>1<span class="p">;</span> <span class="o">}</span>
 </code></pre></div></div>
 
-<h3 id="notes">Notes</h3>
+<h3 id="code-explanation">Code explanation</h3>
 
 <ul>
   <li>
@@ -201,12 +201,6 @@ usage<span class="o">()</span> <span class="o">{</span>
 </code></pre></div>    </div>
   </li>
 </ul>
-
-<h2 id="parse-and-construct-a-folder-path">Parse and construct a folder path</h2>
-
-<p>if you need to always use the same folder structure, you can construct the same path with bash scripting.</p>
-
-<p>For example imagine you have the following path</p>
 
   </div><!-- from https://github.com/utterance/utterances -->
 <script src="https://utteranc.es/client.js"
