@@ -32,7 +32,7 @@ usage() {
     echo ""
     echo "Examples:"
     echo ""
-    echo "        ./$THISSCRIPT"    
+    echo "        ./$THISSCRIPT"
 }
 
 # Parsing arguments
@@ -71,7 +71,7 @@ done
 
 ### Code explanation
 
-* To get the name of the script file  
+* To get the name of the script file
   
   ```bash
   THISSCRIPT=$(basename $0)
@@ -85,7 +85,7 @@ done
   done
   ```
 
-* `case` statement: 
+* `case` statement:
   
   ```bash
   case $1 in
