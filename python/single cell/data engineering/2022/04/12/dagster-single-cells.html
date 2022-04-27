@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="twitter:card" content="summary_large_image" /><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Use Dagster for Reproducible Single cell Analysis Pipelines | Braza Faouzi</title>
+<meta name="generator" content="Jekyll v4.1.1" />
+<meta property="og:title" content="Use Dagster for Reproducible Single cell Analysis Pipelines" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Dagster blablabla … Single cell blablabla … data pipeline Dagster would be extremely relevant for local development of analytic pipeline in the field here we are going to through an example blablabla" />
+<meta property="og:description" content="Dagster blablabla … Single cell blablabla … data pipeline Dagster would be extremely relevant for local development of analytic pipeline in the field here we are going to through an example blablabla" />
+<link rel="canonical" href="https://fbraza.github.io/BrazLog/python/single%20cell/data%20engineering/2022/04/12/dagster-single-cells.html" />
+<meta property="og:url" content="https://fbraza.github.io/BrazLog/python/single%20cell/data%20engineering/2022/04/12/dagster-single-cells.html" />
+<meta property="og:site_name" content="Braza Faouzi" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2022-04-12T00:00:00-05:00" />
+<script type="application/ld+json">
+{"url":"https://fbraza.github.io/BrazLog/python/single%20cell/data%20engineering/2022/04/12/dagster-single-cells.html","@type":"BlogPosting","headline":"Use Dagster for Reproducible Single cell Analysis Pipelines","dateModified":"2022-04-12T00:00:00-05:00","datePublished":"2022-04-12T00:00:00-05:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://fbraza.github.io/BrazLog/python/single%20cell/data%20engineering/2022/04/12/dagster-single-cells.html"},"description":"Dagster blablabla … Single cell blablabla … data pipeline Dagster would be extremely relevant for local development of analytic pipeline in the field here we are going to through an example blablabla","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/BrazLog/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="https://fbraza.github.io/BrazLog/feed.xml" title="Braza Faouzi" /><link rel="shortcut icon" type="image/x-icon" href="/BrazLog/images/favicon.ico"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Primer/15.2.0/primer.css" integrity="sha512-xTz2ys4coGAOz8vuV1NcQBkgVmKhsSEtjbqyMJbBHRplFuvKIUo6xhLHpAyPt9mfR6twHJgn9OgVLuqOvjeBhg==" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css" integrity="sha512-1PKOgIY59xJ8Co8+NE6FZ+LOAZKjy+KY8iq0G4B3CyeY6wYHN3yt9PW0XpSriVlkMXe40PTKnXrLnZ9+fkDaog==" crossorigin="anonymous" />
+
+<script>
+function wrap_img(fn) {
+    if (document.attachEvent ? document.readyState === "complete" : document.readyState !== "loading") {
+        var elements = document.querySelectorAll(".post img");
+        Array.prototype.forEach.call(elements, function(el, i) {
+            if (el.getAttribute("title") && (el.className != "emoji")) {
+                const caption = document.createElement('figcaption');
+                var node = document.createTextNode(el.getAttribute("title"));
+                caption.appendChild(node);
+                const wrapper = document.createElement('figure');
+                wrapper.className = 'image';
+                el.parentNode.insertBefore(wrapper, el);
+                el.parentNode.removeChild(el);
+                wrapper.appendChild(el);
+                wrapper.appendChild(caption);
+            }
+        });
+    } else { document.addEventListener('DOMContentLoaded', fn); }
+}
+window.onload = wrap_img;
+</script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function(){
+    // add link icon to anchor tags
+    var elem = document.querySelectorAll(".anchor-link")
+    elem.forEach(e => (e.innerHTML = '<i class="fas fa-link fa-xs"></i>'));
+    });
+</script>
+</head>
+<body><header class="site-header">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/BrazLog/">Braza Faouzi</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/BrazLog/about/">About Me</a><a class="page-link" href="/BrazLog/search/">Search</a><a class="page-link" href="/BrazLog/categories/">Tags</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Use Dagster for Reproducible Single cell Analysis Pipelines</h1><p class="post-meta post-meta-title"><time class="dt-published" datetime="2022-04-12T00:00:00-05:00" itemprop="datePublished">
+        Apr 12, 2022
+      </time>
+       • <span class="read-time" title="Estimated read time">
+    
+    
+      5 min read
+    
+</span></p>
+
+    
+      <p class="category-tags"><i class="fas fa-tags category-tags-icon"></i></i> 
+      
+        <a class="category-tags-link" href="/BrazLog/categories/#Python">Python</a>
+        &nbsp;
+      
+        <a class="category-tags-link" href="/BrazLog/categories/#Single cell">Single cell</a>
+        &nbsp;
+      
+        <a class="category-tags-link" href="/BrazLog/categories/#Data engineering">Data engineering</a>
+        
+      
+      </p>
+    
+
+    </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <p>Dagster blablabla …
+Single cell blablabla … data pipeline
+Dagster would be extremely relevant for local development of analytic pipeline in the field
+here we are going to through an example blablabla</p>
+
+<h2 id="load-the-data-with-python-only">Load the data with python only</h2>
+
+<p>I am not going to contextualize the data here. Just know that the single cell sequencing data come from cancer cells that were subjected to different treatments. The sequencing data was mapped against the human genome and saved as <code class="language-plaintext highlighter-rouge">h5ad</code> files. It is a file format that stores AnnData object, the fundamental building block of the Scanpy library. We are going to use Scanpy to read this object.</p>
+
+<p>If we had to do it using classical python code we could propose the following:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">scanpy</span> <span class="k">as</span> <span class="n">sc</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="n">pd</span>
+
+
+<span class="k">def</span> <span class="nf">get_count_matrix_from_h5ad</span><span class="p">(</span><span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="p">.</span><span class="n">DataFrame</span><span class="p">:</span>
+    <span class="s">"""Extract the count matrix from an anndata object"""</span>
+    <span class="n">anndata</span> <span class="o">=</span> <span class="n">sc</span><span class="p">.</span><span class="n">read_h5ad</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">anndata</span><span class="p">.</span><span class="n">to_df</span><span class="p">()</span>
+
+
+<span class="k">def</span> <span class="nf">get_metadata_from_h5ad</span><span class="p">(</span><span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="p">.</span><span class="n">DataFrame</span><span class="p">:</span>
+    <span class="s">"""Extract the metadata from an anndata object present in `anndata.obs`"""</span>
+    <span class="n">anndata</span> <span class="o">=</span> <span class="n">sc</span><span class="p">.</span><span class="n">read_h5ad</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">anndata</span><span class="p">.</span><span class="n">obs</span>
+
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">"__main__"</span><span class="p">:</span>
+    <span class="n">PATH</span> <span class="o">=</span> <span class="s">"data/raw/h5ad/RGR/KJF_RGR.h5ad"</span>
+    <span class="k">print</span><span class="p">(</span>
+        <span class="n">get_count_matrix_from_h5ad</span><span class="p">(</span><span class="n">PATH</span><span class="p">),</span>
+        <span class="n">get_metadata_from_h5ad</span><span class="p">(</span><span class="n">PATH</span><span class="p">)</span>
+    <span class="p">)</span>
+</code></pre></div></div>
+
+<p>Now we could just execute our code:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>python path/to/load.py
+</code></pre></div></div>
+
+<p>to get the following output:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>                           0    1    2    3    4    5    6         7    8    9   10   11  ...  20009  20010  20011  20012  20013  20014  20015  20016  20017  20018  20019  20020
+hn017_X068_NT_HN017      0.0  0.0  0.0  0.0  0.0  0.0  0.0  0.000000  0.0  0.0  0.0  0.0  ...    0.0    0.0    0.0    0.0    0.0    0.0    0.0    0.0    0.0    0.0    0.0    0.0
+hn017_X068_NT_HN017.1    0.0  0.0  0.0  0.0  0.0  0.0  0.0  0.000000  0.0  0.0  0.0  0.0  ...    0.0    0.0    0.0    0.0    0.0    0.0    0.0    0.0    0.0    0.0    0.0    0.0
+hn017_X068_NT_HN017.2    0.0  0.0  0.0  0.0  0.0  0.0  0.0  0.000000  0.0  0.0  0.0  0.0  ...    0.0    0.0    0.0    0.0    0.0    0.0    0.0    0.0    0.0    0.0    0.0    0.0
+hn017_X068_NT_HN017.3    0.0  0.0  0.0  0.0  0.0  0.0  0.0  0.000000  0.0  0.0  0.0  0.0  ...    0.0    0.0    0.0    0.0    0.0    0.0    0.0    0.0    0.0    0.0    0.0    0.0
+hn017_X068_NT_HN017.4    0.0  0.0  0.0  0.0  0.0  0.0  0.0  0.000000  0.0  0.0  0.0  0.0  ...    0.0    0.0    0.0    0.0    0.0    0.0    0.0    0.0    0.0    0.0    0.0    0.0
+...                      ...  ...  ...  ...  ...  ...  ...       ...  ...  ...  ...  ...  ...    ...    ...    ...    ...    ...    ...    ...    ...    ...    ...    ...    ...
+hn031_X158_PT_HN031.187  0.0  0.0  0.0  0.0  0.0  0.0  0.0  0.000000  0.0  0.0  0.0  0.0  ...    0.0    0.0    0.0    0.0    0.0    0.0    0.0    0.0    0.0    0.0    0.0    0.0
+hn031_X158_PT_HN031.188  0.0  0.0  0.0  0.0  0.0  0.0  0.0  0.000000  0.0  0.0  0.0  0.0  ...    0.0    0.0    0.0    0.0    0.0    0.0    0.0    0.0    0.0    0.0    0.0    0.0
+hn031_X158_PT_HN031.189  0.0  0.0  0.0  0.0  0.0  0.0  1.0  6.003666  0.0  0.0  0.0  0.0  ...    0.0    0.0    0.0    0.0    0.0    0.0    0.0    0.0    0.0    0.0    0.0    0.0
+hn031_X158_PT_HN031.190  0.0  0.0  0.0  0.0  0.0  0.0  0.0  2.000244  0.0  1.0  0.0  0.0  ...    0.0    0.0    0.0    0.0    0.0    0.0    0.0    0.0    0.0    0.0    0.0    0.0
+hn031_X158_PT_HN031.191  0.0  0.0  0.0  0.0  0.0  0.0  0.0  0.000000  0.0  0.0  0.0  0.0  ...    0.0    0.0    0.0    0.0    0.0    0.0    0.0    0.0    0.0    0.0    0.0    0.0
+
+<span class="o">[</span>3596 rows x 20021 columns]                         orig.ident    nCount_RNA  nFeature_RNA  batch sample treatment                 OG
+hn017_X068_NT_HN017           X068    773.430000           477     68  HN017      SMCs      X068_NT_HN017
+hn017_X068_NT_HN017.1         X068    438.140000           314     68  HN017      SMCs    X068_NT_HN017.1
+hn017_X068_NT_HN017.2         X068    886.110000           498     68  HN017      SMCs    X068_NT_HN017.2
+hn017_X068_NT_HN017.3         X068    402.250000           220     68  HN017      SMCs    X068_NT_HN017.3
+hn017_X068_NT_HN017.4         X068    345.220000           217     68  HN017      SMCs    X068_NT_HN017.4
+...                            ...           ...           ...    ...    ...       ...                ...
+hn031_X158_PT_HN031.187       X158   9969.478365          2797    158  HN031      FMCs  X158_PT_HN031.187
+hn031_X158_PT_HN031.188       X158  11465.470291          3289    158  HN031      FMCs  X158_PT_HN031.188
+hn031_X158_PT_HN031.189       X158  25741.699607          4917    158  HN031      FMCs  X158_PT_HN031.189
+hn031_X158_PT_HN031.190       X158  42022.885436          6369    158  HN031      FMCs  X158_PT_HN031.190
+hn031_X158_PT_HN031.191       X158    998.665076           469    158  HN031      FMCs  X158_PT_HN031.191
+
+<span class="o">[</span>3596 rows x 7 columns]
+</code></pre></div></div>
+
+<p>The <code class="language-plaintext highlighter-rouge">print</code> statement was used as an example here. The idea behind a data engineering pipeline is to build a “<em>graph of functions that ingest and produce data assets</em>“<sup>1</sup>. So here the output generated by our two functions will be used as input data for subsequent processing and analytic tasks that remain to be defined.</p>
+
+<p>We can refactor our code to make it more modular.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">scprep</span> <span class="k">as</span> <span class="n">sp</span>
+<span class="kn">import</span> <span class="nn">scanpy</span> <span class="k">as</span> <span class="n">sc</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="n">pd</span>
+
+
+<span class="k">def</span> <span class="nf">load_anndata</span><span class="p">(</span><span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">sc</span><span class="p">.</span><span class="n">AnnData</span><span class="p">:</span>
+    <span class="s">"""Load an AnnData object from a h5ad file"""</span>
+    <span class="k">return</span> <span class="n">sc</span><span class="p">.</span><span class="n">read_h5ad</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">get_counts</span><span class="p">(</span><span class="n">anndata</span><span class="p">:</span> <span class="n">sc</span><span class="p">.</span><span class="n">AnnData</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="p">.</span><span class="n">DataFrame</span><span class="p">:</span>
+    <span class="s">"""Return a count matrix from an AnnData object"""</span>
+    <span class="k">return</span> <span class="n">anndata</span><span class="p">.</span><span class="n">to_df</span><span class="p">()</span>
+
+
+<span class="k">def</span> <span class="nf">get_metadata</span><span class="p">(</span><span class="n">anndata</span><span class="p">:</span> <span class="n">sc</span><span class="p">.</span><span class="n">AnnData</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="p">.</span><span class="n">DataFrame</span><span class="p">:</span>
+    <span class="s">"""Return the metadata from an AnnData object"""</span>
+    <span class="k">return</span> <span class="n">anndata</span><span class="p">.</span><span class="n">obs</span>
+
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">"__main__"</span><span class="p">:</span>
+    <span class="n">PATH</span> <span class="o">=</span> <span class="s">"data/raw/h5ad/RGR/KJF_RGR.h5ad"</span>
+    <span class="n">anndata</span> <span class="o">=</span> <span class="n">load_anndata</span><span class="p">(</span><span class="n">PATH</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span>
+        <span class="n">get_counts</span><span class="p">(</span><span class="n">anndata</span><span class="o">=</span><span class="n">anndata</span><span class="p">),</span>
+        <span class="n">get_metadata</span><span class="p">(</span><span class="n">anndata</span><span class="o">=</span><span class="n">anndata</span><span class="p">)</span>
+    <span class="p">)</span>
+</code></pre></div></div>
+
+<p>We extracted the logic implemented to load the AnnData object in its own function, <code class="language-plaintext highlighter-rouge">load_anndata</code>. Its returned value feeds the other two functions <code class="language-plaintext highlighter-rouge">get_counts</code> &amp; <code class="language-plaintext highlighter-rouge">get_metadata</code> that respectively return pandas DataFrame for the counts and metadata. If we had to depict the data flow as a graph we would have the following:</p>
+
+<p><img src="../assets/2022-04-12-dagster-single-cells-fig-01.png" alt="figure_01: Graph_of_computation_for_reading_data" /></p>
+
+<p>A couple of remark at this step:</p>
+
+<ul>
+  <li>The path is hardcoded.</li>
+  <li>We could implement a CLI application that parse the argument and get the path from there.</li>
+  <li>We could save the path value in a <code class="language-plaintext highlighter-rouge">yaml</code> / <code class="language-plaintext highlighter-rouge">json</code> / <code class="language-plaintext highlighter-rouge">.env</code> and modify it based on our needs.</li>
+  <li>Both imply to write extra code. But this is doable.</li>
+  <li>As it is implemented now, we have no logs of our runs and no historicall records of the different runs if any.</li>
+</ul>
+
+<h2 id="load-the-data-with-python-and-dagster">Load the data with python and dagster</h2>
+
+<p>Let’s see how to translate this code to Dagster. We are going to approach this Top-Down. First the code and next we will elaborate on some concepts. Show me the code !</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">dagster</span> <span class="kn">import</span> <span class="n">Output</span><span class="p">,</span> <span class="n">op</span><span class="p">,</span> <span class="n">Output</span><span class="p">,</span> <span class="n">Out</span><span class="p">,</span> <span class="n">job</span><span class="p">,</span> <span class="n">fs_io_manager</span>
+
+
+<span class="kn">import</span> <span class="nn">scanpy</span> <span class="k">as</span> <span class="n">sc</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="n">pd</span>
+
+
+<span class="o">@</span><span class="n">op</span><span class="p">(</span><span class="n">config_schema</span><span class="o">=</span><span class="p">{</span><span class="s">"path_to_h5ad"</span><span class="p">:</span> <span class="nb">str</span><span class="p">},</span> <span class="n">out</span><span class="o">=</span><span class="n">Out</span><span class="p">(</span><span class="n">pd</span><span class="p">.</span><span class="n">DataFrame</span><span class="p">))</span>
+<span class="k">def</span> <span class="nf">load_anndata</span><span class="p">(</span><span class="n">context</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">sc</span><span class="p">.</span><span class="n">AnnData</span><span class="p">:</span>
+    <span class="k">return</span> <span class="n">sc</span><span class="p">.</span><span class="n">read_h5ad</span><span class="p">(</span><span class="n">context</span><span class="p">.</span><span class="n">op_config</span><span class="p">[</span><span class="s">"path_to_h5ad"</span><span class="p">])</span>
+
+
+<span class="o">@</span><span class="n">op</span><span class="p">(</span><span class="n">out</span><span class="o">=</span><span class="n">Out</span><span class="p">(</span><span class="n">pd</span><span class="p">.</span><span class="n">DataFrame</span><span class="p">))</span>
+<span class="k">def</span> <span class="nf">get_count_matrix_from_h5ad</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="n">anndata</span><span class="p">:</span> <span class="n">sc</span><span class="p">.</span><span class="n">AnnData</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="p">.</span><span class="n">DataFrame</span><span class="p">:</span>
+    <span class="s">"""Extract the count matrix from an anndata object"""</span>
+    <span class="n">counts</span> <span class="o">=</span> <span class="n">anndata</span><span class="p">.</span><span class="n">to_df</span><span class="p">()</span>
+    <span class="k">yield</span> <span class="n">Output</span><span class="p">(</span>
+        <span class="n">counts</span><span class="p">,</span>
+        <span class="n">metadata</span><span class="o">=</span><span class="p">{</span>
+            <span class="s">"whoiam"</span><span class="p">:</span> <span class="s">"Metadata from the RGR dataset"</span><span class="p">,</span>
+            <span class="s">"# of cells"</span><span class="p">:</span> <span class="n">counts</span><span class="p">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+            <span class="s">"# of genes"</span><span class="p">:</span> <span class="n">counts</span><span class="p">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="p">}</span>
+    <span class="p">)</span>
+
+
+<span class="o">@</span><span class="n">op</span><span class="p">(</span><span class="n">out</span><span class="o">=</span><span class="n">Out</span><span class="p">(</span><span class="n">pd</span><span class="p">.</span><span class="n">DataFrame</span><span class="p">))</span>
+<span class="k">def</span> <span class="nf">get_metadata_from_h5ad</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="n">anndata</span><span class="p">:</span> <span class="n">sc</span><span class="p">.</span><span class="n">AnnData</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="p">.</span><span class="n">DataFrame</span><span class="p">:</span>
+    <span class="s">"""Extract the metadata from an anndata object present in `anndata.obs`"""</span>
+    <span class="n">sc_metadata</span> <span class="o">=</span> <span class="n">anndata</span><span class="p">.</span><span class="n">obs</span>
+    <span class="k">yield</span> <span class="n">Output</span><span class="p">(</span>
+        <span class="n">sc_metadata</span><span class="p">,</span>
+        <span class="n">metadata</span><span class="o">=</span><span class="p">{</span>
+            <span class="s">"whoiam"</span><span class="p">:</span> <span class="s">"Metadata from the RGR dataset"</span><span class="p">,</span>
+            <span class="s">"columns"</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">sc_metadata</span><span class="p">.</span><span class="n">columns</span><span class="p">),</span>
+            <span class="s">"# of cells"</span><span class="p">:</span> <span class="n">sc_metadata</span><span class="p">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+            <span class="s">"# of variables"</span><span class="p">:</span> <span class="n">sc_metadata</span><span class="p">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="p">}</span>
+    <span class="p">)</span>
+
+
+<span class="o">@</span><span class="n">job</span><span class="p">(</span><span class="n">resource_defs</span><span class="o">=</span><span class="p">{</span><span class="s">"io_manager"</span><span class="p">:</span> <span class="n">fs_io_manager</span><span class="p">})</span>
+<span class="k">def</span> <span class="nf">from_anndata_to_pandas_job</span><span class="p">():</span>
+    <span class="s">"""Load anndata and extract counts matrix and metadata"""</span>
+    <span class="n">anndata</span> <span class="o">=</span> <span class="n">load_anndata</span><span class="p">()</span>
+    <span class="n">get_count_matrix_from_h5ad</span><span class="p">(</span><span class="n">anndata</span><span class="p">)</span>
+    <span class="n">get_metadata_from_h5ad</span><span class="p">(</span><span class="n">anndata</span><span class="p">)</span>
+</code></pre></div></div>
+
+  </div><!-- from https://github.com/utterance/utterances -->
+<script src="https://utteranc.es/client.js"
+        repo="fbraza/BrazLog"
+        issue-term="title"
+        label="blogpost-comment"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+</script><a class="u-url" href="/BrazLog/python/single%20cell/data%20engineering/2022/04/12/dagster-single-cells.html" hidden></a>
+</article>
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/BrazLog/"></data>
+
+  <div class="wrapper">
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col">
+        <p class="feed-subscribe">
+          <a href="/BrazLog/feed.xml">
+            <svg class="svg-icon orange">
+              <use xlink:href="/BrazLog/assets/minima-social-icons.svg#rss"></use>
+            </svg><span>Subscribe</span>
+          </a>
+        </p>
+      </div>
+      <div class="footer-col">
+        <p>Python · Scala · BigData · System Design · Data Engineering</p>
+      </div>
+    </div>
+
+    <div class="social-links"><ul class="social-media-list"><li><a rel="me" href="https://github.com/fbraza" target="_blank" title="fbraza"><svg class="svg-icon grey"><use xlink:href="/BrazLog/assets/minima-social-icons.svg#github"></use></svg></a></li><li><a rel="me" href="https://twitter.com/%40braza_faouzi" target="_blank" title="@braza_faouzi"><svg class="svg-icon grey"><use xlink:href="/BrazLog/assets/minima-social-icons.svg#twitter"></use></svg></a></li></ul>
+</div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>
