@@ -4,7 +4,7 @@ toc: false
 comments: true
 layout: post
 description: A technical survey of OSS solutions for metadata
-categories: [BigData, OPS]]
+categories: [BigData, OPS]
 ---
 
 Let's imagine you are a freshly recruited Data Scientist. During one of your stand-up, your product owner gives you a couple of tasks that implies interacting with several data sources. You quickly realize that your main challenge here, even before fulfilling your task will be first to know your data:
