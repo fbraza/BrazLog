@@ -34,9 +34,9 @@ Alternatives are not lacking. But which one should you choose? Which one should 
 
 ### The type 1 architecture: a monolithic approach
 
-![Type 1 architecture: reproduced from [https://engineering.linkedin.com/blog/2020/datahub-popular-metadata-architectures-explained](../assets/2021-12-05-Own-your-metadata-with-metadata-hubs-figure-01.png)
+![Type 1 architecture](https://github.com/fbraza/BrazLog/blob/master/assets/2021-12-05-Own-your-metadata-with-metadata-hubs-figure-01.png)
 
-*<u>**Figure 1:** Type 1 architecture: reproduced and modified from [here](https://engineering.linkedin.com/blog/2020/datahub-popular-metadata-architectures-explained)</u>*
+**Figure 1:** Type 1 architecture: reproduced and modified from [here](https://engineering.linkedin.com/blog/2020/datahub-popular-metadata-architectures-explained)
 
 The first-generation metadata hub consists of a monolithic application connected to a primary metadata store. Sometimes the metadata stored in the primary store is duplicated to be used as a search index. In practice, metadata is imported from your different data sources or ETL logs using an orchestrator such as [Airflow](https://airflow.apache.org/).
 
@@ -50,9 +50,9 @@ Despite its limited features, Admunsen remains a solid choice for data catalogin
 
 ### The type 2 architecture: a programmatic approach
 
-![](../assets/2021-12-05-Own-your-metadata-with-metadata-hubs-figure-02.png)
+![Figure2](https://github.com/fbraza/BrazLog/blob/master/assets/2021-12-05-Own-your-metadata-with-metadata-hubs-figure-02.png)
 
-*<u>**Figure 2:** Type 2 architecture: reproduced and modified from <a href="https://engineering.linkedin.com/blog/2020/datahub-popular-metadata-architectures-explained">here</a></u>*
+**Figure 2:** Type 2 architecture: reproduced and modified from [here](https://engineering.linkedin.com/blog/2020/datahub-popular-metadata-architectures-explained)
 
 One limitation with the type-1 architecture is the impossibility to enable programmatic use cases (no access to the RestAPI). Type-2 metadata hubs solve this specific problem. The monolithic application is composed of three main pieces:
 
@@ -68,9 +68,9 @@ Finally, keep in mind that such a system might not scale well, especially if you
 
 ### Marquez
 
-![Marquez architecture and API](../assets/2021-12-05-Own-your-metadata-with-metadata-hubs-figure-03.png)
+![Marquez architecture and API]([../assets/2021-12-05-Own-your-metadata-with-metadata-hubs-figure-03.png](https://github.com/fbraza/BrazLog/blob/master/assets/2021-12-05-Own-your-metadata-with-metadata-hubs-figure-01.png))
 
-*<u>**Figure 3:** Marquez architecture and API</u>*
+**Figure 3:** Marquez architecture and API
 
 The open-source solution Marquez is a metadata hub built following the type-2 design. The metadata service is a Java server that process API HTTP requests coming from three different [endpoints](https://marquezproject.github.io/marquez/openapi.html):
 
@@ -86,9 +86,9 @@ To conclude, we think that Marquez is an interesting tool to start mastering and
 
 ### The type 3 architecture: a distributed approach
 
-![Type 3 architecture: reproduced and modified from [https://engineering.linkedin.com/blog/2020/datahub-popular-metadata-architectures-explained](../assets/2021-12-05-Own-your-metadata-with-metadata-hubs-figure-04.png)
+![Type 3 architecture](https://github.com/fbraza/BrazLog/blob/master/assets/2021-12-05-Own-your-metadata-with-metadata-hubs-figure-01.png)
 
-*<u>**Figure 4:** Type 3 architecture: reproduced and modified from [here](https://engineering.linkedin.com/blog/2020/datahub-popular-metadata-architectures-explained)</u>*
+**Figure 4:** Type 3 architecture: reproduced and modified from [here](https://engineering.linkedin.com/blog/2020/datahub-popular-metadata-architectures-explained)
 
 The third-generation tool relies on a distributed architecture. It provides several ways to lift metadata from services and data sources:
 
@@ -101,9 +101,9 @@ Do not forget that complexity comes as the main trade-off here. Such solutions r
 
 ### Apache Atlas
 
-![Apache Atlas architecture: reproduced and modified from [https://developer.ibm.com/articles/apache-atlas-and-janusgraph-graph-based-meta-data-management/](../assets/2021-12-05-Own-your-metadata-with-metadata-hubs-figure-05.png)
+![Apache Atlas architecture](https://github.com/fbraza/BrazLog/blob/master/assets/2021-12-05-Own-your-metadata-with-metadata-hubs-figure-01.png)
 
-*<u>**Figure 5:** Apache Atlas architecture: reproduced and modified from [here](https://developer.ibm.com/articles/apache-atlas-and-janusgraph-graph-based-meta-data-management/)</u>*
+**Figure 5:** Apache Atlas architecture: reproduced and modified from [here](https://developer.ibm.com/articles/apache-atlas-and-janusgraph-graph-based-meta-data-management/)
 
 Apache Atlas is a data Governance and metadata framework for Hadoop. It is tightly coupled with the Hadoop ecosystem. Noteworthy, Purview is built on top of Apache Atlas and provides metadata governance and management capabilities with Azure data services.
 
@@ -124,9 +124,9 @@ In conclusion, we think that Apache Atlas is worth investing in if your company 
 
 ### LinkedIn DataHub
 
-![DataHub architecture, reproduced and modified from [https://datahubproject.io/docs/architecture/architecture](../assets/2021-12-05-Own-your-metadata-with-metadata-hubs-figure-06.png)
+![DataHub architecture](https://github.com/fbraza/BrazLog/blob/master/assets/2021-12-05-Own-your-metadata-with-metadata-hubs-figure-01.png)
 
-*<u>**Figure 6:** DataHub architecture, reproduced and modified from [here](https://datahubproject.io/docs/architecture/architecture)</u>*
+**Figure 6:** DataHub architecture, reproduced and modified from [here](https://datahubproject.io/docs/architecture/architecture)
 
 DataHub is LinkedIn's answer to provide a scalable and always consistent metadata hub. It harbors a flexible architecture to ingest metadata following two main approaches:
 
