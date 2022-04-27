@@ -153,9 +153,9 @@ The metadata hub ecosystem is dynamic but remains fragmented. Each solution come
 ## References
 
 - [Amundsen](https://www.amundsen.io/)
-- [Overview | Marquez](https://marquezproject.github.io/marquez/)
-- [DataHub: A generalized metadata search and discovery tool | LinkedIn Engineering](https://engineering.linkedin.com/blog/2019/data-hub)
-- [DataHub: Popular metadata architectures explained | LinkedIn Engineering](https://engineering.linkedin.com/blog/2020/datahub-popular-metadata-architectures-explained)
+- [Overview Marquez](https://marquezproject.github.io/marquez/)
+- [DataHub: A generalized metadata search and discovery tool, LinkedIn Engineering](https://engineering.linkedin.com/blog/2019/data-hub)
+- [DataHub: Popular metadata architectures explained, LinkedIn Engineering](https://engineering.linkedin.com/blog/2020/datahub-popular-metadata-architectures-explained)
 - [Apache Atlas – Data Governance and Metadata framework for Hadoop](https://atlas.apache.org/#/)
 - [Apache Atlas and Amundsen at ING Bank](https://medium.com/wbaa/facilitating-data-discovery-with-apache-atlas-and-amundsen-631baa287c8b)
 - [Data Governance: why and how ? - YouTube](https://www.youtube.com/watch?v=NwoqvuyqyoM&list=PLPrO9x02oC5v4caWb9MJzUQfxUMsjmZ-T&index=5)
